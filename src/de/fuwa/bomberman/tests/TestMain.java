@@ -1,9 +1,18 @@
 package de.fuwa.bomberman.tests;
 
-public class TestMain {
+import de.fuwa.bomberman.app.AppSettings;
+import de.fuwa.bomberman.app.GameApplication;
+
+public class TestMain extends GameApplication {
 
     public static void main(String[] args) {
-        System.out.println("Herzlich willkommen zum Informatik Workshop!");
+        TestMain test = new TestMain();
+        AppSettings settings = new AppSettings(800, 600, false);
+        test.start(settings);
     }
 
+    @Override
+    public void initGame() {
+
+    }
 }
