@@ -146,8 +146,6 @@ public abstract class GameApplication {
     public void destroy(){
         // stop game thread (main game loop)
         this.gameLoop.stopGameLoop();
-        // cleanup app state manager
-        getStateManager().cleanup();
     }
 
 }
