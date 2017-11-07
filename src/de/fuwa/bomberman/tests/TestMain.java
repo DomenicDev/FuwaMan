@@ -15,10 +15,8 @@ public class TestMain extends GameApplication {
 
     @Override
     public void initGame() {
-
         getStateManager().attachState(new TimerAppState());
         getStateManager().attachState(new DestroyerAppState());
-
     }
 
     private class TimerAppState extends BaseAppState {
@@ -57,4 +55,5 @@ public class TestMain extends GameApplication {
             }
         }
     }
+
 }
