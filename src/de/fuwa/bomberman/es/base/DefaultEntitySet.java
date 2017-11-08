@@ -142,6 +142,10 @@ public class DefaultEntitySet extends AbstractSet<Entity> implements EntitySet {
         this.changes.add(change);
     }
 
+    public List<EntityChange> getChanges() {
+        return this.changes;
+    }
+
     private void refreshChangeSets(List<EntityChange> changeList) {
         for (EntityChange change : changeList) {
             EntityId entityId = change.getEntityId();
