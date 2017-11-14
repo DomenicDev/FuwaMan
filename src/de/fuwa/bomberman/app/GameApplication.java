@@ -108,6 +108,12 @@ public abstract class GameApplication {
 
                 // update gui
                 gameContext.updateGui();
+
+                try {
+                    Thread.sleep(20);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

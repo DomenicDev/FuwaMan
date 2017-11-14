@@ -45,19 +45,20 @@ public class TestVisuals extends GameApplication {
             entityData = getStateManager().getState(EntityDataState.class).getEntityData();
 
             player = entityData.createEntity();
-            entityData.setComponents(player, new PositionComponent(1,1), new ModelComponent(ModelType.Player, false));
+            entityData.setComponents(player, new PositionComponent(5, 5), new ModelComponent(ModelType.Player, false));
 
             EntityId block = entityData.createEntity();
             entityData.setComponents(block, new PositionComponent(2,1), new ModelComponent(ModelType.DestroyableTile, false));
 
-            xPos = 1;
-            yPos = 1;
+            xPos = 5;
+            yPos = 5;
         }
 
         @Override
         public void update(float tpf) {
             timer += tpf;
-            entityData.setComponent(player, new PositionComponent((float) (xPos + 1f* Math.sin(timer*2)), (float) (yPos + 1*Math.cos(timer*2))));
+            //   entityData.setComponent(player, new PositionComponent((float) (xPos + 1.5f* Math.sin(timer)), (float) (yPos + 1.5*Math.cos(timer))));
+            entityData.setComponent(player, new PositionComponent(xPos += tpf, 4));
         }
     }
 }
