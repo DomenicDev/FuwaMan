@@ -107,7 +107,7 @@ public abstract class GameApplication {
                 }
 
                 // update gui
-                gameContext.updateGui(tpf);
+                gameContext.updateGui();
             }
         }
     }

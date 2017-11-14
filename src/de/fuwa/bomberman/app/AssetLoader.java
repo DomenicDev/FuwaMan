@@ -1,32 +1,37 @@
 package de.fuwa.bomberman.app;
 
-import com.sun.imageio.plugins.gif.GIFImageReader;
-import com.sun.imageio.plugins.gif.GIFImageReaderSpi;
-
 import javax.imageio.ImageIO;
-import javax.imageio.ImageReadParam;
-import javax.imageio.ImageReader;
-import javax.imageio.stream.ImageInputStream;
-import java.awt.Image;
+import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
+/**
+ * The AssetLoader provides the functionality to load static images and animated images (gif).
+ * Images are only loaded once and referenced for later use.
+ */
 public class AssetLoader {
 
     private Map<String, Image> singleImages = new HashMap<>();
-    private Map<String, List<Image>> animatedImages = new HashMap<>();
+    private Map<String, Image[]> animatedImages = new HashMap<>();
 
+    /**
+     * Loads the image with the specified path.
+     * This image will consist of only one frame.
+     * @param path the path of the image
+     * @return the image with the specified path
+     */
     public Image loadSingleImage(String path) {
         Image image;
+        // first we check if that image has been loaded already
         if (singleImages.containsKey(path)) {
             return singleImages.get(path);
         }
 
         try {
+            // we need to load the image
             image = ImageIO.read(new File(path));
             singleImages.put(path, image);
             return image;
@@ -36,33 +41,31 @@ public class AssetLoader {
         }
     }
 
-    public List<Image> loadAnimatedGif(String path) {
-
-        // this method took some ideas from
-        // https://stackoverflow.com/questions/8933893/convert-each-animated-gif-frame-to-a-separate-bufferedimage
-
-        List<Image> list;
-        if ((list = animatedImages.get(path)) != null) {
-            return list;
+    /**
+     * This method will load and return the animated gif image
+     * plus a single (static) image of the first frame of that gif.
+     * @param path the path of the gif image
+     * @return an Image[] where [0] is the static image and [1] is the animated image
+     */
+    public Image[] loadAnimatedGif(String path) {
+        Image[] images;
+        if ((images = animatedImages.get(path)) != null) {
+            return images;
         }
+        // we need to create a new array
+        images = new Image[2];
 
-        try {
-            ImageReader imageReader = new GIFImageReader(new GIFImageReaderSpi());
-            ImageInputStream inputStream = ImageIO.createImageInputStream(new File(path));
-            imageReader.setInput(inputStream, false);
+        // load static image
+        images[0] = loadSingleImage(path);
 
-            List<Image> frames = new ArrayList<>();
-            for (int i = 0; i < imageReader.getNumImages(true); i++) {
-                Image image = imageReader.read(i);
-                frames.add(image);
-            }
-            this.animatedImages.put(path, frames);
-            return frames;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
+        // load animated image
+        images[1] = new ImageIcon(path).getImage();
 
+        // add images to map
+        this.animatedImages.put(path, images);
+
+        // return array
+        return images;
     }
 
 }

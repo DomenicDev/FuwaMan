@@ -5,11 +5,10 @@ import de.fuwa.bomberman.app.AppStateManager;
 import de.fuwa.bomberman.app.BaseAppState;
 import de.fuwa.bomberman.app.GameApplication;
 import de.fuwa.bomberman.app.gui.AnimatedImageObject;
-import de.fuwa.bomberman.app.gui.GraphicalObject;
 import de.fuwa.bomberman.app.gui.VisualGameField;
 
-import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TestMain extends GameApplication {
@@ -29,6 +28,9 @@ public class TestMain extends GameApplication {
 
     private class GameFieldAppState extends BaseAppState {
 
+        List<AnimatedImageObject> objects = new ArrayList<>();
+        float timer;
+
         @Override
         public void initialize(AppStateManager stateManager) {
 
@@ -38,8 +40,20 @@ public class TestMain extends GameApplication {
             for (int y = 0; y < 10; y++) {
                 for (int x = 0; x < 10; x++) {
                  //   Image testImage = stateManager.getGameApplication().getAssetLoader().loadSingleImage("assets/Textures/player.gif");
-                    List<Image> frames = stateManager.getGameApplication().getAssetLoader().loadAnimatedGif("assets/Textures/player.gif");
-                    visualGameField.addGameObject(new AnimatedImageObject(x, y, frames, true));
+                    Image[] frames = stateManager.getGameApplication().getAssetLoader().loadAnimatedGif("assets/Textures/player.gif");
+                    AnimatedImageObject o = new AnimatedImageObject(x, y, frames, true);
+                    objects.add(o);
+                    visualGameField.addGameObject(o);
+                }
+            }
+        }
+
+        @Override
+        public void update(float tpf) {
+            if (timer != -1 && (timer+=tpf) > 6) {
+                timer = -1;
+                for (AnimatedImageObject o : objects) {
+                    o.setAnimated(false);
                 }
             }
         }

@@ -28,10 +28,6 @@ public class VisualGameField extends JPanel {
         this.graphicalObjects.add(object);
     }
 
-    public List<DrawableObject> getGraphicalObjects() {
-        return graphicalObjects;
-    }
-
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -50,7 +46,6 @@ public class VisualGameField extends JPanel {
             int screenPosY = (int) (object.getY() * tileSizeY);
 
             graphics2D.drawImage(object.getImageToDraw(), screenPosX, screenPosY, this);
-
         }
 
     }

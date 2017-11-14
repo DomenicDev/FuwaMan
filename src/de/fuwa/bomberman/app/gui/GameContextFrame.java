@@ -72,16 +72,9 @@ public class GameContextFrame extends JFrame {
         setVisible(true);
     }
 
-    public void updateGui(float tpf) {
+    public void updateGui() {
         validate();
         repaint();
-
-        // update drawables (if needed)
-        if (visualGameField != null) {
-            for (DrawableObject drawableObject : visualGameField.getGraphicalObjects()) {
-                drawableObject.update(tpf);
-            }
-        }
     }
 
     public VisualGameField createAndDisplayGameField(int sizeX, int sizeY) {

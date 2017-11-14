@@ -2,7 +2,10 @@ package de.fuwa.bomberman.app.gui;
 
 import java.awt.*;
 
-public class AbstractDrawableObject implements DrawableObject {
+/**
+ * Abstract implementation of the {@link DrawableObject} interface.
+ */
+public abstract class AbstractDrawableObject implements DrawableObject {
 
     private float x, y; // the logical x and y position
     private Image imageToDraw;
@@ -43,8 +46,4 @@ public class AbstractDrawableObject implements DrawableObject {
         return y;
     }
 
-    @Override
-    public void update(float tpf) {
-
-    }
 }
