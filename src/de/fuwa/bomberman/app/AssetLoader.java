@@ -53,7 +53,7 @@ public class AssetLoader {
 
             List<Image> frames = new ArrayList<>();
             for (int i = 0; i < imageReader.getNumImages(true); i++) {
-                Image image = imageReader.readTile(i, 0,0);
+                Image image = imageReader.read(i);
                 frames.add(image);
             }
             this.animatedImages.put(path, frames);
