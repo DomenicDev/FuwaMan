@@ -3,6 +3,7 @@ package de.fuwa.bomberman.app.gui;
 import de.fuwa.bomberman.app.AppSettings;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * We created our own JFrame subclass to extend JFrame
@@ -13,8 +14,13 @@ import javax.swing.*;
 public class GameContextFrame extends JFrame {
 
     private AppSettings settings;
-
     private GameContextListener listener;
+
+    private JPanel mainContentPanel;
+    private JPanel gamePanel; // this panel is added if we are in the running game
+    private JPanel mainMenuPanel; // this panel is added if we are in the main menu
+
+    private VisualGameField visualGameField; // the current game field
 
     public GameContextFrame(GameContextListener listener) {
         this.listener = listener;
@@ -27,10 +33,37 @@ public class GameContextFrame extends JFrame {
     public void buildContext() {
         setSize(settings.getWidth(), settings.getHeight());
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setResizable(false);
+        setResizable(true);
         setLocationRelativeTo(null); // to place it in the middle of the screen
+        setMinimumSize(new Dimension(800, 600));
+        setLayout(new GridLayout(1,1));
+
+        this.mainContentPanel = new JPanel();
+        this.mainContentPanel.setLayout(new GridLayout(1,1));
+        add(mainContentPanel);
+
+        this.gamePanel = new JPanel();
+        this.gamePanel.setLayout(new GridLayout(1,1));
+        this.mainContentPanel.add(gamePanel);
+
+        pack();
+
         setVisible(true);
     }
+
+    public void updateGui() {
+        validate();
+        repaint();
+    }
+
+    public VisualGameField createAndDisplayGameField(int sizeX, int sizeY) {
+        VisualGameField visualGameField = new VisualGameField(sizeX, sizeY);
+        visualGameField.setBackground(Color.CYAN);
+        this.gamePanel.add(visualGameField);
+        this.visualGameField = visualGameField;
+        return visualGameField;
+    }
+
 
     @Override
     public void dispose() {

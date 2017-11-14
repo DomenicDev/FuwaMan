@@ -54,6 +54,10 @@ public class AppStateManager {
         return null;
     }
 
+    public GameApplication getGameApplication() {
+        return app;
+    }
+
     /**
      * @return a list containing all currently added app states
      */
