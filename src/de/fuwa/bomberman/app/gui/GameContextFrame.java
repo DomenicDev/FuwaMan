@@ -20,8 +20,13 @@ import java.util.ArrayList;
 public class GameContextFrame extends JFrame {
 
     private AppSettings settings;
-
     private GameContextListener listener;
+
+    private JPanel mainContentPanel;
+    private JPanel gamePanel; // this panel is added if we are in the running game
+    private JPanel mainMenuPanel; // this panel is added if we are in the main menu
+
+    private VisualGameField visualGameField; // the current game field
 
     public GameContextFrame(GameContextListener listener) {
         this.listener = listener;
@@ -39,77 +44,54 @@ public class GameContextFrame extends JFrame {
         setMinimumSize(new Dimension(800, 600));
         setLayout(new GridLayout(1,1));
 
+        this.mainContentPanel = new JPanel();
+        this.mainContentPanel.setLayout(new GridLayout(1,1));
+        add(mainContentPanel);
 
-        VisualGameField gameField = new VisualGameField(9,9);
-        add(gameField);
+        this.gamePanel = new JPanel();
+        this.gamePanel.setLayout(new GridLayout(1,1));
+        this.mainContentPanel.add(gamePanel);
+
+   //     VisualGameField gameField = new VisualGameField(9,9);
+   //     mainContentPanel.add(gameField);
 
         pack();
-
-        ImageIcon block = null;
-        //    block = ImageIO.read(new File("assets/Textures/player.gif"));
-        block = new ImageIcon("assets/Textures/player.gif");
-
-
-        for (int y = 0; y < 9; y++) {
-            for (int x = 0; x < 9; x++) {
-                GraphicalObject object = new GraphicalObject(x, y, block.getImage());
-                gameField.addGameObject(object);
-            }
-        }
+//
+//        ImageIcon block = null;
+//        //    block = ImageIO.read(new File("assets/Textures/player.gif"));
+//        block = new ImageIcon("assets/Textures/player.gif");
+//
+//
+//        for (int y = 0; y < 9; y++) {
+//            for (int x = 0; x < 9; x++) {
+//                GraphicalObject object = new GraphicalObject(x, y, block.getImage());
+//                gameField.addGameObject(object);
+//            }
+//        }
 
         setVisible(true);
     }
 
-    private class VisualGameField extends JPanel {
+    public void updateGui(float tpf) {
+        validate();
+        repaint();
 
-        private int sizeX;
-        private int sizeY;
-
-        final int tileSizeX = 17;
-        final int tileSizeY = 24;
-
-        private List<GraphicalObject> graphicalObjects = new ArrayList<>();
-
-        VisualGameField(int sizeX, int sizeY) {
-            this.sizeX = sizeX;
-            this.sizeY = sizeY;
-        }
-
-        private void addGameObject(GraphicalObject object) {
-            this.graphicalObjects.add(object);
-        }
-
-
-
-        @Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-
-            Graphics2D graphics2D = (Graphics2D) g;
-
-            System.out.println(getWidth());
-
-            float scaleX = (float) getWidth() / (tileSizeX * sizeX);
-            float scaleY = (float) getHeight() / (tileSizeY * sizeY);
-
-            System.out.println(scaleX);
-
-            float scale = Math.min(scaleX, scaleY);
-            graphics2D.scale(scale, scale);
-
-            for (GraphicalObject object : graphicalObjects) {
-
-                int screenPosX = (int) (object.getPosX() * tileSizeX);
-                int screenPosY = (int) (object.getPosY() * tileSizeY);
-
-
-
-                graphics2D.drawImage(object.getImage(), screenPosX, screenPosY, this);
-
+        // update drawables (if needed)
+        if (visualGameField != null) {
+            for (DrawableObject drawableObject : visualGameField.getGraphicalObjects()) {
+                drawableObject.update(tpf);
             }
-
         }
     }
+
+    public VisualGameField createAndDisplayGameField(int sizeX, int sizeY) {
+        VisualGameField visualGameField = new VisualGameField(sizeX, sizeY);
+        visualGameField.setBackground(Color.CYAN);
+        this.gamePanel.add(visualGameField);
+        this.visualGameField = visualGameField;
+        return visualGameField;
+    }
+
 
     @Override
     public void dispose() {

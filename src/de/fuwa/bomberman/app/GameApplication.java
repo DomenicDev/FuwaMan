@@ -14,6 +14,7 @@ import de.fuwa.bomberman.app.gui.GameContextListener;
 public abstract class GameApplication {
 
     private AppStateManager stateManager;
+    private AssetLoader assetLoader;
     private GameContextFrame gameContext;
     private AppSettings appSettings;
     private GameLoop gameLoop;
@@ -44,6 +45,8 @@ public abstract class GameApplication {
 
         // create our AppStateManager to manage AppStates
         stateManager = new AppStateManager(this);
+
+        assetLoader = new AssetLoader();
 
         // create gui by instancing our custom JFrame class
         gameContext = new GameContextFrame(new GuiEventHandler());
@@ -102,6 +105,9 @@ public abstract class GameApplication {
                 for (AppState appState : getStateManager().getAppStates()) {
                     appState.render();
                 }
+
+                // update gui
+                gameContext.updateGui(tpf);
             }
         }
     }
@@ -122,6 +128,10 @@ public abstract class GameApplication {
      */
     public AppStateManager getStateManager() {
         return stateManager;
+    }
+
+    public AssetLoader getAssetLoader() {
+        return assetLoader;
     }
 
     /**
