@@ -2,14 +2,8 @@ package de.fuwa.bomberman.app.gui;
 
 import de.fuwa.bomberman.app.AppSettings;
 
-import javax.imageio.IIOImage;
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
-import java.util.ArrayList;
 
 /**
  * We created our own JFrame subclass to extend JFrame
@@ -52,22 +46,7 @@ public class GameContextFrame extends JFrame {
         this.gamePanel.setLayout(new GridLayout(1,1));
         this.mainContentPanel.add(gamePanel);
 
-   //     VisualGameField gameField = new VisualGameField(9,9);
-   //     mainContentPanel.add(gameField);
-
         pack();
-//
-//        ImageIcon block = null;
-//        //    block = ImageIO.read(new File("assets/Textures/player.gif"));
-//        block = new ImageIcon("assets/Textures/player.gif");
-//
-//
-//        for (int y = 0; y < 9; y++) {
-//            for (int x = 0; x < 9; x++) {
-//                GraphicalObject object = new GraphicalObject(x, y, block.getImage());
-//                gameField.addGameObject(object);
-//            }
-//        }
 
         setVisible(true);
     }
