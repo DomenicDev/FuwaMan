@@ -6,6 +6,13 @@ import de.fuwa.bomberman.app.BaseAppState;
 import de.fuwa.bomberman.app.GameApplication;
 import de.fuwa.bomberman.app.gui.AnimatedImageObject;
 import de.fuwa.bomberman.app.gui.VisualGameField;
+import de.fuwa.bomberman.es.EntityData;
+import de.fuwa.bomberman.es.base.DefaultEntityData;
+import de.fuwa.bomberman.game.appstates.EntityDataState;
+import de.fuwa.bomberman.game.appstates.InputAppState;
+import de.fuwa.bomberman.game.appstates.session.GameSessionAppState;
+import de.fuwa.bomberman.game.appstates.session.GameSessionHandler;
+import de.fuwa.bomberman.game.session.GameSession;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -23,7 +30,18 @@ public class TestMain extends GameApplication {
     public void initGame() {
   //      getStateManager().attachState(new TimerAppState());
   //      getStateManager().attachState(new DestroyerAppState());
-    getStateManager().attachState(new GameFieldAppState());
+ //   getStateManager().attachState(new GameFieldAppState());
+
+        EntityData entityData = new DefaultEntityData();
+        getStateManager().attachState(new EntityDataState(entityData));
+
+        GameSessionHandler sessionHandler = new GameSessionHandler();
+        getStateManager().attachState(sessionHandler);
+        GameSession gameSession = sessionHandler.createGameSession(entityData.createEntity());
+        getStateManager().attachState(new GameSessionAppState(gameSession));
+
+
+        getStateManager().attachState(new InputAppState());
     }
 
     private class GameFieldAppState extends BaseAppState {
