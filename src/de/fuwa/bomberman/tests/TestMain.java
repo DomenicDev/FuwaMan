@@ -7,11 +7,20 @@ import de.fuwa.bomberman.app.GameApplication;
 import de.fuwa.bomberman.app.gui.AnimatedImageObject;
 import de.fuwa.bomberman.app.gui.VisualGameField;
 import de.fuwa.bomberman.es.EntityData;
+import de.fuwa.bomberman.es.EntityId;
 import de.fuwa.bomberman.es.base.DefaultEntityData;
 import de.fuwa.bomberman.game.appstates.EntityDataState;
 import de.fuwa.bomberman.game.appstates.InputAppState;
+import de.fuwa.bomberman.game.appstates.SimpleMovementAppState;
 import de.fuwa.bomberman.game.appstates.session.GameSessionAppState;
 import de.fuwa.bomberman.game.appstates.session.GameSessionHandler;
+import de.fuwa.bomberman.game.appstates.visual.VisualAppState;
+import de.fuwa.bomberman.game.appstates.visual.VisualGameFieldAppState;
+import de.fuwa.bomberman.game.components.ModelComponent;
+import de.fuwa.bomberman.game.components.PositionComponent;
+import de.fuwa.bomberman.game.components.WalkableComponent;
+import de.fuwa.bomberman.game.enums.ModelType;
+import de.fuwa.bomberman.game.enums.MoveDirection;
 import de.fuwa.bomberman.game.session.GameSession;
 
 import java.awt.*;
@@ -35,12 +44,18 @@ public class TestMain extends GameApplication {
         EntityData entityData = new DefaultEntityData();
         getStateManager().attachState(new EntityDataState(entityData));
 
+        getStateManager().attachState(new SimpleMovementAppState());
+
+        EntityId player = entityData.createEntity();
+        entityData.setComponents(player, new PositionComponent(1,1), new WalkableComponent(MoveDirection.Idle, 1f), new ModelComponent(ModelType.Player, true));
+
         GameSessionHandler sessionHandler = new GameSessionHandler();
         getStateManager().attachState(sessionHandler);
-        GameSession gameSession = sessionHandler.createGameSession(entityData.createEntity());
+        GameSession gameSession = sessionHandler.createGameSession(player);
         getStateManager().attachState(new GameSessionAppState(gameSession));
 
-
+        getStateManager().attachState(new VisualGameFieldAppState(5,5));
+        getStateManager().attachState(new VisualAppState());
         getStateManager().attachState(new InputAppState());
     }
 

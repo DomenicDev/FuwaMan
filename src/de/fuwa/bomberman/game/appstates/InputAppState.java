@@ -38,18 +38,15 @@ public class InputAppState extends BaseAppState implements KeyListener {
             return;
         }
 
-        if (!up && !down && !left && !right) {
-            if (e.getKeyCode() == KeyEvent.VK_W) {
-                up = true;
-            } else if (e.getKeyCode() == KeyEvent.VK_A) {
-                left = true;
-            } else if (e.getKeyCode() == KeyEvent.VK_S) {
-                down = true;
-            } else if (e.getKeyCode() == KeyEvent.VK_D) {
-                right = true;
-            }
+        if (!up && e.getKeyCode() == KeyEvent.VK_W) {
+            up = true;
+        } else if (e.getKeyCode() == KeyEvent.VK_A) {
+            left = true;
+        } else if (e.getKeyCode() == KeyEvent.VK_S) {
+            down = true;
+        } else if (e.getKeyCode() == KeyEvent.VK_D) {
+            right = true;
         }
-
 
     }
 
@@ -74,7 +71,7 @@ public class InputAppState extends BaseAppState implements KeyListener {
             moveDirection = MoveDirection.Down;
         } else if (left) {
             moveDirection = MoveDirection.Left;
-        } else if (right){
+        } else if (right) {
             moveDirection = MoveDirection.Right;
         } else {
             moveDirection = MoveDirection.Idle;

@@ -10,8 +10,8 @@ public class VisualGameField extends JPanel {
     private int sizeX;
     private int sizeY;
 
-    final int tileSizeX = 17;
-    final int tileSizeY = 24;
+    final int tileSizeX = 50;
+    final int tileSizeY = 50;
 
     private List<DrawableObject> graphicalObjects = new ArrayList<>();
 
@@ -41,12 +41,13 @@ public class VisualGameField extends JPanel {
         graphics2D.scale(scale, scale);
 
         for (DrawableObject object : graphicalObjects) {
-
             int screenPosX = (int) (object.getX() * tileSizeX);
             int screenPosY = (int) (object.getY() * tileSizeY);
 
             graphics2D.drawImage(object.getImageToDraw(), screenPosX, screenPosY, this);
         }
 
+        // we call this to remove flicker effects when screen is redrawn to often
+        Toolkit.getDefaultToolkit().sync();
     }
 }

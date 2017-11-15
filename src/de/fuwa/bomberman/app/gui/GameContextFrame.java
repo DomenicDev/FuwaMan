@@ -35,7 +35,8 @@ public class GameContextFrame extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setResizable(true);
         setLocationRelativeTo(null); // to place it in the middle of the screen
-        setMinimumSize(new Dimension(800, 600));
+        setMinimumSize(new Dimension(600, 600));
+        setResizable(false);
         setLayout(new GridLayout(1,1));
 
         this.mainContentPanel = new JPanel();
@@ -49,6 +50,8 @@ public class GameContextFrame extends JFrame {
         pack();
 
         setVisible(true);
+
+
     }
 
     public void updateGui() {

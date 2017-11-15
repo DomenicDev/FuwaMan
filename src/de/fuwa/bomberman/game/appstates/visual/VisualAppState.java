@@ -3,6 +3,7 @@ package de.fuwa.bomberman.game.appstates.visual;
 import de.fuwa.bomberman.app.AppStateManager;
 import de.fuwa.bomberman.app.AssetLoader;
 import de.fuwa.bomberman.app.BaseAppState;
+import de.fuwa.bomberman.app.gui.AnimatedImageObject;
 import de.fuwa.bomberman.app.gui.DrawableObject;
 import de.fuwa.bomberman.app.gui.StaticImageObject;
 import de.fuwa.bomberman.app.gui.VisualGameField;
@@ -63,11 +64,10 @@ public class VisualAppState extends BaseAppState {
 
         if (model.isAnimated()) {
             // load animated gif
-            // todo
+            drawableObject = new AnimatedImageObject(position.getX(), position.getY(), assetLoader.loadAnimatedGif("assets/Textures/" +model.getModelType().getFilename()), true);
         } else {
             // load static image
             drawableObject = new StaticImageObject(position.getX(), position.getY(), assetLoader.loadSingleImage("assets/Textures/" + model.getModelType().getFilename()));
-
         }
 
         visualGameField.addGameObject(drawableObject);

@@ -79,6 +79,10 @@ public abstract class GameApplication {
             this.active = false; // set flag to false --> will close thread
         }
 
+        final long OPTIMAL_TIME = 1000000000 / 60;
+
+        private float timer = 0;
+        private int frameCounter = 0;
         @Override
         public void run() {
             // active is a flag which can be set to false which will make
@@ -108,6 +112,21 @@ public abstract class GameApplication {
 
                 // update gui
                 gameContext.updateGui();
+
+                if ((timer+=tpf) >= 1) {
+                    System.out.println(frameCounter);
+                    frameCounter = 0;
+                    timer = 0;
+                } else {
+                    frameCounter++;
+                    timer+=tpf;
+                }
+
+                try {
+                    Thread.sleep(5);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

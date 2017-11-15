@@ -1,7 +1,12 @@
 package de.fuwa.bomberman.game.appstates.session;
 
+import de.fuwa.bomberman.app.AppStateManager;
 import de.fuwa.bomberman.app.BaseAppState;
+import de.fuwa.bomberman.es.EntityData;
 import de.fuwa.bomberman.es.EntityId;
+import de.fuwa.bomberman.game.appstates.EntityDataState;
+import de.fuwa.bomberman.game.appstates.SimpleMovementAppState;
+import de.fuwa.bomberman.game.components.WalkableComponent;
 import de.fuwa.bomberman.game.enums.MoveDirection;
 import de.fuwa.bomberman.game.session.GameSession;
 
@@ -10,6 +15,15 @@ import de.fuwa.bomberman.game.session.GameSession;
  * The actual implementation of the GameSession interface is done here as well.
  */
 public class GameSessionHandler extends BaseAppState {
+
+    private SimpleMovementAppState simpleMovementAppState;
+    private EntityData entityData;
+
+    @Override
+    public void initialize(AppStateManager stateManager) {
+        this.entityData = stateManager.getState(EntityDataState.class).getEntityData();
+        simpleMovementAppState = stateManager.getState(SimpleMovementAppState.class);
+    }
 
     /**
      * Creates a new GameSession object for the specified player.
@@ -40,7 +54,7 @@ public class GameSessionHandler extends BaseAppState {
 
         @Override
         public void applyMoveDirection(MoveDirection direction) {
-            // ToDo: implement as soon as missing classes are implemented
+            entityData.setComponent(playerId, new WalkableComponent(direction, 1));
         }
     }
 
