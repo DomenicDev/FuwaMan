@@ -4,21 +4,23 @@ import de.fuwa.bomberman.es.EntityComponent;
 
 public class CollisionComponent implements EntityComponent {
 
-    private float x, y, width, height;
+    private float xOffset, yOffset, width, height;
+    private boolean staticObject;
 
-    public CollisionComponent(float x, float y, float width, float height) {
-        this.x = x;
-        this.y = y;
+    public CollisionComponent(float xOffset, float yOffset, float width, float height, boolean staticObject) {
+        this.xOffset = xOffset;
+        this.yOffset = yOffset;
         this.width = width;
         this.height = height;
+        this.staticObject = staticObject;
     }
 
-    public float getX() {
-        return x;
+    public float getOffsetX() {
+        return xOffset;
     }
 
-    public float getY() {
-        return y;
+    public float getOffsetY() {
+        return yOffset;
     }
 
     public float getWidth() {
@@ -27,5 +29,9 @@ public class CollisionComponent implements EntityComponent {
 
     public float getHeight() {
         return height;
+    }
+
+    public boolean isStaticObject() {
+        return staticObject;
     }
 }
