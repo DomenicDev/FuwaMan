@@ -38,10 +38,6 @@ public class PhysicsCharacterMovementAppState extends BaseAppState {
             PositionComponent playerPos = character.get(PositionComponent.class);
             CollisionComponent playerCollisionShape = character.get(CollisionComponent.class);
 
-            float oldX = playerPos.getX();
-            float oldY = playerPos.getY();
-
-
             RectangleFloat r1 = new RectangleFloat();
             RectangleFloat r2 = new RectangleFloat();
 
