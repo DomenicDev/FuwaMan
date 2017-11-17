@@ -10,8 +10,8 @@ public class VisualGameField extends JPanel {
     private int sizeX;
     private int sizeY;
 
-    final int tileSizeX = 50;
-    final int tileSizeY = 50;
+    final int tileSizeX = 200;
+    final int tileSizeY = 200;
 
     private List<DrawableObject> graphicalObjects = new ArrayList<>();
 
