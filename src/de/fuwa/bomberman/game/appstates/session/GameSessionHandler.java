@@ -54,7 +54,8 @@ public class GameSessionHandler extends BaseAppState {
 
         @Override
         public void applyMoveDirection(MoveDirection direction) {
-            entityData.setComponent(playerId, new WalkableComponent(direction, 1));
+            WalkableComponent walkableComponent = entityData.getComponent(playerId, WalkableComponent.class);
+            entityData.setComponent(playerId, new WalkableComponent(direction, walkableComponent.getSpeed()));
         }
     }
 

@@ -15,9 +15,9 @@ public class EntityCreator {
         EntityId player = entityData.createEntity();
         entityData.setComponents(player,
                 new PositionComponent(startX, startY),
-                new CollisionComponent(0.20f, 0.5f, 0.6f, 0.4f, false),
+                new CollisionComponent(0.20f, 0.5f, 0.6f, 0.45f, false),
                 new ModelComponent(ModelType.Player, true),
-                new WalkableComponent(MoveDirection.Idle, 1)
+                new WalkableComponent(MoveDirection.Idle, 2)
         );
 
         return player;
