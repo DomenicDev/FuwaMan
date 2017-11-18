@@ -38,9 +38,9 @@ public class PowerUpAppState extends BaseAppState{
                     PowerUpType powerUpType = powCom.getPowerUpType();
 
                     PlayerComponent playCom = entity2.get(PlayerComponent.class);
-                    WalkableComponent walkCom = entity2.get(WalkableComponent.class);
 
                     if(powerUpType == powerUpType.SpeedUp){
+                        WalkableComponent walkCom = entity2.get(WalkableComponent.class);
                         entityData.setComponents(entity2.getId(), new PlayerComponent( playCom.getBombStrength(), playCom.getBombAmount()), new WalkableComponent(walkCom.getMoveDirection(), walkCom.getSpeed() + 1));
                     }
                     else if(powerUpType == powerUpType.BombStrengthUp){
