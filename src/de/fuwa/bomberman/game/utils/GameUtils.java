@@ -14,7 +14,7 @@ public class GameUtils {
     public static boolean inSameCell(PositionComponent p1, PositionComponent p2) {
         int x1 = (int) p1.getX();
         int x2 = (int) p2.getX();
-        int y1 = (int) p1.getX();
+        int y1 = (int) p1.getY();
         int y2 = (int) p2.getY();
         return x1 == x2 && y1 == y2;
     }
