@@ -12,11 +12,10 @@ public class GameUtils {
      * @return true if the positions are refering to the same logical cell
      */
     public static boolean inSameCell(PositionComponent p1, PositionComponent p2) {
-        int x1 =  Math.round(p1.getX());
+        int x1 = Math.round(p1.getX());
         int x2 = Math.round(p2.getX());
         int y1 = Math.round(p1.getY());
         int y2 = Math.round(p2.getY());
         return x1 == x2 && y1 == y2;
     }
-
 }
