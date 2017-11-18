@@ -25,7 +25,7 @@ public class VisualGameField extends JPanel {
     }
 
     public void removeGameObject(DrawableObject object) {
-        this.graphicalObjects.add(object);
+        this.graphicalObjects.remove(object);
     }
 
     @Override

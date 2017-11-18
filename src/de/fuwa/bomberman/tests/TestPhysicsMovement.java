@@ -8,10 +8,12 @@ import de.fuwa.bomberman.es.base.DefaultEntityData;
 import de.fuwa.bomberman.game.appstates.EntityDataState;
 import de.fuwa.bomberman.game.appstates.InputAppState;
 import de.fuwa.bomberman.game.appstates.PhysicsCharacterMovementAppState;
+import de.fuwa.bomberman.game.appstates.PowerUpAppState;
 import de.fuwa.bomberman.game.appstates.session.GameSessionAppState;
 import de.fuwa.bomberman.game.appstates.session.GameSessionHandler;
 import de.fuwa.bomberman.game.appstates.visual.VisualAppState;
 import de.fuwa.bomberman.game.appstates.visual.VisualGameFieldAppState;
+import de.fuwa.bomberman.game.enums.PowerUpType;
 import de.fuwa.bomberman.game.session.GameSession;
 import de.fuwa.bomberman.game.utils.EntityCreator;
 
@@ -31,6 +33,9 @@ public class TestPhysicsMovement extends GameApplication {
         getStateManager().attachState(new PhysicsCharacterMovementAppState());
 
         EntityId player = EntityCreator.createPlayer(entityData, 1, 1);
+        EntityCreator.createPowerUP(entityData,3,3, PowerUpType.SpeedUp);
+        EntityCreator.createPowerUP(entityData,7,7, PowerUpType.BombAmountUp);
+        EntityCreator.createPowerUP(entityData,5,5, PowerUpType.BombStrengthUp);
 
         GameSessionHandler sessionHandler = new GameSessionHandler();
         getStateManager().attachState(sessionHandler);
@@ -40,6 +45,7 @@ public class TestPhysicsMovement extends GameApplication {
         getStateManager().attachState(new VisualGameFieldAppState(11, 9));
         getStateManager().attachState(new VisualAppState());
         getStateManager().attachState(new InputAppState());
+        getStateManager().attachState(new PowerUpAppState());
 
         final boolean map[][] = {{true, true, true, true, true, true, true, true, true, true, true},
                 {true, false, false, false, false, false, false, false, false, false, true},
@@ -54,7 +60,7 @@ public class TestPhysicsMovement extends GameApplication {
         for (int y = 0; y < 9; y++) {
             for (int x = 0; x < 11; x++) {
                 if (map[y][x]) {
-                    EntityCreator.createBlock(entityData, x, y);
+                    EntityCreator.createBlock(entityData, x, y, true);
                 }
             }
 
