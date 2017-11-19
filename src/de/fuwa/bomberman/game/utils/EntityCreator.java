@@ -10,12 +10,17 @@ import de.fuwa.bomberman.game.enums.PowerUpType;
 
 public class EntityCreator {
 
-    public static EntityId createPlayer(EntityData entityData, float startX, float startY) {
-        EntityId player = entityData.createEntity();
+    public static EntityId createPlayer(EntityData entityData, float startX, float startY, String name) {
+        return createPlayer(entityData, null, startX, startY, name);
+    }
+
+    public static EntityId createPlayer(EntityData entityData, EntityId playerId, float startX, float startY, String name) {
+        EntityId player = playerId != null ? playerId : entityData.createEntity();
         entityData.setComponents(player,
                 new PositionComponent(startX, startY),
                 new CollisionComponent(0.20f, 0.5f, 0.6f, 0.45f, false),
                 new ModelComponent(ModelType.Player, true),
+                new NameComponent(name),
                 new WalkableComponent(MoveDirection.Idle, 2),
                 new PlayerComponent(1, 1)
         );
@@ -37,7 +42,6 @@ public class EntityCreator {
             blockType = BlockType.Undestroyable;
         }
 
-        if(destroyable)
         entityData.setComponents(block,
                 new PositionComponent(posX, posY),
                 new CollisionComponent(0, 0, 1, 1, true),

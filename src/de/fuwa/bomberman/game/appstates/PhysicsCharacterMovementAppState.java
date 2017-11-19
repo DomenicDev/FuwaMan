@@ -74,7 +74,6 @@ public class PhysicsCharacterMovementAppState extends BaseAppState {
                 // now we check if they intersect
                 // if they do we have a collision
                 if (areColliding(r1, r2)) {
-                    System.out.println("collision!!!");
                     // we collided so we do not do everything
                     // means we do not apply the new calculated position
                     collided = true;

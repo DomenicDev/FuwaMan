@@ -1,6 +1,7 @@
 package de.fuwa.bomberman.game.utils;
 
 import de.fuwa.bomberman.game.components.PositionComponent;
+import de.fuwa.bomberman.game.enums.BlockType;
 
 public class GameUtils {
 
@@ -17,5 +18,21 @@ public class GameUtils {
         int y1 = Math.round(p1.getY());
         int y2 = Math.round(p2.getY());
         return x1 == x2 && y1 == y2;
+    }
+
+    public static GameField createSimpleGameField() {
+        int width = 13;
+        int height = 7;
+
+        GameField gameField = new GameField(width, height);
+
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                if (y == 0 || x == 0 || y == height - 1 || x == width - 1 || (x % 2 == 0 && y % 2 == 0)) {
+                    gameField.setBlock(x, y, BlockType.Undestroyable);
+                }
+            }
+        }
+        return gameField;
     }
 }

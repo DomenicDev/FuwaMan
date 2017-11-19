@@ -5,7 +5,6 @@ import de.fuwa.bomberman.app.BaseAppState;
 import de.fuwa.bomberman.es.EntityData;
 import de.fuwa.bomberman.es.EntityId;
 import de.fuwa.bomberman.game.appstates.EntityDataState;
-import de.fuwa.bomberman.game.appstates.SimpleMovementAppState;
 import de.fuwa.bomberman.game.components.WalkableComponent;
 import de.fuwa.bomberman.game.enums.MoveDirection;
 import de.fuwa.bomberman.game.session.GameSession;
@@ -16,13 +15,21 @@ import de.fuwa.bomberman.game.session.GameSession;
  */
 public class GameSessionHandler extends BaseAppState {
 
-    private SimpleMovementAppState simpleMovementAppState;
     private EntityData entityData;
+
+    private boolean gameStarted = false;
 
     @Override
     public void initialize(AppStateManager stateManager) {
         this.entityData = stateManager.getState(EntityDataState.class).getEntityData();
-        simpleMovementAppState = stateManager.getState(SimpleMovementAppState.class);
+    }
+
+    public boolean isGameStarted() {
+        return gameStarted;
+    }
+
+    public void setGameStarted(boolean gameStarted) {
+        this.gameStarted = gameStarted;
     }
 
     /**
@@ -49,11 +56,13 @@ public class GameSessionHandler extends BaseAppState {
 
         @Override
         public void placeBomb() {
+            if (!isGameStarted()) return;
             // ToDo: implement as soon as missing classes are implemented
         }
 
         @Override
         public void applyMoveDirection(MoveDirection direction) {
+            if (!isGameStarted()) return;
             WalkableComponent walkableComponent = entityData.getComponent(playerId, WalkableComponent.class);
             entityData.setComponent(playerId, new WalkableComponent(direction, walkableComponent.getSpeed()));
         }

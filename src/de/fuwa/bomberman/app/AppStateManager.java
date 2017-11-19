@@ -9,6 +9,7 @@ public class AppStateManager {
 
     private List<AppState> appStatesToRemove = new ArrayList<>();
     private List<AppState> appStatesToAdd    = new ArrayList<>();
+    private List<AppState> toInitialize = new ArrayList<>();
 
     private GameApplication app;
 
@@ -27,12 +28,16 @@ public class AppStateManager {
     void addStates() {
         for (AppState appState : appStatesToAdd) {
             if (applicationStates.contains(appState)) {
-                return;
+                continue;
             }
+            this.toInitialize.add(appState);
+        }
+        this.appStatesToAdd.clear(); // clear buffer
+        for (AppState appState : toInitialize) {
             this.applicationStates.add(appState);
             appState.initialize(this);
         }
-        this.appStatesToAdd.clear(); // clear buffer
+        toInitialize.clear();
     }
 
     void removeStates() {
