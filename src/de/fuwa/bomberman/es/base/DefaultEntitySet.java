@@ -3,6 +3,7 @@ package de.fuwa.bomberman.es.base;
 import de.fuwa.bomberman.es.*;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class DefaultEntitySet extends AbstractSet<Entity> implements EntitySet {
 
@@ -14,7 +15,7 @@ public class DefaultEntitySet extends AbstractSet<Entity> implements EntitySet {
 
     private Class[] types;
 
-    private List<EntityChange> changes = new ArrayList<>();
+    private ConcurrentLinkedQueue<EntityChange> changes = new ConcurrentLinkedQueue<>();
 
     private EntityData entityData;
 
@@ -142,11 +143,11 @@ public class DefaultEntitySet extends AbstractSet<Entity> implements EntitySet {
         this.changes.add(change);
     }
 
-    public List<EntityChange> getChanges() {
+    public ConcurrentLinkedQueue<EntityChange> getChanges() {
         return this.changes;
     }
 
-    private void refreshChangeSets(List<EntityChange> changeList) {
+    private void refreshChangeSets(ConcurrentLinkedQueue<EntityChange> changeList) {
         for (EntityChange change : changeList) {
             EntityId entityId = change.getEntityId();
             Class c = change.getComponentClass();

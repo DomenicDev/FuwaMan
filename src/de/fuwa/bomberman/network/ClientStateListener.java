@@ -12,6 +12,6 @@ public interface ClientStateListener {
     /**
      * Called after the client has disconnected from the server.
      */
-    void onClientDisconected();
+    void onClientDisconnected();
 
 }

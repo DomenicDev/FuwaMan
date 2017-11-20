@@ -1,41 +1,25 @@
 package de.fuwa.bomberman.tests.network;
 
-import de.fuwa.bomberman.network.Client;
-import de.fuwa.bomberman.network.ClientStateListener;
-import de.fuwa.bomberman.network.TestMessage;
+import de.fuwa.bomberman.app.AppSettings;
+import de.fuwa.bomberman.app.GameApplication;
+import de.fuwa.bomberman.game.appstates.multiplayer.GameClient;
+import de.fuwa.bomberman.game.appstates.state.GameStateHandler;
 
-public class TestClient {
+public class TestClient extends GameApplication {
 
-    TestClient() {
-
-        Client c = new Client("localhost", 5555);
-        c.addClientStateListener(new ClientStateListener() {
-
-            @Override
-            public void onClientConnected(Client c) {
-                System.out.println("client has connected");
-                c.send(new TestMessage("Hello server"));
-            }
-
-            @Override
-            public void onClientDisconected() {
-
-            }
-        });
-        c.start();
-
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        c.close();
-
-
-    }
 
     public static void main(String[] args) {
-        new TestClient();
+        new TestClient().start(new AppSettings(800, 600, false));
+    }
+
+    @Override
+    public void initGame() {
+
+        getStateManager().attachState(new GameStateHandler());
+
+        GameClient client = new GameClient("localhost", 5555);
+        getStateManager().attachState(client);
+        //      client.connect("localhost", 5555);
+
     }
 }

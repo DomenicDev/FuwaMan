@@ -2,12 +2,13 @@ package de.fuwa.bomberman.app;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class AppStateManager {
 
     private List<AppState> applicationStates = new ArrayList<>();
 
-    private List<AppState> appStatesToRemove = new ArrayList<>();
+    private ConcurrentLinkedQueue<AppState> appStatesToRemove = new ConcurrentLinkedQueue<>();
     private List<AppState> appStatesToAdd    = new ArrayList<>();
     private List<AppState> toInitialize = new ArrayList<>();
 

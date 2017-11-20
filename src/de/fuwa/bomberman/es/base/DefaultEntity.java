@@ -4,7 +4,9 @@ import de.fuwa.bomberman.es.Entity;
 import de.fuwa.bomberman.es.EntityComponent;
 import de.fuwa.bomberman.es.EntityId;
 
-public class DefaultEntity implements Entity {
+import java.io.Serializable;
+
+public class DefaultEntity implements Entity, Serializable {
 
     private EntityId entityId;
     private EntityComponent[] components;

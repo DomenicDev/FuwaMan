@@ -29,6 +29,7 @@ public class Client {
     private ClientHandler handler;
 
     private List<ClientStateListener> clientStateListeners = new ArrayList<>();
+    private List<MessageListener<Client>> messageListeners = new ArrayList<>();
 
     /**
      * Creates a new client object with the specified parameters.
@@ -92,6 +93,9 @@ public class Client {
         this.clientStateListeners.add(listener);
     }
 
+    public void addMessageListener(MessageListener<Client> listener) {
+        this.messageListeners.add(listener);
+    }
     /**
      * Sends the specified message to the server.
      *
@@ -141,9 +145,10 @@ public class Client {
                             }
                         }
 
-                        if (o instanceof TestMessage) {
-                            if (((TestMessage) o).getMessage().equals("JOIN")) {
-                                System.out.println("i am joined");
+                        if (o instanceof AbstractMessage) {
+                            AbstractMessage am = (AbstractMessage) o;
+                            for (MessageListener<Client> listener : messageListeners) {
+                                listener.onMessageReceived(Client.this, am);
                             }
                         }
                     }
@@ -157,7 +162,7 @@ public class Client {
                     client.close();
 
                     for (ClientStateListener l : clientStateListeners) {
-                        l.onClientDisconected();
+                        l.onClientDisconnected();
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
