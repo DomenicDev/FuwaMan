@@ -9,6 +9,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * A server is the endpoint clients connect to.
@@ -20,8 +21,8 @@ public class Server {
     private ServerSocket server;
     private List<HostedConnection> connections = new ArrayList<>();
 
-    private List<MessageListener<HostedConnection>> messageListeners = new ArrayList<>();
-    private List<ConnectionListener> connectionListeners = new ArrayList<>();
+    private ConcurrentLinkedQueue<MessageListener<HostedConnection>> messageListeners = new ConcurrentLinkedQueue<>();
+    private ConcurrentLinkedQueue<ConnectionListener> connectionListeners = new ConcurrentLinkedQueue<>();
 
     private boolean active = true;
 
@@ -78,13 +79,6 @@ public class Server {
         this.connectionListeners.add(l);
     }
 
-    public List<MessageListener<HostedConnection>> getMessageListeners() {
-        return this.messageListeners;
-    }
-
-    public List<ConnectionListener> getConnectionListeners() {
-        return this.connectionListeners;
-    }
 
     void onConnectionRemoved(HostedConnection connection) {
         System.out.println(connections.size());

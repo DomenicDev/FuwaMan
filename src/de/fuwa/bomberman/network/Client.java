@@ -9,8 +9,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * A client is a part of our network architecture.
@@ -28,8 +27,8 @@ public class Client {
 
     private ClientHandler handler;
 
-    private List<ClientStateListener> clientStateListeners = new ArrayList<>();
-    private List<MessageListener<Client>> messageListeners = new ArrayList<>();
+    private ConcurrentLinkedQueue<ClientStateListener> clientStateListeners = new ConcurrentLinkedQueue<>();
+    private ConcurrentLinkedQueue<MessageListener<Client>> messageListeners = new ConcurrentLinkedQueue<>();
 
     /**
      * Creates a new client object with the specified parameters.

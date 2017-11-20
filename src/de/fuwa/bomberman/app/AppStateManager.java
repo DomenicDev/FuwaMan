@@ -9,8 +9,8 @@ public class AppStateManager {
     private List<AppState> applicationStates = new ArrayList<>();
 
     private ConcurrentLinkedQueue<AppState> appStatesToRemove = new ConcurrentLinkedQueue<>();
-    private List<AppState> appStatesToAdd    = new ArrayList<>();
-    private List<AppState> toInitialize = new ArrayList<>();
+    private ConcurrentLinkedQueue<AppState> appStatesToAdd = new ConcurrentLinkedQueue<>();
+    private ConcurrentLinkedQueue<AppState> toInitialize = new ConcurrentLinkedQueue<>();
 
     private GameApplication app;
 
