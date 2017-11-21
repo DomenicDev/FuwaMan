@@ -30,10 +30,13 @@ import java.util.Map;
  */
 public class MainGameAppState extends BaseAppState {
 
+    private AppStateManager stateManager;
+    private GameSessionHandler gameSessionHandler;
+    private EntityDataState entityDataState;
+
     private List<GameStateListener> gameStateListeners = new ArrayList<>();
     private List<Player> players = new ArrayList<>();
 
-    private GameSessionHandler gameSessionHandler;
     private Map<Player, GameSession> gameSessionMap = new HashMap<>();
     private Map<Player, EntityId> playerEntityIdMap = new HashMap<>();
 
@@ -46,9 +49,12 @@ public class MainGameAppState extends BaseAppState {
 
     @Override
     public void initialize(AppStateManager stateManager) {
+        this.stateManager = stateManager;
+
         // we init entity data
         this.entityData = new DefaultEntityData();
-        stateManager.attachState(new EntityDataState(entityData));
+        this.entityDataState = new EntityDataState(entityData);
+        stateManager.attachState(entityDataState);
 
         // init game logic app states
         GameInitializer.initGameLogicAppStates(stateManager);
@@ -167,5 +173,10 @@ public class MainGameAppState extends BaseAppState {
         return startPositions;
     }
 
-
+    @Override
+    public void cleanup() {
+        stateManager.detachState(gameSessionHandler);
+        stateManager.detachState(entityDataState);
+        GameInitializer.removeGameLogicAppStates(stateManager);
+    }
 }

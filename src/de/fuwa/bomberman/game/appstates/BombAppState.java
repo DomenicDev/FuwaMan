@@ -48,4 +48,11 @@ public class BombAppState extends BaseAppState {
         }
         EntityCreator.createBomb(entityData, position);
     }
+
+    @Override
+    public void cleanup() {
+        this.bombEntities.close();
+        this.bombEntities.clear();
+        this.bombEntities = null;
+    }
 }

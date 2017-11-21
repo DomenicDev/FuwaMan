@@ -65,6 +65,13 @@ public class GameContextFrame extends JFrame {
         return visualGameField;
     }
 
+    public void removeCurrentGameField() {
+        if (this.visualGameField != null) {
+            this.gamePanel.remove(visualGameField);
+            this.visualGameField = null;
+        }
+    }
+
 
     @Override
     public void dispose() {

@@ -22,4 +22,9 @@ public class SettingsAppState extends BaseAppState {
     public Setting getCurrentSetting() {
         return currentSetting;
     }
+
+    @Override
+    public void cleanup() {
+        this.currentSetting = null;
+    }
 }

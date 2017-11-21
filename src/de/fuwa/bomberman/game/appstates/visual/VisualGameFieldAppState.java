@@ -7,6 +7,7 @@ import de.fuwa.bomberman.app.gui.VisualGameField;
 
 public class VisualGameFieldAppState extends BaseAppState {
 
+    private GameContextFrame frame;
     private VisualGameField visualGameField;
     private int sizeX, sizeY;
 
@@ -17,11 +18,16 @@ public class VisualGameFieldAppState extends BaseAppState {
 
     @Override
     public void initialize(AppStateManager stateManager) {
-        GameContextFrame frame = stateManager.getGameApplication().getGameContext();
+        this.frame = stateManager.getGameApplication().getGameContext();
         this.visualGameField = frame.createAndDisplayGameField(sizeX, sizeY);
     }
 
     public VisualGameField getVisualGameField() {
         return visualGameField;
+    }
+
+    @Override
+    public void cleanup() {
+        this.frame.removeCurrentGameField();
     }
 }

@@ -18,9 +18,9 @@ public class PhysicsCharacterMovementAppState extends BaseAppState {
 
     @Override
     public void initialize(AppStateManager stateManager) {
-        entityData = stateManager.getState(EntityDataState.class).getEntityData();
-        characters = entityData.getEntities(PositionComponent.class, WalkableComponent.class, CollisionComponent.class);
-        physicalObjects = entityData.getEntities(PositionComponent.class, CollisionComponent.class);
+        this.entityData = stateManager.getState(EntityDataState.class).getEntityData();
+        this.characters = entityData.getEntities(PositionComponent.class, WalkableComponent.class, CollisionComponent.class);
+        this.physicalObjects = entityData.getEntities(PositionComponent.class, CollisionComponent.class);
     }
 
     @Override
@@ -127,64 +127,22 @@ public class PhysicsCharacterMovementAppState extends BaseAppState {
 
         private float x, y, width, height;
 
-        public RectangleFloat() {
-        }
-
-        private RectangleFloat(float x, float y, float width, float height) {
-            this.x = x;
-            this.y = y;
-            this.width = width;
-            this.height = height;
-        }
-
         private void setBounds(float x, float y, float width, float height) {
-            setX(x);
-            setY(y);
-            setWidth(width);
-            setHeight(height);
-        }
-
-        private float getX() {
-            return x;
-        }
-
-        private void setX(float x) {
             this.x = x;
-        }
-
-        private float getY() {
-            return y;
-        }
-
-        private void setY(float y) {
             this.y = y;
-        }
-
-        private float getWidth() {
-            return width;
-        }
-
-        private void setWidth(float width) {
             this.width = width;
-        }
-
-        private float getHeight() {
-            return height;
-        }
-
-        private void setHeight(float height) {
             this.height = height;
         }
     }
 
-    private class Position {
+    @Override
+    public void cleanup() {
+        this.characters.close();
+        this.characters.clear();
+        this.characters = null;
 
-        private float x, y;
-
-        private Position(float x, float y) {
-            this.x = x;
-            this.y = y;
-        }
-
+        this.physicalObjects.close();
+        this.physicalObjects.clear();
+        this.physicalObjects = null;
     }
 }
