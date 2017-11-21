@@ -50,12 +50,13 @@ public class MainGameAppState extends BaseAppState {
         this.entityData = new DefaultEntityData();
         stateManager.attachState(new EntityDataState(entityData));
 
+        // init game logic app states
+        GameInitializer.initGameLogicAppStates(stateManager);
+
         // we create our game session handler
         this.gameSessionHandler = new GameSessionHandler();
         stateManager.attachState(this.gameSessionHandler);
 
-        // init game logic app states
-        GameInitializer.initGameLogicAppStates(stateManager);
     }
 
     public void addGameStateListener(GameStateListener listener) {
