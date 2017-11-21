@@ -4,7 +4,9 @@ import de.fuwa.bomberman.app.AppStateManager;
 import de.fuwa.bomberman.app.BaseAppState;
 import de.fuwa.bomberman.es.EntityData;
 import de.fuwa.bomberman.es.EntityId;
+import de.fuwa.bomberman.game.appstates.BombAppState;
 import de.fuwa.bomberman.game.appstates.EntityDataState;
+import de.fuwa.bomberman.game.components.PositionComponent;
 import de.fuwa.bomberman.game.components.WalkableComponent;
 import de.fuwa.bomberman.game.enums.MoveDirection;
 import de.fuwa.bomberman.game.session.GameSession;
@@ -16,12 +18,14 @@ import de.fuwa.bomberman.game.session.GameSession;
 public class GameSessionHandler extends BaseAppState {
 
     private EntityData entityData;
+    private BombAppState bombAppState;
 
     private boolean gameStarted = false;
 
     @Override
     public void initialize(AppStateManager stateManager) {
         this.entityData = stateManager.getState(EntityDataState.class).getEntityData();
+        this.bombAppState = stateManager.getState(BombAppState.class);
     }
 
     public boolean isGameStarted() {
@@ -58,6 +62,10 @@ public class GameSessionHandler extends BaseAppState {
         public void placeBomb() {
             if (!isGameStarted()) return;
             // ToDo: implement as soon as missing classes are implemented
+            PositionComponent playerPos = entityData.getComponent(playerId,PositionComponent.class);
+            if(playerPos != null){
+                bombAppState.placeBomb(playerPos);
+            }
         }
 
         @Override

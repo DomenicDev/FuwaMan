@@ -1,5 +1,6 @@
 package de.fuwa.bomberman.game.utils;
 
+import de.fuwa.bomberman.es.Entity;
 import de.fuwa.bomberman.es.EntityData;
 import de.fuwa.bomberman.es.EntityId;
 import de.fuwa.bomberman.game.components.*;
@@ -67,6 +68,11 @@ public class EntityCreator {
         );
 
         return  powerUp;
+    }
+    public static EntityId createBomb(EntityData entityData, PositionComponent pos){
+        EntityId bombEntity = entityData.createEntity();
+        entityData.setComponents(bombEntity, pos, new BombComponent(5, 2), new ModelComponent(ModelType.Bomb,false));
+        return bombEntity;
     }
 
 }
