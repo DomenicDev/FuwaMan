@@ -3,7 +3,7 @@ package de.fuwa.bomberman.es.base;
 import de.fuwa.bomberman.es.*;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class DefaultEntitySet extends AbstractSet<Entity> implements EntitySet {
 
@@ -15,7 +15,7 @@ public class DefaultEntitySet extends AbstractSet<Entity> implements EntitySet {
 
     private Class[] types;
 
-    private ConcurrentLinkedQueue<EntityChange> changes = new ConcurrentLinkedQueue<>();
+    private Map<EntityId, EntityChange> changes = new ConcurrentHashMap<>();
 
     private EntityData entityData;
 
@@ -54,7 +54,7 @@ public class DefaultEntitySet extends AbstractSet<Entity> implements EntitySet {
         addDirectlyAddedEntities();
 
         // then we refresh our change sets
-        refreshChangeSets(changes);
+        refreshChangeSets(changes.values());
         changes.clear();
 
         // if there were any changes we return true
@@ -140,14 +140,15 @@ public class DefaultEntitySet extends AbstractSet<Entity> implements EntitySet {
     }
 
     protected void onRelevantEntityChange(EntityChange change) {
-        this.changes.add(change);
+        EntityId changedEntityId = change.getEntityId();
+        this.changes.put(changedEntityId, change);
     }
 
-    public ConcurrentLinkedQueue<EntityChange> getChanges() {
-        return this.changes;
+    public Collection<EntityChange> getChanges() {
+        return this.changes.values();
     }
 
-    private void refreshChangeSets(ConcurrentLinkedQueue<EntityChange> changeList) {
+    private void refreshChangeSets(Collection<EntityChange> changeList) {
         for (EntityChange change : changeList) {
             EntityId entityId = change.getEntityId();
             Class c = change.getComponentClass();
