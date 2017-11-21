@@ -83,7 +83,6 @@ public class MainGameAppState extends BaseAppState {
     }
 
     public GameSession getGameSession(Player player) {
-        System.out.println(gameSessionMap.get(player));
         return this.gameSessionMap.get(player);
     }
 

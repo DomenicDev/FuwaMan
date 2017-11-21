@@ -35,4 +35,5 @@ public class EntityChange implements Serializable {
     public Class getComponentClass() {
         return compClass;
     }
+
 }

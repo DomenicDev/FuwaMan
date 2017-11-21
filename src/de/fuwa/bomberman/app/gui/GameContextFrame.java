@@ -50,8 +50,6 @@ public class GameContextFrame extends JFrame {
         pack();
 
         setVisible(true);
-
-
     }
 
     public void updateGui() {

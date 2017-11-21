@@ -4,6 +4,7 @@ import de.fuwa.bomberman.es.Entity;
 import de.fuwa.bomberman.es.EntityChange;
 import de.fuwa.bomberman.es.base.DefaultEntityData;
 import de.fuwa.bomberman.es.base.DefaultEntitySet;
+import de.fuwa.bomberman.es.net.messages.CloseEntitySetMessage;
 import de.fuwa.bomberman.es.net.messages.EntitySetChangeMessage;
 import de.fuwa.bomberman.es.net.messages.EntitySetInitialDataMessage;
 import de.fuwa.bomberman.es.net.messages.GetEntitiesMessage;
@@ -40,6 +41,13 @@ public class HostedEntityData {
 
         // put set into activeEntitySets
         activeEntitySets.put(setId, entitySet);
+    }
+
+    public void closeEntitySet(CloseEntitySetMessage message) {
+        DefaultEntitySet set = activeEntitySets.remove(message.getId());
+        if (set != null) {
+            set.close();
+        }
     }
 
     public void sendUpdates() {

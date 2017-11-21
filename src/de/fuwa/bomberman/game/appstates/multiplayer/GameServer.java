@@ -4,6 +4,7 @@ import de.fuwa.bomberman.app.AppStateManager;
 import de.fuwa.bomberman.app.BaseAppState;
 import de.fuwa.bomberman.es.base.DefaultEntityData;
 import de.fuwa.bomberman.es.net.HostedEntityData;
+import de.fuwa.bomberman.es.net.messages.CloseEntitySetMessage;
 import de.fuwa.bomberman.es.net.messages.GetEntitiesMessage;
 import de.fuwa.bomberman.game.appstates.EntityDataState;
 import de.fuwa.bomberman.game.appstates.MainGameAppState;
@@ -96,7 +97,6 @@ public class GameServer extends BaseAppState implements ConnectionListener, Mess
             // to inform the client about the add we send the message back
             source.send(m);
 
-            System.out.println("server received " + m);
             if (++playerCounter >= 2) {
                 mainGameAppState.setupGame(GameUtils.createSimpleGameField(), Setting.Classic);
             }
@@ -106,9 +106,18 @@ public class GameServer extends BaseAppState implements ConnectionListener, Mess
                 System.out.println("start game");
                 mainGameAppState.startGame();
             }
-        } else if (m instanceof GetEntitiesMessage) {
+        }
+
+        // -----------------------------------
+        // Entity System Messages
+        // ---------------------------
+
+        if (m instanceof GetEntitiesMessage) {
             GetEntitiesMessage gm = (GetEntitiesMessage) m;
             hostedEntityDataMap.get(source).getEntities(gm);
+        } else if (m instanceof CloseEntitySetMessage) {
+            CloseEntitySetMessage cm = (CloseEntitySetMessage) m;
+            hostedEntityDataMap.get(source).closeEntitySet(cm);
         }
 
         // -------------------------------------

@@ -6,6 +6,7 @@ import de.fuwa.bomberman.es.EntityData;
 import de.fuwa.bomberman.es.EntitySet;
 import de.fuwa.bomberman.es.base.DefaultEntityData;
 import de.fuwa.bomberman.es.base.DefaultEntitySet;
+import de.fuwa.bomberman.es.net.messages.CloseEntitySetMessage;
 import de.fuwa.bomberman.es.net.messages.EntitySetChangeMessage;
 import de.fuwa.bomberman.es.net.messages.EntitySetInitialDataMessage;
 import de.fuwa.bomberman.es.net.messages.GetEntitiesMessage;
@@ -32,7 +33,7 @@ public class RemoteEntityData extends DefaultEntityData {
 
     @Override
     public EntitySet getEntities(Class... componentTypes) {
-        RemoteEntitySet set = new RemoteEntitySet(this, componentTypes);
+        RemoteEntitySet set = new RemoteEntitySet(entitySetCounter, this, componentTypes);
         entitySets.put(entitySetCounter, set);
         client.send(new GetEntitiesMessage(entitySetCounter, componentTypes));
         entitySetCounter++;
@@ -50,7 +51,6 @@ public class RemoteEntityData extends DefaultEntityData {
                 set.loadEntities(new ArrayList<>(Arrays.asList(im.getEntities())));
             } else if (m instanceof EntitySetChangeMessage) {
                 EntitySetChangeMessage cm = (EntitySetChangeMessage) m;
-                System.out.println("received change " + cm.getChanges().length);
                 RemoteEntitySet set = entitySets.get(cm.getId());
                 for (EntityChange change : cm.getChanges()) {
                     set.onRelevantEntityChange(change);
@@ -61,8 +61,11 @@ public class RemoteEntityData extends DefaultEntityData {
 
     private class RemoteEntitySet extends DefaultEntitySet {
 
-        RemoteEntitySet(EntityData entityData, Class[] types) {
+        private int id;
+
+        RemoteEntitySet(int id, EntityData entityData, Class[] types) {
             super(entityData, types);
+            this.id = id;
         }
 
         @Override
@@ -73,6 +76,11 @@ public class RemoteEntityData extends DefaultEntityData {
         @Override
         protected void onRelevantEntityChange(EntityChange change) {
             super.onRelevantEntityChange(change);
+        }
+
+        @Override
+        public void close() {
+            client.send(new CloseEntitySetMessage(id));
         }
     }
 }
