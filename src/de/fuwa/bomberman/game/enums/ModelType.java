@@ -5,7 +5,7 @@ public enum ModelType {
     Player("playerNew.png"),
     DestroyableTile("undestroyable.png"),
     UndestroyableTile("undestroyable.png"),
-    Bomb(null),
+    Bomb("Bomb_Artwork.png"),
     SpeedUp("SpeedUp.png"),
     BombStrengthUp("BombStrengthUp.png"),
     BombAmountUp("BombAmountUp.png");

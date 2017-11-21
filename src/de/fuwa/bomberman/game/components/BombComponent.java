@@ -17,6 +17,7 @@ public class BombComponent implements EntityComponent{
     }
 
     public float getTimer() {
+
         return timer;
     }
 

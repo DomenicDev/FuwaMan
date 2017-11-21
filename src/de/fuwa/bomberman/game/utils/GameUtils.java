@@ -35,4 +35,9 @@ public class GameUtils {
         }
         return gameField;
     }
+    public static PositionComponent getCellPosition(PositionComponent pos){
+        int x = Math.round(pos.getX());
+        int y = Math.round(pos.getY());
+        return new PositionComponent(x,y);
+    }
 }
