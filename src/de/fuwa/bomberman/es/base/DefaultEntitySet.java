@@ -156,8 +156,10 @@ public class DefaultEntitySet extends AbstractSet<Entity> implements EntitySet {
             if (component == null) {
                 // this is a remove here
                 DefaultEntity entity = (DefaultEntity) entities.remove(entityId);
-                entity.removeComponent(c);
-                this.removedEntities.add(entity);
+                if (entity != null) {
+                    entity.removeComponent(c);
+                    this.removedEntities.add(entity);
+                }
             } else {
                 // we either have an add or a change
 
