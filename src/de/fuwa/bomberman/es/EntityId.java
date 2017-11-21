@@ -1,10 +1,12 @@
 package de.fuwa.bomberman.es;
 
+import java.io.Serializable;
+
 /**
  * An EntityId mostly acts as a key and identifies an entity.
  * At the beginning an entity is nothing more than an id.
  */
-public class EntityId {
+public class EntityId implements Serializable {
 
     private int id; // an int should be enough for us
 

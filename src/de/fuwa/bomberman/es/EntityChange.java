@@ -1,10 +1,12 @@
 package de.fuwa.bomberman.es;
 
+import java.io.Serializable;
+
 /**
  * An EntityChange is created when an entity has been modified.
  * (For example by adding, updating, or removing components)
  */
-public class EntityChange {
+public class EntityChange implements Serializable {
 
     private EntityId entityId;
     private EntityComponent component;
