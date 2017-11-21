@@ -13,11 +13,15 @@ import de.fuwa.bomberman.network.Client;
 import de.fuwa.bomberman.network.MessageListener;
 import de.fuwa.bomberman.network.messages.AbstractMessage;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 public class RemoteEntityData extends DefaultEntityData {
 
-    private Map<Integer, RemoteEntitySet> entitySets = new HashMap<>();
+    private ConcurrentMap<Integer, RemoteEntitySet> entitySets = new ConcurrentHashMap<>();
     private Client client;
     private int entitySetCounter = 0;
 
@@ -28,9 +32,9 @@ public class RemoteEntityData extends DefaultEntityData {
 
     @Override
     public EntitySet getEntities(Class... componentTypes) {
-        client.send(new GetEntitiesMessage(entitySetCounter, componentTypes));
         RemoteEntitySet set = new RemoteEntitySet(this, componentTypes);
         entitySets.put(entitySetCounter, set);
+        client.send(new GetEntitiesMessage(entitySetCounter, componentTypes));
         entitySetCounter++;
         return set;
     }
@@ -42,9 +46,11 @@ public class RemoteEntityData extends DefaultEntityData {
             if (m instanceof EntitySetInitialDataMessage) {
                 EntitySetInitialDataMessage im = (EntitySetInitialDataMessage) m;
                 RemoteEntitySet set = entitySets.get(im.getSetId());
+                System.out.println(set);
                 set.loadEntities(new ArrayList<>(Arrays.asList(im.getEntities())));
             } else if (m instanceof EntitySetChangeMessage) {
                 EntitySetChangeMessage cm = (EntitySetChangeMessage) m;
+                System.out.println("received change " + cm.getChanges().length);
                 RemoteEntitySet set = entitySets.get(cm.getId());
                 for (EntityChange change : cm.getChanges()) {
                     set.onRelevantEntityChange(change);

@@ -9,14 +9,15 @@ import de.fuwa.bomberman.es.net.messages.EntitySetInitialDataMessage;
 import de.fuwa.bomberman.es.net.messages.GetEntitiesMessage;
 import de.fuwa.bomberman.network.HostedConnection;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 public class HostedEntityData {
 
     private HostedConnection connection;
 
-    private Map<Integer, DefaultEntitySet> activeEntitySets = new HashMap<>();
+    private ConcurrentMap<Integer, DefaultEntitySet> activeEntitySets = new ConcurrentHashMap<>();
 
     private DefaultEntityData entityData;
 
@@ -49,10 +50,11 @@ public class HostedEntityData {
             EntityChange[] changes = set.getChanges().toArray(new EntityChange[set.getChanges().size()]);
 
             // apply changes to clear the change buffer within the EntitySet
-            set.applyChanges();
+            if (set.applyChanges()) {
+                EntitySetChangeMessage m = new EntitySetChangeMessage(id, changes);
+                connection.send(m);
+            }
 
-            EntitySetChangeMessage m = new EntitySetChangeMessage(id, changes);
-            connection.send(m);
         }
 
     }
