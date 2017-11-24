@@ -12,12 +12,12 @@ import de.fuwa.bomberman.game.session.GameSession;
 import de.fuwa.bomberman.game.utils.GameUtils;
 import de.fuwa.bomberman.game.utils.Player;
 
-public class SingleplayerTest extends GameApplication {
-
+public class KiTest extends GameApplication {
     private Player player = new Player("Bomberman");
+    private Player ki = new Player("Computer1", true);
 
     public static void main(String[] args) {
-        SingleplayerTest test = new SingleplayerTest();
+        KiTest test = new KiTest();
         AppSettings settings = new AppSettings(800, 600, false);
         test.start(settings);
     }
@@ -28,7 +28,7 @@ public class SingleplayerTest extends GameApplication {
         getStateManager().attachState(mainGameAppState);
         getStateManager().attachState(new GameStateHandler());
 
-        getStateManager().attachState(new Initializer());
+        getStateManager().attachState(new KiTest.Initializer());
     }
 
     private class Initializer extends BaseAppState {
@@ -38,6 +38,8 @@ public class SingleplayerTest extends GameApplication {
             MainGameAppState mainGameAppState = stateManager.getState(MainGameAppState.class);
             mainGameAppState.addPlayer(player);
             mainGameAppState.addGameStateListener(stateManager.getState(GameStateHandler.class));
+
+            mainGameAppState.addPlayer(ki);
 
             // get game session and create holder class
             GameSession gameSession = mainGameAppState.getGameSession(player);
