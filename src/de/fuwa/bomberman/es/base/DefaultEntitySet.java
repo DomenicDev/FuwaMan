@@ -15,7 +15,7 @@ public class DefaultEntitySet extends AbstractSet<Entity> implements EntitySet {
 
     private Class[] types;
 
-    private Map<EntityId, EntityChange> changes = new ConcurrentHashMap<>();
+    private Map<EntityId, Map<Class, EntityChange>> changes = new ConcurrentHashMap<>();
 
     private EntityData entityData;
 
@@ -54,7 +54,7 @@ public class DefaultEntitySet extends AbstractSet<Entity> implements EntitySet {
         addDirectlyAddedEntities();
 
         // then we refresh our change sets
-        refreshChangeSets(changes.values());
+        refreshChangeSets(getChanges());
         changes.clear();
 
         // if there were any changes we return true
@@ -141,11 +141,18 @@ public class DefaultEntitySet extends AbstractSet<Entity> implements EntitySet {
 
     protected void onRelevantEntityChange(EntityChange change) {
         EntityId changedEntityId = change.getEntityId();
-        this.changes.put(changedEntityId, change);
+        if (changes.get(changedEntityId) == null) {
+            this.changes.put(changedEntityId, new HashMap<>());
+        }
+        this.changes.get(changedEntityId).put(change.getComponentClass(), change);
     }
 
     public Collection<EntityChange> getChanges() {
-        return this.changes.values();
+        List<EntityChange> changeList = new ArrayList<>();
+        for (Map<Class, EntityChange> changeMap : this.changes.values()) {
+            changeList.addAll(changeMap.values());
+        }
+        return changeList;
     }
 
     private void refreshChangeSets(Collection<EntityChange> changeList) {

@@ -39,11 +39,11 @@ public class KiAppstate extends BaseAppState {
 
     @Override
     public void update(float tpf){
-        entitySet.applyChanges();
-        System.out.println(entitySet.size());
-        for(Entity entity : entitySet){
-            GameSession gameSession = multipleGameSessionAppState.getGameSession(entity.getId());
-            gameSession.applyMoveDirection(MoveDirection.Left);
+        if (entitySet.applyChanges()) {
+            for(Entity entity : entitySet.getAddedEntities()){
+                GameSession gameSession = multipleGameSessionAppState.getGameSession(entity.getId());
+                gameSession.applyMoveDirection(MoveDirection.Left);
+            }
         }
     }
 

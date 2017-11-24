@@ -79,7 +79,6 @@ public class InputAppState extends BaseAppState implements KeyListener {
 
         if (moveDirection != lastMoveDir) {
             lastMoveDir = moveDirection;
-            System.out.println(moveDirection);
             gameSession.applyMoveDirection(moveDirection);
         }
 

@@ -72,7 +72,9 @@ public class GameSessionHandler extends BaseAppState {
         public void applyMoveDirection(MoveDirection direction) {
             if (!isGameStarted()) return;
             WalkableComponent walkableComponent = entityData.getComponent(playerId, WalkableComponent.class);
-            entityData.setComponent(playerId, new WalkableComponent(direction, walkableComponent.getSpeed()));
+            if (walkableComponent.getMoveDirection() != direction) {
+                entityData.setComponent(playerId, new WalkableComponent(direction, walkableComponent.getSpeed()));
+            }
         }
     }
 
