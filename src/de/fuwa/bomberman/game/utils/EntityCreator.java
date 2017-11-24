@@ -12,10 +12,10 @@ import de.fuwa.bomberman.game.enums.PowerUpType;
 public class EntityCreator {
 
     public static EntityId createPlayer(EntityData entityData, float startX, float startY, String name) {
-        return createPlayer(entityData, null, startX, startY, name);
+        return createPlayer(entityData, null, startX, startY, name, false);
     }
 
-    public static EntityId createPlayer(EntityData entityData, EntityId playerId, float startX, float startY, String name) {
+    public static EntityId createPlayer(EntityData entityData, EntityId playerId, float startX, float startY, String name, boolean isKi) {
         EntityId player = playerId != null ? playerId : entityData.createEntity();
         entityData.setComponents(player,
                 new PositionComponent(startX, startY),
@@ -25,6 +25,10 @@ public class EntityCreator {
                 new WalkableComponent(MoveDirection.Idle, 2),
                 new PlayerComponent(1, 1)
         );
+
+        if (isKi) {
+            entityData.setComponent(playerId, new KIComponent());
+        }
 
         return player;
     }

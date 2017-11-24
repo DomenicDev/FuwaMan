@@ -12,9 +12,20 @@ import java.io.Serializable;
 public class Player implements Serializable {
 
     private String name;
+    private boolean ki;
 
     public Player(String name) {
         this.name = name;
+        this.ki = false;
+    }
+
+    public Player(String name, boolean ki) {
+        this.name = name;
+        this.ki = ki;
+    }
+
+    public boolean isKi() {
+        return ki;
     }
 
     public String getName() {

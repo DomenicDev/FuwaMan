@@ -6,6 +6,7 @@ import de.fuwa.bomberman.es.EntityData;
 import de.fuwa.bomberman.es.EntityId;
 import de.fuwa.bomberman.es.base.DefaultEntityData;
 import de.fuwa.bomberman.game.appstates.session.GameSessionHandler;
+import de.fuwa.bomberman.game.appstates.session.MultipleGameSessionAppState;
 import de.fuwa.bomberman.game.components.PositionComponent;
 import de.fuwa.bomberman.game.enums.BlockType;
 import de.fuwa.bomberman.game.enums.Setting;
@@ -32,12 +33,11 @@ public class MainGameAppState extends BaseAppState {
 
     private AppStateManager stateManager;
     private GameSessionHandler gameSessionHandler;
+    private MultipleGameSessionAppState gameSessionAppState;
     private EntityDataState entityDataState;
 
     private List<GameStateListener> gameStateListeners = new ArrayList<>();
     private List<Player> players = new ArrayList<>();
-
-    private Map<Player, GameSession> gameSessionMap = new HashMap<>();
     private Map<Player, EntityId> playerEntityIdMap = new HashMap<>();
 
     private EntityData entityData;
@@ -50,6 +50,9 @@ public class MainGameAppState extends BaseAppState {
     @Override
     public void initialize(AppStateManager stateManager) {
         this.stateManager = stateManager;
+
+        this.gameSessionAppState = new MultipleGameSessionAppState();
+        stateManager.attachState(gameSessionAppState);
 
         // we init entity data
         this.entityData = new DefaultEntityData();
@@ -76,20 +79,23 @@ public class MainGameAppState extends BaseAppState {
             // create game session
             EntityId playerId = entityData.createEntity();
             GameSession gameSession = gameSessionHandler.createGameSession(playerId);
-            gameSessionMap.put(player, gameSession);
+            //gameSessionMap.put(playerId, gameSession); // deprecated
+            this.gameSessionAppState.addGameSession(playerId, gameSession);
             playerEntityIdMap.put(player, playerId);
         }
     }
 
     public void removePlayer(Player player) {
         if (players.remove(player)) {
-            gameSessionMap.remove(player);
-            entityData.removeEntity(playerEntityIdMap.remove(player));
+            EntityId playerId = playerEntityIdMap.remove(player);
+            gameSessionAppState.removeGameSession(playerId);
+            entityData.removeEntity(playerId);
         }
     }
 
     public GameSession getGameSession(Player player) {
-        return this.gameSessionMap.get(player);
+        EntityId playerId = playerEntityIdMap.get(player);
+        return this.gameSessionAppState.getGameSession(playerId);
     }
 
     public void setupGame(GameField gameField, Setting setting) {
@@ -113,7 +119,7 @@ public class MainGameAppState extends BaseAppState {
             String playerName = player.getName();
             PositionComponent startPos = startPositions[i];
             EntityId playerId = playerEntityIdMap.get(player);
-            EntityCreator.createPlayer(entityData, playerId, startPos.getX(), startPos.getY(), playerName);
+            EntityCreator.createPlayer(entityData, playerId, startPos.getX(), startPos.getY(), playerName, player.isKi());
         }
 
         for (GameStateListener listener : gameStateListeners) {
