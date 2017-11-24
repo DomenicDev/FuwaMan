@@ -65,6 +65,7 @@ public class MainGameAppState extends BaseAppState {
         // we create our game session handler
         this.gameSessionHandler = new GameSessionHandler();
         stateManager.attachState(this.gameSessionHandler);
+        stateManager.attachState(new BombAppState());
 
     }
 

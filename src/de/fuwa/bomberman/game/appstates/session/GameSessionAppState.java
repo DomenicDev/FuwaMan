@@ -1,7 +1,11 @@
 package de.fuwa.bomberman.game.appstates.session;
 
 import de.fuwa.bomberman.app.BaseAppState;
+import de.fuwa.bomberman.es.EntityId;
 import de.fuwa.bomberman.game.session.GameSession;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This app state just holds the GameSession object given in the constructor.

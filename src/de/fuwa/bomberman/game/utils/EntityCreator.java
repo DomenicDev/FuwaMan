@@ -3,11 +3,13 @@ package de.fuwa.bomberman.game.utils;
 import de.fuwa.bomberman.es.Entity;
 import de.fuwa.bomberman.es.EntityData;
 import de.fuwa.bomberman.es.EntityId;
+import de.fuwa.bomberman.es.EntitySet;
 import de.fuwa.bomberman.game.components.*;
 import de.fuwa.bomberman.game.enums.BlockType;
 import de.fuwa.bomberman.game.enums.ModelType;
 import de.fuwa.bomberman.game.enums.MoveDirection;
 import de.fuwa.bomberman.game.enums.PowerUpType;
+
 
 public class EntityCreator {
 
@@ -79,4 +81,16 @@ public class EntityCreator {
         return bombEntity;
     }
 
+    public static EntityId createBomb(EntityData entityData, int x, int y, int strength){
+        EntityId bomb = entityData.createEntity();
+
+        entityData.setComponents(bomb,
+                new PositionComponent(x, y),
+                //new CollisionComponent(0,0,1,1,true ),
+                new ModelComponent(ModelType.Bomb, false),
+                new BombComponent(5, strength)
+        );
+
+        return bomb;
+    }
 }
