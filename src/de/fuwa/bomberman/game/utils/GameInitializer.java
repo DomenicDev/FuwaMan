@@ -1,8 +1,10 @@
 package de.fuwa.bomberman.game.utils;
 
 import de.fuwa.bomberman.app.AppStateManager;
+import de.fuwa.bomberman.game.appstates.BombAppState;
 import de.fuwa.bomberman.game.appstates.InputAppState;
 import de.fuwa.bomberman.game.appstates.PhysicsCharacterMovementAppState;
+import de.fuwa.bomberman.game.appstates.PowerUpAppState;
 import de.fuwa.bomberman.game.appstates.visual.VisualAppState;
 import de.fuwa.bomberman.game.appstates.visual.VisualGameFieldAppState;
 
@@ -14,6 +16,14 @@ public class GameInitializer {
      */
     public static void initGameLogicAppStates(AppStateManager stateManager) {
         stateManager.attachState(new PhysicsCharacterMovementAppState());
+        stateManager.attachState(new BombAppState());
+        stateManager.attachState(new PowerUpAppState());
+    }
+
+    public static void removeGameLogicAppStates(AppStateManager stateManager) {
+        stateManager.detachState(stateManager.getState(PhysicsCharacterMovementAppState.class));
+        stateManager.detachState(stateManager.getState(BombAppState.class));
+        stateManager.detachState(stateManager.getState(PowerUpAppState.class));
     }
 
     /**

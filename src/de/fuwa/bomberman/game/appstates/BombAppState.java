@@ -7,6 +7,8 @@ import de.fuwa.bomberman.es.EntityData;
 import de.fuwa.bomberman.es.EntitySet;
 import de.fuwa.bomberman.game.components.BombComponent;
 import de.fuwa.bomberman.game.components.PositionComponent;
+import de.fuwa.bomberman.game.utils.EntityCreator;
+import de.fuwa.bomberman.game.utils.GameUtils;
 
 public class BombAppState extends BaseAppState {
 
@@ -36,8 +38,21 @@ public class BombAppState extends BaseAppState {
     }
 
     public void placeBomb(PositionComponent position){
+        bombEntities.applyChanges();
+        position = GameUtils.getCellPosition(position);
+        for(Entity bomb : bombEntities){
+            PositionComponent bombPos = bomb.get(PositionComponent.class);
+            if(GameUtils.inSameCell(bombPos,position)){
+                return;
+            }
+        }
+        EntityCreator.createBomb(entityData, position);
+    }
 
-
-
+    @Override
+    public void cleanup() {
+        this.bombEntities.close();
+        this.bombEntities.clear();
+        this.bombEntities = null;
     }
 }

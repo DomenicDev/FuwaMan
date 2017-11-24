@@ -50,8 +50,6 @@ public class GameContextFrame extends JFrame {
         pack();
 
         setVisible(true);
-
-
     }
 
     public void updateGui() {
@@ -65,6 +63,13 @@ public class GameContextFrame extends JFrame {
         this.gamePanel.add(visualGameField);
         this.visualGameField = visualGameField;
         return visualGameField;
+    }
+
+    public void removeCurrentGameField() {
+        if (this.visualGameField != null) {
+            this.gamePanel.remove(visualGameField);
+            this.visualGameField = null;
+        }
     }
 
 

@@ -14,8 +14,6 @@ import de.fuwa.bomberman.es.EntitySet;
 import de.fuwa.bomberman.game.appstates.EntityDataState;
 import de.fuwa.bomberman.game.components.ModelComponent;
 import de.fuwa.bomberman.game.components.PositionComponent;
-import de.fuwa.bomberman.game.enums.ModelType;
-import javafx.geometry.Pos;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,7 +30,7 @@ public class VisualAppState extends BaseAppState {
     @Override
     public void initialize(AppStateManager stateManager) {
         EntityData entityData = stateManager.getState(EntityDataState.class).getEntityData();
-        visualEntities = entityData.getEntities(ModelComponent.class, PositionComponent.class);
+        this.visualEntities = entityData.getEntities(ModelComponent.class, PositionComponent.class);
         this.visualGameField = stateManager.getState(VisualGameFieldAppState.class).getVisualGameField();
         this.assetLoader = stateManager.getGameApplication().getAssetLoader();
     }
@@ -60,11 +58,13 @@ public class VisualAppState extends BaseAppState {
         ModelComponent model = entity.get(ModelComponent.class);
         PositionComponent position = entity.get(PositionComponent.class);
 
-        DrawableObject drawableObject = null;
+        DrawableObject drawableObject;
+
+        String path = "assets/Textures/" + model.getModelType().getFilename();
 
         if (model.isAnimated()) {
             // load animated gif
-            drawableObject = new AnimatedImageObject(position.getX(), position.getY(), assetLoader.loadAnimatedGif("assets/Textures/" +model.getModelType().getFilename()), true);
+            drawableObject = new AnimatedImageObject(position.getX(), position.getY(), assetLoader.loadAnimatedGif(path), true);
         } else {
             // load static image
             drawableObject = new StaticImageObject(position.getX(), position.getY(), assetLoader.loadSingleImage("assets/Textures/" + model.getModelType().getFilename()));
@@ -87,6 +87,11 @@ public class VisualAppState extends BaseAppState {
 
     @Override
     public void cleanup() {
+        if (visualGameField != null) {
+            for (DrawableObject o : visualGameObjectMap.values()) {
+                visualGameField.removeGameObject(o);
+            }
+        }
         this.visualEntities.close();
         this.visualEntities.clear();
         this.visualEntities = null;

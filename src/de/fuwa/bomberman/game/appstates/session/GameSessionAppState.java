@@ -26,4 +26,9 @@ public class GameSessionAppState extends BaseAppState {
     public GameSession getGameSession() {
         return gameSession;
     }
+
+    @Override
+    public void cleanup() {
+        this.gameSession = null;
+    }
 }

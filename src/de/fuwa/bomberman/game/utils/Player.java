@@ -1,5 +1,7 @@
 package de.fuwa.bomberman.game.utils;
 
+import java.io.Serializable;
+
 /**
  * The player class stores the most relevant information
  * of a real player. But it also can be used for NPCs.
@@ -7,7 +9,7 @@ package de.fuwa.bomberman.game.utils;
  * The Player class is also used as a kind of link to the in-game
  * players entity object.
  */
-public class Player {
+public class Player implements Serializable {
 
     private String name;
 
