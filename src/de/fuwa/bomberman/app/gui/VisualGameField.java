@@ -2,8 +2,7 @@ package de.fuwa.bomberman.app.gui;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class VisualGameField extends JPanel {
 
@@ -13,7 +12,7 @@ public class VisualGameField extends JPanel {
     final int tileSizeX = 200;
     final int tileSizeY = 200;
 
-    private List<DrawableObject> graphicalObjects = new ArrayList<>();
+    private ConcurrentLinkedQueue<DrawableObject> graphicalObjects = new ConcurrentLinkedQueue<>();
 
     public VisualGameField(int sizeX, int sizeY) {
         this.sizeX = sizeX;
