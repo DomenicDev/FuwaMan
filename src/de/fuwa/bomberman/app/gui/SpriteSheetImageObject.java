@@ -28,6 +28,10 @@ public class SpriteSheetImageObject extends AbstractDrawableObject {
         }
     }
 
+    public BufferedImage[][] getSubImages() {
+        return subImages;
+    }
+
     public BufferedImage getSprite(int x, int y) {
         if (x >= 0 && x < sizeX && y >= 0 && y < sizeY) {
             return subImages[y][x];
