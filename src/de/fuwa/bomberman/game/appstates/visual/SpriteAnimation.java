@@ -37,6 +37,18 @@ public class SpriteAnimation {
 
     }
 
+    public void start() {
+        this.running = true;
+        this.currentFrameNumber = 0;
+        this.timer = 0;
+    }
+
+    public void stop() {
+        this.running = false;
+        this.currentFrameNumber = 0; // start frame
+        this.timer = 0;
+    }
+
     public float getSpeed() {
         return speed;
     }

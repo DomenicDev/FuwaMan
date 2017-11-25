@@ -1,8 +1,8 @@
 package de.fuwa.bomberman.app;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -14,8 +14,8 @@ import java.util.Map;
  */
 public class AssetLoader {
 
-    private Map<String, Image> singleImages = new HashMap<>();
-    private Map<String, Image[]> animatedImages = new HashMap<>();
+    private Map<String, BufferedImage> singleImages = new HashMap<>();
+    private Map<String, BufferedImage[]> animatedImages = new HashMap<>();
 
     /**
      * Loads the image with the specified path.
@@ -23,8 +23,8 @@ public class AssetLoader {
      * @param path the path of the image
      * @return the image with the specified path
      */
-    public Image loadSingleImage(String path) {
-        Image image;
+    public BufferedImage loadSingleImage(String path) {
+        BufferedImage image;
         // first we check if that image has been loaded already
         if (singleImages.containsKey(path)) {
             return singleImages.get(path);
@@ -48,18 +48,18 @@ public class AssetLoader {
      * @return an Image[] where [0] is the static image and [1] is the animated image
      */
     public Image[] loadAnimatedGif(String path) {
-        Image[] images;
+        BufferedImage[] images;
         if ((images = animatedImages.get(path)) != null) {
             return images;
         }
         // we need to create a new array
-        images = new Image[2];
+        images = new BufferedImage[2];
 
         // load static image
         images[0] = loadSingleImage(path);
 
         // load animated image
-        images[1] = new ImageIcon(path).getImage();
+        //    images[1] = new ImageIcon(path).getImage();
 
         // add images to map
         this.animatedImages.put(path, images);
