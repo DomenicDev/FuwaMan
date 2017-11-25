@@ -2,7 +2,7 @@ package de.fuwa.bomberman.game.enums;
 
 public enum ModelType {
 
-    Player("playerNew.png"),
+    Player(null),
     DestroyableTile("undestroyable.png"),
     UndestroyableTile("undestroyable.png"),
     Bomb("Bomb_Artwork.png"),

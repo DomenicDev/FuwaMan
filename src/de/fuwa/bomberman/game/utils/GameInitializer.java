@@ -4,7 +4,7 @@ import de.fuwa.bomberman.app.AppStateManager;
 import de.fuwa.bomberman.game.appstates.*;
 import de.fuwa.bomberman.game.appstates.visual.VisualAppState;
 import de.fuwa.bomberman.game.appstates.visual.VisualGameFieldAppState;
-import de.fuwa.bomberman.game.components.KIComponent;
+import de.fuwa.bomberman.game.appstates.visual.VisualPlayerAppState;
 
 public class GameInitializer {
 
@@ -33,6 +33,7 @@ public class GameInitializer {
     public static void initVisualAndSoundAppStates(AppStateManager stateManager, int sizeX, int sizeY) {
         stateManager.attachState(new VisualGameFieldAppState(sizeX, sizeY));
         stateManager.attachState(new VisualAppState());
+        stateManager.attachState(new VisualPlayerAppState());
     }
 
     public static void initInputAppStates(AppStateManager stateManager) {

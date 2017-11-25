@@ -8,14 +8,10 @@ import java.awt.*;
 public class StaticImageObject extends AbstractDrawableObject {
 
     /**
-     * Creates a StaticImageObject with the specified parameters.
-     * @param x logical x-position
-     * @param y logical y-position
-     * @param staticImage the image to draw
+     * Creates a single static image.
+     * @param staticImage the single image to set
      */
-    public StaticImageObject(float x, float y, Image staticImage) {
-        setX(x);
-        setY(y);
+    public StaticImageObject(Image staticImage) {
         setImageToDraw(staticImage);
     }
 }

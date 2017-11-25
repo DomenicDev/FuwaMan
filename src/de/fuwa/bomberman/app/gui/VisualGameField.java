@@ -9,9 +9,6 @@ public class VisualGameField extends JPanel {
     private int sizeX;
     private int sizeY;
 
-    final int tileSizeX = 200;
-    final int tileSizeY = 200;
-
     private ConcurrentLinkedQueue<DrawableObject> graphicalObjects = new ConcurrentLinkedQueue<>();
 
     public VisualGameField(int sizeX, int sizeY) {
@@ -32,6 +29,9 @@ public class VisualGameField extends JPanel {
         super.paintComponent(g);
 
         Graphics2D graphics2D = (Graphics2D) g;
+
+        int tileSizeX = 200;
+        int tileSizeY = 200;
 
         float scaleX = (float) getWidth() / (tileSizeX * sizeX);
         float scaleY = (float) getHeight() / (tileSizeY * sizeY);
