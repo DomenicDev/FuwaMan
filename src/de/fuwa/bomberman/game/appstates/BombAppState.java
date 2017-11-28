@@ -7,6 +7,7 @@ import de.fuwa.bomberman.es.EntityData;
 import de.fuwa.bomberman.es.EntitySet;
 import de.fuwa.bomberman.game.components.BombComponent;
 import de.fuwa.bomberman.game.components.PositionComponent;
+import de.fuwa.bomberman.game.session.GameSession;
 import de.fuwa.bomberman.game.utils.EntityCreator;
 import de.fuwa.bomberman.game.utils.GameUtils;
 
@@ -14,6 +15,7 @@ public class BombAppState extends BaseAppState {
 
     private EntitySet bombEntities;
     private EntityData entityData;
+    private GameSession gameSession;
 
     @Override
     public void initialize(AppStateManager stateManager) {
@@ -29,7 +31,8 @@ public class BombAppState extends BaseAppState {
             float timer = bombComponent.getTimer();
             timer -= tpf;
             if(timer <= 0){
-                System.out.println("Explode");
+                System.out.println("Boom!");
+
                 entityData.removeEntity(bomb.getId());
             }else{
                 entityData.setComponents(bomb.getId(),new BombComponent(timer,bombComponent.getRadius()));
