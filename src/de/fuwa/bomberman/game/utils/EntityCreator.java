@@ -19,7 +19,7 @@ public class EntityCreator {
         EntityId player = playerId != null ? playerId : entityData.createEntity();
         entityData.setComponents(player,
                 new PositionComponent(startX, startY),
-                new CollisionComponent(0.20f, 0.5f, 0.6f, 0.45f, false),
+                new CollisionComponent(0.15f, 0.5f, 0.7f, 0.45f, false),
                 new ModelComponent(ModelType.Player, true),
                 new NameComponent(name),
                 new WalkableComponent(MoveDirection.Idle, 2),
