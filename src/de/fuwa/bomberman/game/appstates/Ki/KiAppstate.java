@@ -37,9 +37,9 @@ public class KiAppstate extends BaseAppState {
         entitySet = entityData.getEntities(PositionComponent.class, KIComponent.class, PlayerComponent.class);
 
         for(Entity entity : entitySet){
-            PositionComponent posCom = entity.get(PositionComponent.class);
-            KiAction kiAction = new KiAction(AStar.findPath(posCom, new PositionComponent(1, 5), entityData), true, 0);
-            kiActions.put(entity.getId(), kiAction);
+            //PositionComponent posCom = entity.get(PositionComponent.class);
+            //KiAction kiAction = new KiAction(AStar.findPath(posCom, new PositionComponent(1, 5), entityData), true, 0);
+            //kiActions.put(entity.getId(), kiAction);
         }
     }
 

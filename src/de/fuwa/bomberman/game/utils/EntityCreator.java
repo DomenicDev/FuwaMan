@@ -53,7 +53,8 @@ public class EntityCreator {
                 new CollisionComponent(0, 0, 1, 1, true),
                 new ModelComponent(modelType, false),
                 new BlockComponent(blockType),
-                new ActionWhenTouchingExplosionComponent(actionWhenTouchingExplosionType)
+                new ActionWhenTouchingExplosionComponent(actionWhenTouchingExplosionType),
+                new DropPowerUpComponent()
         );
 
         return block;

@@ -12,6 +12,7 @@ import de.fuwa.bomberman.game.utils.EntityCreator;
 import de.fuwa.bomberman.game.utils.GameUtils;
 
 import javax.swing.text.Position;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class ExplosionAppState extends BaseAppState{
 
@@ -25,10 +26,6 @@ public class ExplosionAppState extends BaseAppState{
         this.explosionEntities = entityData.getEntities(ExplosionComponent.class, PositionComponent.class);
         this.entitySet = entityData.getEntities(PositionComponent.class, ActionWhenTouchingExplosionComponent.class);
         this.stateManager = stateManager;
-
-        EntityCreator.createBlock(entityData, 1,2,true);
-        EntityCreator.createPowerUP(entityData,5,5, PowerUpType.BombStrengthUp);
-        EntityCreator.createPowerUP(entityData, 7,7, PowerUpType.BombAmountUp);
     }
     @Override
     public void update(float tpf) {
@@ -89,6 +86,13 @@ public class ExplosionAppState extends BaseAppState{
                             stop = true;
                         }
                         else if(actionWhenTouchingExplosionType == ActionWhenTouchingExplosionType.DisappearAndStopExplosion){
+                            DropPowerUpComponent droPowCom = entityData.getComponent(entity.getId(), DropPowerUpComponent.class);
+                            if(droPowCom != null){
+                                int randomNum = ThreadLocalRandom.current().nextInt(1, 100);
+                                if(randomNum <= 10) EntityCreator.createPowerUP(entityData, posCom.getX(), posCom.getY(), PowerUpType.SpeedUp);
+                                else if(randomNum > 10 && randomNum <= 20) EntityCreator.createPowerUP(entityData, posCom.getX(), posCom.getY(), PowerUpType.BombStrengthUp);
+                                else if(randomNum > 20 && randomNum <= 30) EntityCreator.createPowerUP(entityData, posCom.getX(), posCom.getY(), PowerUpType.BombAmountUp);
+                            }
                             entityData.removeEntity(entity.getId());
                             stop = true;
                         }
