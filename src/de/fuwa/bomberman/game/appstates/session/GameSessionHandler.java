@@ -6,6 +6,7 @@ import de.fuwa.bomberman.es.EntityData;
 import de.fuwa.bomberman.es.EntityId;
 import de.fuwa.bomberman.game.appstates.BombAppState;
 import de.fuwa.bomberman.game.appstates.EntityDataState;
+import de.fuwa.bomberman.game.components.PlayerComponent;
 import de.fuwa.bomberman.game.components.PositionComponent;
 import de.fuwa.bomberman.game.components.WalkableComponent;
 import de.fuwa.bomberman.game.enums.MoveDirection;
@@ -64,7 +65,8 @@ public class GameSessionHandler extends BaseAppState {
             // ToDo: implement as soon as missing classes are implemented
             PositionComponent playerPos = entityData.getComponent(playerId,PositionComponent.class);
             if(playerPos != null){
-                bombAppState.placeBomb(playerPos);
+                PlayerComponent playCom = entityData.getComponent(playerId, PlayerComponent.class);
+                bombAppState.placeBomb(playerPos, entityData.getComponent(playerId, PlayerComponent.class).getBombStrength(), playCom, playerId);
             }
         }
 

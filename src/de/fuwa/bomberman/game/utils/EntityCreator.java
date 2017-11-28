@@ -3,10 +3,7 @@ package de.fuwa.bomberman.game.utils;
 import de.fuwa.bomberman.es.EntityData;
 import de.fuwa.bomberman.es.EntityId;
 import de.fuwa.bomberman.game.components.*;
-import de.fuwa.bomberman.game.enums.BlockType;
-import de.fuwa.bomberman.game.enums.ModelType;
-import de.fuwa.bomberman.game.enums.MoveDirection;
-import de.fuwa.bomberman.game.enums.PowerUpType;
+import de.fuwa.bomberman.game.enums.*;
 
 
 public class EntityCreator {
@@ -23,7 +20,8 @@ public class EntityCreator {
                 new ModelComponent(ModelType.Player, true),
                 new NameComponent(name),
                 new WalkableComponent(MoveDirection.Idle, 2),
-                new PlayerComponent(1, 1)
+                new PlayerComponent(1, 1),
+                new ActionWhenTouchingExplosionComponent(ActionWhenTouchingExplosionType.Disappear)
         );
 
         if (isKi) {
@@ -37,21 +35,25 @@ public class EntityCreator {
         EntityId block = entityData.createEntity();
         ModelType modelType;
         BlockType blockType;
+        ActionWhenTouchingExplosionType actionWhenTouchingExplosionType;
 
         if(destroyable) {
             modelType = ModelType.DestroyableTile;
             blockType = BlockType.Destroyable;
+            actionWhenTouchingExplosionType = ActionWhenTouchingExplosionType.DisappearAndStopExplosion;
         }
         else{
             modelType = ModelType.UndestroyableTile;
             blockType = BlockType.Undestroyable;
+            actionWhenTouchingExplosionType = ActionWhenTouchingExplosionType.StopExplosion;
         }
 
         entityData.setComponents(block,
                 new PositionComponent(posX, posY),
                 new CollisionComponent(0, 0, 1, 1, true),
                 new ModelComponent(modelType, false),
-                new BlockComponent(blockType)
+                new BlockComponent(blockType),
+                new ActionWhenTouchingExplosionComponent(actionWhenTouchingExplosionType)
         );
 
         return block;
@@ -68,25 +70,32 @@ public class EntityCreator {
         entityData.setComponents(powerUp,
                 new PositionComponent(posX, posY),
                 new ModelComponent(modelType , false),
-                new PowerUpComponent(powerUpType)
+                new PowerUpComponent(powerUpType),
+                new ActionWhenTouchingExplosionComponent(ActionWhenTouchingExplosionType.Disappear)
         );
 
         return  powerUp;
     }
-    public static EntityId createBomb(EntityData entityData, PositionComponent pos){
+    public static EntityId createBomb(EntityData entityData, PositionComponent pos, int strength, EntityId creator){
         EntityId bombEntity = entityData.createEntity();
-        entityData.setComponents(bombEntity, pos, new BombComponent(5, 2), new ModelComponent(ModelType.Bomb,false));
+        entityData.setComponents(bombEntity,
+                pos,
+                new BombComponent(5, strength, creator),
+                new ModelComponent(ModelType.Bomb,false),
+                new ActionWhenTouchingExplosionComponent(ActionWhenTouchingExplosionType.Explode)
+        );
         return bombEntity;
     }
 
-    public static EntityId createBomb(EntityData entityData, int x, int y, int strength){
+    public static EntityId createBomb(EntityData entityData, int x, int y, int strength, EntityId creator){
         EntityId bomb = entityData.createEntity();
 
         entityData.setComponents(bomb,
                 new PositionComponent(x, y),
                 //new CollisionComponent(0,0,1,1,true ),
                 new ModelComponent(ModelType.Bomb, false),
-                new BombComponent(5, strength)
+                new BombComponent(5, strength, creator),
+                new ActionWhenTouchingExplosionComponent(ActionWhenTouchingExplosionType.Explode)
         );
 
         return bomb;
@@ -101,8 +110,10 @@ public class EntityCreator {
 
         entityData.setComponents(explosion,
                 new PositionComponent(centreX,centreY),
-                //      new ModelComponent(ModelType.Explosion, false),
-                new ExplosionComponent(1));
+                new ModelComponent(ModelType.Explosion, false),
+                new ExplosionComponent(1),
+                new ActionWhenTouchingExplosionComponent(ActionWhenTouchingExplosionType.Nothing)
+        );
         return explosion;
     }
 

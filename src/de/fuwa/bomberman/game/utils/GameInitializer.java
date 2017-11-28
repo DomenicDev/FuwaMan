@@ -2,6 +2,7 @@ package de.fuwa.bomberman.game.utils;
 
 import de.fuwa.bomberman.app.AppStateManager;
 import de.fuwa.bomberman.game.appstates.*;
+import de.fuwa.bomberman.game.appstates.Ki.KiAppstate;
 import de.fuwa.bomberman.game.appstates.sound.ExplosionSoundAppState;
 import de.fuwa.bomberman.game.appstates.visual.VisualAppState;
 import de.fuwa.bomberman.game.appstates.visual.VisualGameFieldAppState;
