@@ -101,7 +101,7 @@ public class EntityCreator {
 
         entityData.setComponents(explosion,
                 new PositionComponent(centreX,centreY),
-                new ModelComponent(ModelType.Explosion, false),
+                //      new ModelComponent(ModelType.Explosion, false),
                 new ExplosionComponent(1));
         return explosion;
     }

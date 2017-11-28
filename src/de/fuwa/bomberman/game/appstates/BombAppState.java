@@ -16,11 +16,13 @@ public class BombAppState extends BaseAppState {
     private EntitySet bombEntities;
     private EntityData entityData;
     private GameSession gameSession;
+    private ExplosionAppState explosionAppState;
 
     @Override
     public void initialize(AppStateManager stateManager) {
         this.entityData = stateManager.getState(EntityDataState.class).getEntityData();
         this.bombEntities = entityData.getEntities(BombComponent.class, PositionComponent.class);
+        this.explosionAppState = stateManager.getState(ExplosionAppState.class);
     }
 
     @Override
@@ -32,7 +34,7 @@ public class BombAppState extends BaseAppState {
             timer -= tpf;
             if(timer <= 0){
                 System.out.println("Boom!");
-
+                explosionAppState.createExplosion(bomb.get(PositionComponent.class));
                 entityData.removeEntity(bomb.getId());
             }else{
                 entityData.setComponents(bomb.getId(),new BombComponent(timer,bombComponent.getRadius()));

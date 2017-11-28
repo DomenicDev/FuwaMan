@@ -21,8 +21,8 @@ public class GameUtils {
     }
 
     public static GameField createSimpleGameField() {
-        int width = 13;
-        int height = 7;
+        int width = 11;
+        int height = 11;
 
         GameField gameField = new GameField(width, height);
 
