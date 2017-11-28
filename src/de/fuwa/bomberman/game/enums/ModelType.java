@@ -8,7 +8,9 @@ public enum ModelType {
     Bomb("Bomb_Artwork.png"),
     SpeedUp("SpeedUp.png"),
     BombStrengthUp("BombStrengthUp.png"),
-    BombAmountUp("BombAmountUp.png");
+    BombAmountUp("BombAmountUp.png"),
+    Explosion("Explosion.png");
+
 
     ModelType(String filename) {
         this.filename = filename;

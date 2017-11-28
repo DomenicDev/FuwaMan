@@ -93,4 +93,19 @@ public class EntityCreator {
 
         return bomb;
     }
+    public static EntityId createExplosion(EntityData entityData, PositionComponent pos){
+        pos = GameUtils.getCellPosition(pos);
+        return createExplosion(entityData,(int)pos.getX(), (int)pos.getY());
+    }
+
+    public static EntityId createExplosion(EntityData entityData, int centreX, int centreY){
+        EntityId explosion = entityData.createEntity();
+
+        entityData.setComponents(explosion,
+                new PositionComponent(centreX,centreY),
+                new ModelComponent(ModelType.Explosion, false),
+                new ExplosionComponent(1));
+        return explosion;
+    }
+
 }
