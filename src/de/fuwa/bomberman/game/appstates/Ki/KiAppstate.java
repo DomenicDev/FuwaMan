@@ -37,9 +37,9 @@ public class KiAppstate extends BaseAppState {
         entitySet = entityData.getEntities(PositionComponent.class, KIComponent.class, PlayerComponent.class);
 
         for(Entity entity : entitySet){
-            //PositionComponent posCom = entity.get(PositionComponent.class);
-            //KiAction kiAction = new KiAction(AStar.findPath(posCom, new PositionComponent(1, 5), entityData), true, 0);
-            //kiActions.put(entity.getId(), kiAction);
+            PositionComponent posCom = entity.get(PositionComponent.class);
+            KiAction kiAction = new KiAction(AStar.findPath(posCom, new PositionComponent(9, 2), entityData), true, 0);
+            kiActions.put(entity.getId(), kiAction);
         }
     }
 
@@ -53,39 +53,44 @@ public class KiAppstate extends BaseAppState {
             //else if(kiInDanger) // Decide how to react
             else{ // do Action
                 Path path = kiActions.get(entity.getId()).getPath();
-                Move move =  path.getMove(path.getMoves().size() -1);
-                PositionComponent nextCheckpoint = move.getPos();
-                MoveDirection dir = move.getDir();
-                PositionComponent pos = entity.get(PositionComponent.class);
+                if(path.getMoves().size() > 0){
+                    Move move =  path.getMove(path.getMoves().size() -1);
+                    PositionComponent nextCheckpoint = move.getPos();
+                    MoveDirection dir = move.getDir();
+                    PositionComponent pos = entity.get(PositionComponent.class);
 
-                GameSession gameSession = multipleGameSessionAppState.getGameSession(entity.getId());
+                    GameSession gameSession = multipleGameSessionAppState.getGameSession(entity.getId());
 
-                boolean next = false;
-                CollisionComponent colCom = entity.get(CollisionComponent.class);
-                if(dir == MoveDirection.Right && pos.getX() >= nextCheckpoint.getX()){
-                    next = true;
-                }
-                else if(dir == MoveDirection.Left && pos.getX() <= nextCheckpoint.getX()){
-                    next = true;
-                }
-                else if(dir == MoveDirection.Down && pos.getY() >= nextCheckpoint.getY()){
-                    next = true;
-                }
-                else if(dir == MoveDirection.Up && pos.getY() <= nextCheckpoint.getY()){
-                    next = true;
-                }
-
-                if(next){
-                    dir = MoveDirection.Idle;
-                    entityData.setComponent(entity.getId(), move.getPos());
-                    path.removeMove(move);
-
-                    if(path.getMoves().isEmpty()){
-                        if(kiActions.get(entity.getId()).isPlaceBomb()) gameSession.placeBomb();
-                        kiActions.remove(entity.getId());
+                    boolean next = false;
+                    CollisionComponent colCom = entity.get(CollisionComponent.class);
+                    if(dir == MoveDirection.Right && pos.getX() >= nextCheckpoint.getX()){
+                        next = true;
                     }
+                    else if(dir == MoveDirection.Left && pos.getX() <= nextCheckpoint.getX()){
+                        next = true;
+                    }
+                    else if(dir == MoveDirection.Down && pos.getY() >= nextCheckpoint.getY()){
+                        next = true;
+                    }
+                    else if(dir == MoveDirection.Up && pos.getY() <= nextCheckpoint.getY()){
+                        next = true;
+                    }
+
+                    if(next){
+                        dir = MoveDirection.Idle;
+                        entityData.setComponent(entity.getId(), move.getPos());
+                        path.removeMove(move);
+
+                        if(path.getMoves().isEmpty()){
+                            if(kiActions.get(entity.getId()).isPlaceBomb()) gameSession.placeBomb();
+                            kiActions.remove(entity.getId());
+                        }
+                    }
+                    gameSession.applyMoveDirection(dir);
                 }
-                gameSession.applyMoveDirection(dir);
+                else {
+                    kiActions.remove(entity.getId());
+                }
             }
         }
     }
