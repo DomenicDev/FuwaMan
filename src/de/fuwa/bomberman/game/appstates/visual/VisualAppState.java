@@ -98,9 +98,9 @@ public class VisualAppState extends BaseAppState {
         if (modelType == ModelType.Player) {
             drawableObject = new SpriteSheetImageObject(assetLoader.loadSingleImage(PLAYER_PATH + "player_green.png"), 4, 4);
         } else if (modelType == ModelType.UndestroyableTile) {
-            drawableObject = new StaticImageObject(assetLoader.loadSingleImage(SETTINGS_PATH + "undestroyable.png"));
+            drawableObject = new StaticImageObject(assetLoader.loadSingleImage(SETTINGS_PATH + "undes_block_01.png"));
         } else if (modelType == ModelType.Bomb) {
-            drawableObject = new StaticImageObject(assetLoader.loadSingleImage(TEXTURE_PATH + "Bomb_Artwork.png"));
+            drawableObject = new StaticImageObject(assetLoader.loadSingleImage(SETTINGS_PATH + "bomb_01.png"));
         }
 
         if (drawableObject == null) {
