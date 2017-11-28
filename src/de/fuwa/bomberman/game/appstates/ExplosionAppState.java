@@ -25,6 +25,10 @@ public class ExplosionAppState extends BaseAppState{
         this.explosionEntities = entityData.getEntities(ExplosionComponent.class, PositionComponent.class);
         this.entitySet = entityData.getEntities(PositionComponent.class, ActionWhenTouchingExplosionComponent.class);
         this.stateManager = stateManager;
+
+        EntityCreator.createBlock(entityData, 1,2,true);
+        EntityCreator.createPowerUP(entityData,5,5, PowerUpType.BombStrengthUp);
+        EntityCreator.createPowerUP(entityData, 7,7, PowerUpType.BombAmountUp);
     }
     @Override
     public void update(float tpf) {
@@ -40,8 +44,6 @@ public class ExplosionAppState extends BaseAppState{
 
                 if(GameUtils.inSameCell(pos,posCom)){
                     if(actionWhenTouchingExplosionType == ActionWhenTouchingExplosionType.Disappear || actionWhenTouchingExplosionType == ActionWhenTouchingExplosionType.DisappearAndStopExplosion){
-                        KIComponent kiComponent = entity.get(KIComponent.class);
-                        if(kiComponent != null) stateManager.detachState(stateManager.getState(InputAppState.class));
                         entityData.removeEntity(entity.getId());
                     }
                     else if(actionWhenTouchingExplosionType == ActionWhenTouchingExplosionType.Explode){
