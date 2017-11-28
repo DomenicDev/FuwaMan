@@ -15,7 +15,7 @@ public class SpriteAnimation {
     public SpriteAnimation(BufferedImage[] frames) {
         this.frames = frames;
         this.currentFrameNumber = 0;
-        this.speed = 1;
+        this.speed = 2;
         this.timer = 0;
         this.running = false;
     }
