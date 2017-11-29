@@ -71,6 +71,14 @@ public class LogicalGameFieldAppState extends BaseAppState {
         }
     }
 
+    public int getGameFieldSizeX() {
+        return gameFieldSizeX;
+    }
+
+    public int getGameFieldSizeY() {
+        return gameFieldSizeY;
+    }
+
     private void add(Entity entity) {
         PositionComponent pos = entity.get(PositionComponent.class);
         pos = GameUtils.getCellPosition(pos);

@@ -3,12 +3,14 @@ package de.fuwa.bomberman.es.base;
 import de.fuwa.bomberman.es.*;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 public class DefaultEntityData implements EntityData {
 
     private int idCounter;
 
-    private Map<EntityId, Map<Class, EntityComponent>> entityDataBase = new HashMap<>();
+    private ConcurrentMap<EntityId, Map<Class, EntityComponent>> entityDataBase = new ConcurrentHashMap<>();
 
     private EntitySetChangeListener entitySetHandler = new EntitySetChangeListener();
 

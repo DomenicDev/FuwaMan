@@ -42,31 +42,9 @@ public class MainGameAppState extends BaseAppState {
 
     private EntityData entityData;
 
-    private boolean gameStarted = false;
-
-    public MainGameAppState() {
-    }
-
     @Override
     public void initialize(AppStateManager stateManager) {
         this.stateManager = stateManager;
-
-        this.gameSessionAppState = new MultipleGameSessionAppState();
-        stateManager.attachState(gameSessionAppState);
-
-        // we init entity data
-        this.entityData = new DefaultEntityData();
-        this.entityDataState = new EntityDataState(entityData);
-        stateManager.attachState(entityDataState);
-
-        // init game logic app states
-        GameInitializer.initGameLogicAppStates(stateManager);
-
-        // we create our game session handler
-        this.gameSessionHandler = new GameSessionHandler();
-        stateManager.attachState(this.gameSessionHandler);
-        stateManager.attachState(new BombAppState());
-
     }
 
     public void addGameStateListener(GameStateListener listener) {
@@ -76,13 +54,6 @@ public class MainGameAppState extends BaseAppState {
     public void addPlayer(Player player) {
         if (this.players.size() < 4) {
             this.players.add(player);
-
-            // create game session
-            EntityId playerId = entityData.createEntity();
-            GameSession gameSession = gameSessionHandler.createGameSession(playerId);
-            //gameSessionMap.put(playerId, gameSession); // deprecated
-            this.gameSessionAppState.addGameSession(playerId, gameSession);
-            playerEntityIdMap.put(player, playerId);
         }
     }
 
@@ -105,8 +76,36 @@ public class MainGameAppState extends BaseAppState {
             return;
         }
 
+        this.gameSessionAppState = new MultipleGameSessionAppState();
+        stateManager.attachState(gameSessionAppState);
+
+        // we init entity data
+        this.entityData = new DefaultEntityData();
+        this.entityDataState = new EntityDataState(entityData);
+        stateManager.attachState(entityDataState);
+
+        // we initialize our logical game field app state
+        this.stateManager.attachState(new LogicalGameFieldAppState(gameField.getSizeX(), gameField.getSizeY()));
+
+        // init game logic app states
+        GameInitializer.initGameLogicAppStates(stateManager);
+
+        // we create our game session handler
+        this.gameSessionHandler = new GameSessionHandler();
+        stateManager.attachState(this.gameSessionHandler);
+
         // we want to create the entities for the for the blocks
         createEntitiesForGameField(entityData, gameField);
+
+        // now we create the game sessions
+        for (Player player : players) {
+            // create game session
+            EntityId playerId = entityData.createEntity();
+            GameSession gameSession = gameSessionHandler.createGameSession(playerId);
+            //gameSessionMap.put(playerId, gameSession); // deprecated
+            this.gameSessionAppState.addGameSession(playerId, gameSession);
+            playerEntityIdMap.put(player, playerId);
+        }
 
         // next, we would like to create the players
         // for that we need to get the start positions of the players
@@ -184,6 +183,7 @@ public class MainGameAppState extends BaseAppState {
     public void cleanup() {
         stateManager.detachState(gameSessionHandler);
         stateManager.detachState(entityDataState);
+        stateManager.detachState(stateManager.getState(LogicalGameFieldAppState.class));
         GameInitializer.removeGameLogicAppStates(stateManager);
     }
 }
