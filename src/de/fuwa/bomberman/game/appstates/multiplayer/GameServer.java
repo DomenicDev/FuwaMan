@@ -72,7 +72,7 @@ public class GameServer extends BaseAppState implements ConnectionListener, Mess
 
     @Override
     public void onClientConnected(HostedConnection connection) {
-        this.hostedEntityDataMap.put(connection, new HostedEntityData(connection, (DefaultEntityData) stateManager.getState(EntityDataState.class).getEntityData()));
+
     }
 
     @Override
@@ -98,7 +98,11 @@ public class GameServer extends BaseAppState implements ConnectionListener, Mess
             source.send(m);
 
             if (++playerCounter >= 2) {
-                mainGameAppState.setupGame(GameUtils.createSimpleGameField(), Setting.Classic);
+                mainGameAppState.setupGame(GameUtils.createComplexGameField(), Setting.Classic);
+                for (HostedConnection connection : server.getConnections()) {
+                    this.hostedEntityDataMap.put(connection, new HostedEntityData(connection, (DefaultEntityData) stateManager.getState(EntityDataState.class).getEntityData()));
+                }
+
             }
         } else if (m instanceof ReadyForGameStartMessage) {
             readyCounter++;
