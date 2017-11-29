@@ -21,7 +21,7 @@ public class EntityCreator {
                 new NameComponent(name),
                 new WalkableComponent(MoveDirection.Idle, 2),
                 new PlayerComponent(1, 1),
-                new ActionWhenTouchingExplosionComponent(ActionWhenTouchingExplosionType.Disappear)
+                new ExplosionImpactComponent(ExplosionImpactType.Disappear)
         );
 
         if (isKi) {
@@ -35,17 +35,17 @@ public class EntityCreator {
         EntityId block = entityData.createEntity();
         ModelType modelType;
         BlockType blockType;
-        ActionWhenTouchingExplosionType actionWhenTouchingExplosionType;
+        ExplosionImpactType explosionImpactType;
 
         if(destroyable) {
             modelType = ModelType.DestroyableTile;
             blockType = BlockType.Destroyable;
-            actionWhenTouchingExplosionType = ActionWhenTouchingExplosionType.DisappearAndStopExplosion;
+            explosionImpactType = ExplosionImpactType.DisappearAndStopExplosion;
         }
         else{
             modelType = ModelType.UndestroyableTile;
             blockType = BlockType.Undestroyable;
-            actionWhenTouchingExplosionType = ActionWhenTouchingExplosionType.StopExplosion;
+            explosionImpactType = ExplosionImpactType.StopExplosion;
         }
 
         entityData.setComponents(block,
@@ -53,7 +53,7 @@ public class EntityCreator {
                 new CollisionComponent(0, 0, 1, 1, true),
                 new ModelComponent(modelType, false),
                 new BlockComponent(blockType),
-                new ActionWhenTouchingExplosionComponent(actionWhenTouchingExplosionType),
+                new ExplosionImpactComponent(explosionImpactType),
                 new DropPowerUpComponent()
         );
 
@@ -72,7 +72,7 @@ public class EntityCreator {
                 new PositionComponent(posX, posY),
                 new ModelComponent(modelType , false),
                 new PowerUpComponent(powerUpType),
-                new ActionWhenTouchingExplosionComponent(ActionWhenTouchingExplosionType.Disappear)
+                new ExplosionImpactComponent(ExplosionImpactType.Disappear)
         );
 
         return  powerUp;
@@ -83,7 +83,7 @@ public class EntityCreator {
                 pos,
                 new BombComponent(5, strength, creator),
                 new ModelComponent(ModelType.Bomb,false),
-                new ActionWhenTouchingExplosionComponent(ActionWhenTouchingExplosionType.Explode)
+                new ExplosionImpactComponent(ExplosionImpactType.Explode)
         );
         return bombEntity;
     }
@@ -96,7 +96,7 @@ public class EntityCreator {
                 //new CollisionComponent(0,0,1,1,true ),
                 new ModelComponent(ModelType.Bomb, false),
                 new BombComponent(5, strength, creator),
-                new ActionWhenTouchingExplosionComponent(ActionWhenTouchingExplosionType.Explode)
+                new ExplosionImpactComponent(ExplosionImpactType.Explode)
         );
 
         return bomb;
@@ -112,8 +112,7 @@ public class EntityCreator {
         entityData.setComponents(explosion,
                 new PositionComponent(centreX,centreY),
                 new ModelComponent(ModelType.Explosion, false),
-                new ExplosionComponent(1),
-                new ActionWhenTouchingExplosionComponent(ActionWhenTouchingExplosionType.Nothing)
+                new ExplosionComponent(1)
         );
         return explosion;
     }

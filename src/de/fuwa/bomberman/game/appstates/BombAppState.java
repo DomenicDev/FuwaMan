@@ -9,7 +9,6 @@ import de.fuwa.bomberman.es.EntitySet;
 import de.fuwa.bomberman.game.components.BombComponent;
 import de.fuwa.bomberman.game.components.PlayerComponent;
 import de.fuwa.bomberman.game.components.PositionComponent;
-import de.fuwa.bomberman.game.session.GameSession;
 import de.fuwa.bomberman.game.utils.EntityCreator;
 import de.fuwa.bomberman.game.utils.GameUtils;
 
@@ -17,7 +16,6 @@ public class BombAppState extends BaseAppState {
 
     private EntitySet bombEntities;
     private EntityData entityData;
-    private GameSession gameSession;
     private ExplosionAppState explosionAppState;
 
     @Override
@@ -49,12 +47,14 @@ public class BombAppState extends BaseAppState {
         position = GameUtils.getCellPosition(position);
         int maxBombAmount = playCom.getBombAmount();
         int currentBombAmount = 0;
+        // Todo !!! THIS CODE IS STRANGE !!!
         for(Entity bomb : bombEntities){
             PositionComponent bombPos = bomb.get(PositionComponent.class);
             if(GameUtils.inSameCell(bombPos,position)){
                 return;
             }
-            if(creator == bomb.get(BombComponent.class).getCreator()){
+            // Todo this could be replaced with an own component!!!
+            if (creator.equals(bomb.get(BombComponent.class).getCreator())) {
                 currentBombAmount++;
             }
         }

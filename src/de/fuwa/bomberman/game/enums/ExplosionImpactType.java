@@ -1,7 +1,6 @@
 package de.fuwa.bomberman.game.enums;
 
-public enum ActionWhenTouchingExplosionType {
-    Nothing,
+public enum ExplosionImpactType {
     Explode,
     Disappear,
     StopExplosion,
