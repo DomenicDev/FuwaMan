@@ -44,7 +44,7 @@ public class SingleplayerTest extends GameApplication {
             stateManager.attachState(new GameSessionAppState(gameSession));
 
             //  we now want to setup and run the game
-            mainGameAppState.setupGame(GameUtils.createSimpleGameField(), Setting.Classic);
+            mainGameAppState.setupGame(GameUtils.createComplexGameField(), Setting.Classic);
             mainGameAppState.startGame();
         }
     }
