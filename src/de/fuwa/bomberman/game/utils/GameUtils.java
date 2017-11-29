@@ -37,12 +37,18 @@ public class GameUtils {
     }
 
     public static GameField createComplexGameField(){
-        int width = 11;
-        int height = 11;
+        int width = 14;
+        int height = 4;
+        width = Math.max(11,width);
+        height = Math.max(11,height);
+        if(width%2==0)
+            width++;
+        if(height%2==0)
+            height++;
 
         GameField gameField = new GameField(width, height);
 
-        int[][] field = {{1,1,1,1,1,1,1,1,1,1,1},
+        /*int[][] field = {{1,1,1,1,1,1,1,1,1,1,1},
                 {1,0,0,2,2,2,2,2,0,0,1},
                 {1,0,1,2,1,2,1,2,1,0,1},
                 {1,2,2,2,2,2,2,2,2,2,1},
@@ -58,6 +64,18 @@ public class GameUtils {
             for(int x = 0; x < width; x++){
                 if(field[x][y] == 1) gameField.setBlock(x,y, BlockType.Undestroyable);
                 else if(field[x][y] == 2) gameField.setBlock(x, y, BlockType.Destroyable);
+            }
+        }*/
+        for(int y = 0; y < height; y++){
+            for(int x = 0; x < width; x++){
+                if(x==0||y==0||x==width-1||y==height-1||x%2==0&&y%2==0){
+                    gameField.setBlock(x, y, BlockType.Undestroyable);
+                }else if(!( x == 1 && y == 1 || x == 2 && y == 1 || x == 1 && y == 2 ||
+                        ( x == width - 2 && y == 1 || x == width - 3 && y == 1 || x == width - 2 && y == 2)||
+                        ( x == 1 && y == height - 3 || x == 1 && y == height - 2 || x == 2 && y == height - 2)||
+                        ( x == width - 2 && y == height - 2 || x == width - 3 && y == height - 2 || x == width - 2 && y == height - 3))){
+                    gameField.setBlock(x,y,BlockType.Destroyable);
+                }
             }
         }
 
