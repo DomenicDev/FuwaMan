@@ -81,7 +81,7 @@ public class EntityCreator {
         EntityId bombEntity = entityData.createEntity();
         entityData.setComponents(bombEntity,
                 pos,
-                new BombComponent(5, strength, creator),
+                new BombComponent(2.5f, strength, creator),
                 new ModelComponent(ModelType.Bomb,false),
                 new ExplosionImpactComponent(ExplosionImpactType.Explode)
         );
@@ -112,7 +112,7 @@ public class EntityCreator {
         entityData.setComponents(explosion,
                 new PositionComponent(centreX,centreY),
                 new ModelComponent(ModelType.Explosion, false),
-                new ExplosionComponent(1)
+                new ExplosionComponent(1f)
         );
         return explosion;
     }

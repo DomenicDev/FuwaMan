@@ -19,11 +19,15 @@ public class AppStateManager {
     }
 
     public void attachState(AppState appState) {
-        this.appStatesToAdd.add(appState);
+        if (appState != null) {
+            this.appStatesToAdd.add(appState);
+        }
     }
 
     public void detachState(AppState appState) {
-        this.appStatesToRemove.add(appState);
+        if (appState != null) {
+            this.appStatesToRemove.add(appState);
+        }
     }
 
     void addStates() {
@@ -54,7 +58,7 @@ public class AppStateManager {
     public <T extends AppState> T getState(Class<T> stateType) {
         for (AppState state : applicationStates) {
             if (state.getClass().isAssignableFrom(stateType)) {
-                return (T) state;
+                return stateType.cast(state);
             }
         }
         return null;
@@ -67,7 +71,7 @@ public class AppStateManager {
     /**
      * @return a list containing all currently added app states
      */
-    public List<AppState> getAppStates() {
+    List<AppState> getAppStates() {
         return this.applicationStates;
     }
 

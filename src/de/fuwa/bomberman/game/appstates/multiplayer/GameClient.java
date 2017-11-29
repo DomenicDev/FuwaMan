@@ -54,6 +54,8 @@ public class GameClient extends BaseAppState implements MessageListener<Client>,
 
         if (m instanceof OnSetupGameMessage) {
             OnSetupGameMessage sm = (OnSetupGameMessage) m;
+            stateManager.attachState(new EntityDataState(new RemoteEntityData(source)));
+            stateManager.attachState(new GameSessionAppState(new RemoteGameSession(source)));
             this.gameStateListener.onSetupGame(sm.getSetting(), sm.getSizeX(), sm.getSizeY());
             // at this point we setup our game, so we tell the server that we are ready
             source.send(new ReadyForGameStartMessage());
@@ -66,8 +68,6 @@ public class GameClient extends BaseAppState implements MessageListener<Client>,
     public void onClientConnected(Client c) {
         System.out.println("connected");
         c.send(new JoinGameMessage(new Player("TestClient")));
-        stateManager.attachState(new EntityDataState(new RemoteEntityData(c)));
-        stateManager.attachState(new GameSessionAppState(new RemoteGameSession(c)));
     }
 
     @Override
