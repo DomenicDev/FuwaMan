@@ -99,8 +99,20 @@ public class VisualAppState extends BaseAppState {
             drawableObject = new SpriteSheetImageObject(assetLoader.loadSingleImage(PLAYER_PATH + "player_green.png"), 4, 4);
         } else if (modelType == ModelType.UndestroyableTile) {
             drawableObject = new StaticImageObject(assetLoader.loadSingleImage(SETTINGS_PATH + "undes_block_01.png"));
-        } else if (modelType == ModelType.Bomb) {
+        } else if(modelType == ModelType.DestroyableTile){
+            drawableObject = new StaticImageObject(assetLoader.loadSingleImage(SETTINGS_PATH + "des_block_01.png"));
+        }
+
+        else if (modelType == ModelType.Bomb) {
             drawableObject = new StaticImageObject(assetLoader.loadSingleImage(SETTINGS_PATH + "bomb_01.png"));
+        } else if(modelType == ModelType.Explosion){
+            drawableObject = new StaticImageObject(assetLoader.loadSingleImage(TEXTURE_PATH + "Explosion.png"));
+        } else if(modelType == ModelType.BombAmountUp){
+            drawableObject = new StaticImageObject(assetLoader.loadSingleImage(TEXTURE_PATH + "BombAmountUp.png"));
+        } else if(modelType == ModelType.BombStrengthUp){
+            drawableObject = new StaticImageObject(assetLoader.loadSingleImage(TEXTURE_PATH + "BombStrengthUp.png"));
+        } else if(modelType == ModelType.SpeedUp){
+            drawableObject = new StaticImageObject(assetLoader.loadSingleImage(TEXTURE_PATH + "SpeedUp.png"));
         }
 
         if (drawableObject == null) {

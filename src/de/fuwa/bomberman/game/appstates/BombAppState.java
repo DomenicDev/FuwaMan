@@ -4,8 +4,10 @@ import de.fuwa.bomberman.app.AppStateManager;
 import de.fuwa.bomberman.app.BaseAppState;
 import de.fuwa.bomberman.es.Entity;
 import de.fuwa.bomberman.es.EntityData;
+import de.fuwa.bomberman.es.EntityId;
 import de.fuwa.bomberman.es.EntitySet;
 import de.fuwa.bomberman.game.components.BombComponent;
+import de.fuwa.bomberman.game.components.PlayerComponent;
 import de.fuwa.bomberman.game.components.PositionComponent;
 import de.fuwa.bomberman.game.session.GameSession;
 import de.fuwa.bomberman.game.utils.EntityCreator;
@@ -34,24 +36,31 @@ public class BombAppState extends BaseAppState {
             timer -= tpf;
             if(timer <= 0){
                 System.out.println("Boom!");
-                explosionAppState.createExplosion(bomb.get(PositionComponent.class));
+                explosionAppState.createExplosion(bomb.get(PositionComponent.class), bombComponent.getRadius());
                 entityData.removeEntity(bomb.getId());
             }else{
-                entityData.setComponents(bomb.getId(),new BombComponent(timer,bombComponent.getRadius()));
+                entityData.setComponents(bomb.getId(),new BombComponent(timer, bombComponent.getRadius(), bombComponent.getCreator()));
             }
         }
     }
 
-    public void placeBomb(PositionComponent position){
+    public void placeBomb(PositionComponent position, int strength, PlayerComponent playCom, EntityId creator){
         bombEntities.applyChanges();
         position = GameUtils.getCellPosition(position);
+        int maxBombAmount = playCom.getBombAmount();
+        int currentBombAmount = 0;
         for(Entity bomb : bombEntities){
             PositionComponent bombPos = bomb.get(PositionComponent.class);
             if(GameUtils.inSameCell(bombPos,position)){
                 return;
             }
+            if(creator == bomb.get(BombComponent.class).getCreator()){
+                currentBombAmount++;
+            }
         }
-        EntityCreator.createBomb(entityData, position);
+        if(currentBombAmount < maxBombAmount){
+            EntityCreator.createBomb(entityData, position, strength, creator);
+        }
     }
 
     @Override
