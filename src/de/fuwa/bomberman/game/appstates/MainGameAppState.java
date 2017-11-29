@@ -45,6 +45,15 @@ public class MainGameAppState extends BaseAppState {
     @Override
     public void initialize(AppStateManager stateManager) {
         this.stateManager = stateManager;
+
+        this.gameSessionAppState = new MultipleGameSessionAppState();
+        stateManager.attachState(gameSessionAppState);
+
+        // we init entity data
+        this.entityData = new DefaultEntityData();
+        this.entityDataState = new EntityDataState(entityData);
+        stateManager.attachState(entityDataState);
+
     }
 
     public void addGameStateListener(GameStateListener listener) {
@@ -76,13 +85,7 @@ public class MainGameAppState extends BaseAppState {
             return;
         }
 
-        this.gameSessionAppState = new MultipleGameSessionAppState();
-        stateManager.attachState(gameSessionAppState);
 
-        // we init entity data
-        this.entityData = new DefaultEntityData();
-        this.entityDataState = new EntityDataState(entityData);
-        stateManager.attachState(entityDataState);
 
         // we initialize our logical game field app state
         this.stateManager.attachState(new LogicalGameFieldAppState(gameField.getSizeX(), gameField.getSizeY()));

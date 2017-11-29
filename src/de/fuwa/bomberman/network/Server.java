@@ -102,6 +102,10 @@ public class Server {
         }
     }
 
+    public List<HostedConnection> getConnections() {
+        return connections;
+    }
+
     /**
      * Our ServerHandler listens for incoming messages.
      */

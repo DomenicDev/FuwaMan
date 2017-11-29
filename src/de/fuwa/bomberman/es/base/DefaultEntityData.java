@@ -23,7 +23,7 @@ public class DefaultEntityData implements EntityData {
     @Override
     public EntityId createEntity() {
         EntityId entityId = new EntityId(idCounter++);
-        entityDataBase.put(entityId, new HashMap<>());
+        entityDataBase.put(entityId, new ConcurrentHashMap<>());
         return entityId;
     }
 
@@ -130,7 +130,7 @@ public class DefaultEntityData implements EntityData {
      */
     private class EntitySetChangeListener implements EntityChangeListener {
 
-        private Map<ComponentCombination, List<EntitySet>> entitySetsMap = new HashMap<>();
+        private Map<ComponentCombination, List<EntitySet>> entitySetsMap = new ConcurrentHashMap<>();
 
         /**
          * The specified EntitySet will now receive updates.
