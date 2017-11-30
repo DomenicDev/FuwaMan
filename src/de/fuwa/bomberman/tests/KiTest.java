@@ -45,12 +45,13 @@ public class KiTest extends GameApplication {
             mainGameAppState.addPlayer(ki2);
             mainGameAppState.addPlayer(ki3);
 
+            //  we now want to setup and run the game
+            mainGameAppState.setupGame(GameUtils.createComplexGameField(), Setting.Classic);
+
             //get game session and create holder class
             GameSession gameSession = mainGameAppState.getGameSession(player);
             stateManager.attachState(new GameSessionAppState(gameSession));
 
-            //  we now want to setup and run the game
-            mainGameAppState.setupGame(GameUtils.createComplexGameField(), Setting.Classic);
             mainGameAppState.startGame();
         }
     }
