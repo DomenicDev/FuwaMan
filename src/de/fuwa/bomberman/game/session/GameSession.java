@@ -19,6 +19,7 @@ public interface GameSession {
      * Will apply the current move direction of the player.
      * @param direction the direction the player is moving in
      */
+
     void applyMoveDirection(MoveDirection direction);
 
 }

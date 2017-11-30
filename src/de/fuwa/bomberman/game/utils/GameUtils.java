@@ -48,24 +48,6 @@ public class GameUtils {
 
         GameField gameField = new GameField(width, height);
 
-        /*int[][] field = {{1,1,1,1,1,1,1,1,1,1,1},
-                {1,0,0,2,2,2,2,2,0,0,1},
-                {1,0,1,2,1,2,1,2,1,0,1},
-                {1,2,2,2,2,2,2,2,2,2,1},
-                {1,2,1,2,1,2,1,2,1,2,1},
-                {1,2,2,2,2,2,2,2,2,2,1},
-                {1,2,1,2,1,2,1,2,1,2,1},
-                {1,2,2,2,2,2,2,2,2,2,1},
-                {1,0,1,2,1,2,1,2,1,0,1},
-                {1,0,0,2,2,2,2,2,0,0,1,},
-                {1,1,1,1,1,1,1,1,1,1,1}};
-
-        for(int y = 0; y < height; y++){
-            for(int x = 0; x < width; x++){
-                if(field[x][y] == 1) gameField.setBlock(x,y, BlockType.Undestroyable);
-                else if(field[x][y] == 2) gameField.setBlock(x, y, BlockType.Destroyable);
-            }
-        }*/
         for(int y = 0; y < height; y++){
             for(int x = 0; x < width; x++){
                 if(x==0||y==0||x==width-1||y==height-1||x%2==0&&y%2==0){

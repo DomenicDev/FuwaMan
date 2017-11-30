@@ -4,29 +4,51 @@ import de.fuwa.bomberman.app.AppStateManager;
 import de.fuwa.bomberman.app.BaseAppState;
 import de.fuwa.bomberman.es.Entity;
 import de.fuwa.bomberman.es.EntityData;
+import de.fuwa.bomberman.es.EntityId;
 import de.fuwa.bomberman.es.EntitySet;
+import de.fuwa.bomberman.game.components.BombComponent;
 import de.fuwa.bomberman.game.components.CollisionComponent;
 import de.fuwa.bomberman.game.components.PositionComponent;
 import de.fuwa.bomberman.game.components.WalkableComponent;
 import de.fuwa.bomberman.game.enums.MoveDirection;
+import de.fuwa.bomberman.game.utils.GameUtils;
+import javafx.geometry.Pos;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class PhysicsCharacterMovementAppState extends BaseAppState {
 
     private EntitySet characters;
     private EntitySet physicalObjects;
+    private EntitySet bombEntities;
     private EntityData entityData;
+
+    private Map<EntityId, EntityId> playerOnBomb = new HashMap<>();
 
     @Override
     public void initialize(AppStateManager stateManager) {
         this.entityData = stateManager.getState(EntityDataState.class).getEntityData();
         this.characters = entityData.getEntities(PositionComponent.class, WalkableComponent.class, CollisionComponent.class);
         this.physicalObjects = entityData.getEntities(PositionComponent.class, CollisionComponent.class);
+        this.bombEntities = entityData.getEntities(PositionComponent.class, CollisionComponent.class, BombComponent.class)
     }
 
     @Override
     public void update(float tpf) {
         physicalObjects.applyChanges();
         characters.applyChanges();
+        if(bombEntities.applyChanges()){
+            for(Entity bomb : bombEntities.getAddedEntities()){
+                PositionComponent bombPos = bomb.get(PositionComponent.class);
+                for(Entity character : characters){
+                    PositionComponent charPos = character.get(PositionComponent.class);
+                    if(GameUtils.inSameCell(charPos, bombPos){
+                        playerOnBomb.put(character.getId(), bomb.getId());
+                    }
+                }
+            }
+        }
 
         for (Entity character : characters) {
 
@@ -74,7 +96,14 @@ public class PhysicsCharacterMovementAppState extends BaseAppState {
                 // now we check if they intersect
                 // if they do we have a collision
 
+
                 if (areColliding(r1, r2)) {
+
+                    if(playerOnBomb.containsKey(character.getId())){
+                        if (playerOnBomb.get(character.getId()).equals(physicalObject.getId())){
+                            break;
+                        }
+                    }
                     // we collided so we do not do everything
                     // means we do not apply the new calculated position
                     collided = true;
