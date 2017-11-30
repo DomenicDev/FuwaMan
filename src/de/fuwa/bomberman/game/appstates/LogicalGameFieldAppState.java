@@ -71,6 +71,14 @@ public class LogicalGameFieldAppState extends BaseAppState {
         }
     }
 
+    public List<EntityId> getEntitiesAt(int x, int y) {
+        Cell cell = gameField[y][x];
+        if (cell != null) {
+            return cell.entities;
+        }
+        return null;
+    }
+
     public int getGameFieldSizeX() {
         return gameFieldSizeX;
     }
