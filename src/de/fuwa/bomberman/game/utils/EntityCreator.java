@@ -83,6 +83,7 @@ public class EntityCreator {
                 pos,
                 new BombComponent(2.5f, strength, creator),
                 new ModelComponent(ModelType.Bomb,false),
+                new CollisionComponent(0, 0, 1, 1, true),
                 new ExplosionImpactComponent(ExplosionImpactType.Explode)
         );
         return bombEntity;

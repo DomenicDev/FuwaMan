@@ -18,4 +18,9 @@ public class PositionComponent implements EntityComponent {
     public float getY() {
         return y;
     }
+
+    @Override
+    public String toString() {
+        return "[" + x + "," + y + "]";
+    }
 }
