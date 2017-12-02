@@ -3,6 +3,7 @@ package de.fuwa.bomberman.game.utils;
 import de.fuwa.bomberman.app.AppStateManager;
 import de.fuwa.bomberman.game.appstates.*;
 import de.fuwa.bomberman.game.appstates.Ki.KiAppstate;
+import de.fuwa.bomberman.game.appstates.multiplayer.ClientSideInterpolationAppState;
 import de.fuwa.bomberman.game.appstates.sound.ExplosionSoundAppState;
 import de.fuwa.bomberman.game.appstates.visual.VisualAppState;
 import de.fuwa.bomberman.game.appstates.visual.VisualGameFieldAppState;
@@ -44,6 +45,10 @@ public class GameInitializer {
 
     public static void initInputAppStates(AppStateManager stateManager) {
         stateManager.attachState(new InputAppState());
+    }
+
+    public static void initClientAppStates(AppStateManager stateManager) {
+        stateManager.attachState(new ClientSideInterpolationAppState());
     }
 
 }

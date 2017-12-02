@@ -10,6 +10,7 @@ import de.fuwa.bomberman.game.appstates.state.GameStateHandler;
 import de.fuwa.bomberman.game.enums.MoveDirection;
 import de.fuwa.bomberman.game.session.GameSession;
 import de.fuwa.bomberman.game.state.GameStateListener;
+import de.fuwa.bomberman.game.utils.GameInitializer;
 import de.fuwa.bomberman.game.utils.Player;
 import de.fuwa.bomberman.network.Client;
 import de.fuwa.bomberman.network.ClientStateListener;
@@ -57,6 +58,8 @@ public class GameClient extends BaseAppState implements MessageListener<Client>,
             stateManager.attachState(new EntityDataState(new RemoteEntityData(source)));
             stateManager.attachState(new GameSessionAppState(new RemoteGameSession(source)));
             this.gameStateListener.onSetupGame(sm.getSetting(), sm.getSizeX(), sm.getSizeY());
+            GameInitializer.initClientAppStates(stateManager);
+
             // at this point we setup our game, so we tell the server that we are ready
             source.send(new ReadyForGameStartMessage());
         } else if (m instanceof OnGameStartMessage) {
