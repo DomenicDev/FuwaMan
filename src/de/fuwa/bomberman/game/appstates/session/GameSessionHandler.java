@@ -6,9 +6,9 @@ import de.fuwa.bomberman.es.EntityData;
 import de.fuwa.bomberman.es.EntityId;
 import de.fuwa.bomberman.game.appstates.BombAppState;
 import de.fuwa.bomberman.game.appstates.EntityDataState;
+import de.fuwa.bomberman.game.appstates.PhysicsCharacterMovementAppState;
 import de.fuwa.bomberman.game.components.PlayerComponent;
 import de.fuwa.bomberman.game.components.PositionComponent;
-import de.fuwa.bomberman.game.components.WalkableComponent;
 import de.fuwa.bomberman.game.enums.MoveDirection;
 import de.fuwa.bomberman.game.session.GameSession;
 
@@ -20,6 +20,7 @@ public class GameSessionHandler extends BaseAppState {
 
     private EntityData entityData;
     private BombAppState bombAppState;
+    private PhysicsCharacterMovementAppState movementAppState;
 
     private boolean gameStarted = false;
 
@@ -27,6 +28,7 @@ public class GameSessionHandler extends BaseAppState {
     public void initialize(AppStateManager stateManager) {
         this.entityData = stateManager.getState(EntityDataState.class).getEntityData();
         this.bombAppState = stateManager.getState(BombAppState.class);
+        this.movementAppState = stateManager.getState(PhysicsCharacterMovementAppState.class);
     }
 
     public boolean isGameStarted() {
@@ -65,16 +67,14 @@ public class GameSessionHandler extends BaseAppState {
             PositionComponent playerPos = entityData.getComponent(playerId,PositionComponent.class);
             if(playerPos != null){
                 PlayerComponent playCom = entityData.getComponent(playerId, PlayerComponent.class);
-                bombAppState.placeBomb(playerPos, entityData.getComponent(playerId, PlayerComponent.class).getBombStrength(), playCom, playerId);
+                bombAppState.placeBomb(playerPos, playCom.getBombStrength(), playCom, playerId);
             }
         }
 
         @Override
         public void applyMoveDirection(MoveDirection direction) {
-            if (!isGameStarted()) return;
-            WalkableComponent walkableComponent = entityData.getComponent(playerId, WalkableComponent.class);
-            if (walkableComponent.getMoveDirection() != direction) {
-                entityData.setComponent(playerId, new WalkableComponent(direction, walkableComponent.getSpeed()));
+            if (isGameStarted()) {
+                movementAppState.updateMoveDirection(playerId, direction);
             }
         }
     }
