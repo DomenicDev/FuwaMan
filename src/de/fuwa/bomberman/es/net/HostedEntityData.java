@@ -39,6 +39,7 @@ public class HostedEntityData {
         // send it
         connection.send(m);
 
+
         // put set into activeEntitySets
         activeEntitySets.put(setId, entitySet);
     }
@@ -55,8 +56,13 @@ public class HostedEntityData {
         for (Map.Entry<Integer, DefaultEntitySet> e : activeEntitySets.entrySet()) {
             int id = e.getKey();
             DefaultEntitySet set = e.getValue();
-            EntityChange[] changes = set.getChanges().toArray(new EntityChange[set.getChanges().size()]);
 
+            int size = set.getChanges().size();
+            if (size == 0) {
+                continue;
+            }
+
+            EntityChange[] changes = set.getChanges().toArray(new EntityChange[size]);
             // apply changes to clear the change buffer within the EntitySet
             if (set.applyChanges()) {
                 EntitySetChangeMessage m = new EntitySetChangeMessage(id, changes);

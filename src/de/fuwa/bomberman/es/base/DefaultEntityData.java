@@ -217,7 +217,23 @@ public class DefaultEntityData implements EntityData {
                             // the entity actually does have all required components of that combination
                             // so we inform the entity sets about the update
                            for (EntitySet entitySet : e.getValue()) {
-                               ((DefaultEntitySet)entitySet).onRelevantEntityChange(change);
+                               // in a networked situation
+                               // we have to check if the set does contain this entity already
+                               // if it does not, it might be missing one component (if the set has more than one)
+                               // this is why we check if the set already contains this entity
+                               // and then send the whole entity with its components
+                               if (!entitySet.containsId(change.getEntityId())) {
+                                   // it is not known by this set
+                                   // so we call onRelevantEntityChange() for each component
+                                   DefaultEntitySet set = (DefaultEntitySet) entitySet;
+                                   for (Class c : set.getComponentTypes()) {
+                                       EntityComponent comp = getComponent(entityId, c);
+                                       set.onRelevantEntityChange(new EntityChange(entityId, comp, comp.getClass()));
+                                   }
+                               } else {
+                                   // this set knows about the entity, so we can pass this change
+                                   ((DefaultEntitySet) entitySet).onRelevantEntityChange(change);
+                               }
                            }
                         }
                     }
