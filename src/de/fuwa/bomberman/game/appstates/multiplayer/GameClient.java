@@ -85,7 +85,7 @@ public class GameClient extends BaseAppState implements MessageListener<Client>,
 
         @Override
         public void placeBomb() {
-
+            client.send(new PlaceBombMessage());
         }
 
         @Override

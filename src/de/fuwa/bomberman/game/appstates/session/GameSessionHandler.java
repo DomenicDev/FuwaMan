@@ -62,7 +62,6 @@ public class GameSessionHandler extends BaseAppState {
         @Override
         public void placeBomb() {
             if (!isGameStarted()) return;
-            // ToDo: implement as soon as missing classes are implemented
             PositionComponent playerPos = entityData.getComponent(playerId,PositionComponent.class);
             if(playerPos != null){
                 PlayerComponent playCom = entityData.getComponent(playerId, PlayerComponent.class);
