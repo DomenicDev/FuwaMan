@@ -100,7 +100,7 @@ public class Client {
      *
      * @param m the message to send to the server
      */
-    public void send(AbstractMessage m) {
+    public synchronized void send(AbstractMessage m) {
         if (m != null && handler != null) {
             handler.send(m);
         }
@@ -115,7 +115,7 @@ public class Client {
             send(new DefaultCommandMessage(Command.Join));
         }
 
-        private void send(Serializable message) {
+        private synchronized void send(Serializable message) {
             try {
                 output.writeObject(message);
                 output.flush();

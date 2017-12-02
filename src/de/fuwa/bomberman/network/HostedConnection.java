@@ -49,7 +49,7 @@ public class HostedConnection {
      *
      * @param message the message to sent to the client
      */
-    public void send(AbstractMessage message) {
+    public synchronized void send(AbstractMessage message) {
         if (output == null) return;
         try {
             output.writeObject(message);
