@@ -13,9 +13,22 @@ import de.fuwa.bomberman.game.components.WalkableComponent;
 import de.fuwa.bomberman.game.enums.MoveDirection;
 import de.fuwa.bomberman.game.utils.GameUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+/**
+ * This app state handles the movement of the characters in the game.
+ * Therefore it computes the new location of each character and checks
+ * if the position would overlap with another collision shape.
+ * In the case it does not the position is applied.
+ * <p>
+ * We also implemented the special physics behavior of bombs in this app state.
+ * While a character does place a bomb and would collide with the bombs shape
+ * this collision is ignored until the character has moved out of the collision shape.
+ * But as soon as the player walked out it is not possible to walk into the bomb again.
+ */
 public class PhysicsCharacterMovementAppState extends BaseAppState {
 
     private EntitySet characters;
@@ -23,8 +36,9 @@ public class PhysicsCharacterMovementAppState extends BaseAppState {
     private EntitySet bombEntities;
     private EntityData entityData;
 
-    // this map stores the character id with the bomb id it is in right now
-    private Map<EntityId, EntityId> playerOnBomb = new HashMap<>();
+    // this map stores references to the bombs each character is in
+    // it's possible that a character is "within" several bomb collision shapes
+    private Map<EntityId, List<EntityId>> playerOnBomb = new HashMap<>();
 
     @Override
     public void initialize(AppStateManager stateManager) {
@@ -37,7 +51,16 @@ public class PhysicsCharacterMovementAppState extends BaseAppState {
     @Override
     public void update(float tpf) {
         physicalObjects.applyChanges();
-        characters.applyChanges();
+
+        if (characters.applyChanges()) {
+
+            // create a new list for the bombs a character is in
+            for (Entity character : characters.getAddedEntities()) {
+                playerOnBomb.put(character.getId(), new ArrayList<>());
+            }
+
+        }
+
         // we have to check if there are some characters
         // at the position of newly placed bombs
         // if so we have to ignore collisions
@@ -48,7 +71,7 @@ public class PhysicsCharacterMovementAppState extends BaseAppState {
                 for (Entity character : characters) {
                     PositionComponent charPos = character.get(PositionComponent.class);
                     if (GameUtils.inSameCell(charPos, bombPos)) {
-                        playerOnBomb.put(character.getId(), bomb.getId());
+                        playerOnBomb.get(character.getId()).add(bomb.getId());
                     }
                 }
             }
@@ -63,6 +86,8 @@ public class PhysicsCharacterMovementAppState extends BaseAppState {
 
             PositionComponent playerPos = character.get(PositionComponent.class);
             CollisionComponent playerCollisionShape = character.get(CollisionComponent.class);
+
+            System.out.println(playerPos);
 
             RectangleFloat r1 = new RectangleFloat();
             RectangleFloat r2 = new RectangleFloat();
@@ -104,11 +129,10 @@ public class PhysicsCharacterMovementAppState extends BaseAppState {
                     // if we collide we check if this character
                     // is still "in" a bomb
                     // if so, we have to ignore this collision
-                    if (playerOnBomb.containsKey(character.getId())) {
-                        if (playerOnBomb.get(character.getId()).equals(physicalObject.getId())) {
-                            continue;
-                        }
+                    if (playerOnBomb.get(character.getId()).contains(physicalObject.getId())) {
+                        continue;
                     }
+
                     // we collided so we do not do everything
                     // means we do not apply the new calculated position
                     collided = true;
@@ -117,15 +141,12 @@ public class PhysicsCharacterMovementAppState extends BaseAppState {
                     // in the case we did not collide
                     // and the player is still contained in
                     // the bomb list, we remove the character from the list
-                    if (playerOnBomb.containsKey(character.getId())) {
-                        if (playerOnBomb.get(character.getId()).equals(physicalObject.getId())) {
-                            playerOnBomb.remove(character.getId()); // remove it from the list
-                            collided = false; // just to make sure the value is set to false
-                            break; // we break out
-                        }
+                    if (playerOnBomb.get(character.getId()).contains(physicalObject.getId())) {
+                        playerOnBomb.get(character.getId()).remove(physicalObject.getId()); // remove it from the list
+                        collided = false; // just to make sure the value is set to false
+                        break; // we break out
                     }
                 }
-
             }
 
             if (!collided) {
@@ -133,9 +154,7 @@ public class PhysicsCharacterMovementAppState extends BaseAppState {
                 // so we apply the new calculated position
                 entityData.setComponent(character.getId(), newPos);
             }
-
         }
-
     }
 
     private PositionComponent computeNewPosition(PositionComponent pos, WalkableComponent walkComponent, float tpf) {
@@ -191,5 +210,11 @@ public class PhysicsCharacterMovementAppState extends BaseAppState {
         this.physicalObjects.close();
         this.physicalObjects.clear();
         this.physicalObjects = null;
+
+        this.bombEntities.close();
+        this.bombEntities.clear();
+        this.bombEntities = null;
+
+        this.playerOnBomb.clear();
     }
 }
