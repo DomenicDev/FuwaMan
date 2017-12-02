@@ -48,6 +48,15 @@ public class PhysicsCharacterMovementAppState extends BaseAppState {
         this.bombEntities = entityData.getEntities(PositionComponent.class, CollisionComponent.class, BombComponent.class);
     }
 
+    public void updateMoveDirection(EntityId entityId, MoveDirection moveDirection) {
+        if (characters.containsId(entityId)) {
+            WalkableComponent walkableComponent = entityData.getComponent(entityId, WalkableComponent.class);
+            if (walkableComponent != null && walkableComponent.getMoveDirection() != moveDirection) {
+                entityData.setComponent(entityId, new WalkableComponent(moveDirection, walkableComponent.getSpeed()));
+            }
+        }
+    }
+
     @Override
     public void update(float tpf) {
         physicalObjects.applyChanges();
