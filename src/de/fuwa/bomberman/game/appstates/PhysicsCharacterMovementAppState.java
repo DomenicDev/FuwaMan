@@ -106,7 +106,7 @@ public class PhysicsCharacterMovementAppState extends BaseAppState {
                     // if so, we have to ignore this collision
                     if (playerOnBomb.containsKey(character.getId())) {
                         if (playerOnBomb.get(character.getId()).equals(physicalObject.getId())) {
-                            break;
+                            continue;
                         }
                     }
                     // we collided so we do not do everything
