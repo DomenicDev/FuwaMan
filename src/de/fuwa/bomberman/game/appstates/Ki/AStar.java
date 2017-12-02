@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AStar {
-    static int MapSizeX = 11;
+    static int MapSizeX = 15;
     static int MapSizeY = 11;
     public static Path findPath(PositionComponent start, PositionComponent destination, EntityData entityData){
 
@@ -55,7 +55,7 @@ public class AStar {
                 return new Path();
             }
         }
-        return null;
+        return new Path();
     }
 
     private static Node findLowestFInOpen(List<Node> openList){
@@ -77,18 +77,14 @@ public class AStar {
         boolean done = false;
         while(!done){
             Node temp = curr.getPrevious();
+            if(temp == null) break;
 
             MoveDirection dir = MoveDirection.Idle;
-
-            System.out.println(temp.getPos().getX() + " " + temp.getPos().getY());
-            System.out.println(curr.getPos().getX() + " " + curr.getPos().getY());
 
             if(temp.getPos().getX() < curr.getPos().getX()) dir = MoveDirection.Right;
             else if(temp.getPos().getX() > curr.getPos().getX()) dir = MoveDirection.Left;
             else if(temp.getPos().getY() < curr.getPos().getY()) dir = MoveDirection.Down;
             else if(temp.getPos().getY() > curr.getPos().getY()) dir = MoveDirection.Up;
-            System.out.println(dir);
-            System.out.println(" ");
 
             path.addMove(new Move(curr.getPos(), dir));
             curr = temp;
