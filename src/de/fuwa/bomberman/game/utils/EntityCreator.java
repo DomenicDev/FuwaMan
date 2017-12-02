@@ -80,7 +80,7 @@ public class EntityCreator {
     public static EntityId createBomb(EntityData entityData, PositionComponent pos, int strength, EntityId creator){
         EntityId bombEntity = entityData.createEntity();
         entityData.setComponents(bombEntity,
-                pos,
+                new PositionComponent(pos.getX(), pos.getY()),
                 new BombComponent(2.5f, strength, creator),
                 new ModelComponent(ModelType.Bomb,false),
                 new CollisionComponent(0, 0, 1, 1, true),

@@ -25,6 +25,8 @@ import java.util.Map;
 
 public class GameServer extends BaseAppState implements ConnectionListener, MessageListener<HostedConnection> {
 
+    private static final int MIN_PLAYERS = 1; // JUST FOR TESTING --> GOING TO BE REMOVED LATER
+
     int playerCounter = 0;
     int readyCounter = 0;
     private AppStateManager stateManager;
@@ -97,7 +99,7 @@ public class GameServer extends BaseAppState implements ConnectionListener, Mess
             // to inform the client about the add we send the message back
             source.send(m);
 
-            if (++playerCounter >= 2) {
+            if (++playerCounter >= MIN_PLAYERS) {
                 mainGameAppState.setupGame(GameUtils.createComplexGameField(), Setting.Classic);
                 for (HostedConnection connection : server.getConnections()) {
                     this.hostedEntityDataMap.put(connection, new HostedEntityData(connection, (DefaultEntityData) stateManager.getState(EntityDataState.class).getEntityData()));
@@ -106,7 +108,7 @@ public class GameServer extends BaseAppState implements ConnectionListener, Mess
             }
         } else if (m instanceof ReadyForGameStartMessage) {
             readyCounter++;
-            if (readyCounter >= 2) {
+            if (readyCounter >= MIN_PLAYERS) {
                 System.out.println("start game");
                 mainGameAppState.startGame();
             }
@@ -130,6 +132,8 @@ public class GameServer extends BaseAppState implements ConnectionListener, Mess
         if (m instanceof ApplyMoveDirectionMessage) {
             ApplyMoveDirectionMessage am = (ApplyMoveDirectionMessage) m;
             getGameSession(source).applyMoveDirection(am.getMoveDirection());
+        } else if (m instanceof PlaceBombMessage) {
+            getGameSession(source).placeBomb();
         }
 
 
