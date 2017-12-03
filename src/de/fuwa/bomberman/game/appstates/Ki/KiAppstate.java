@@ -256,6 +256,7 @@ public class KiAppstate extends BaseAppState {
             KiAction kiAction = new KiAction(AStar.findPath(pos, destination, entityData, playermap, false, MapSizeX, MapSizeY), false, 0);
             if(kiAction.getPath().getMoves().size() > 0){
                 kiActions.put(entity.getId(), kiAction);
+                kidone.put(entity.getId(), false);
                 return true;
             }
         }
