@@ -55,7 +55,6 @@ public class ExplosionAppState extends BaseAppState {
             float timer = explosionComponent.getTimer();
             timer -= tpf;
             if (timer <= 0) {
-                System.out.println("Explosion-End");
                 entityData.removeEntity(explosion.getId());
             } else {
                 entityData.setComponents(explosion.getId(), new ExplosionComponent(timer));
