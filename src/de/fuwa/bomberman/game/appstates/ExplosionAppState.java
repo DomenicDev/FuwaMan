@@ -31,6 +31,7 @@ public class ExplosionAppState extends BaseAppState {
     @Override
     public void update(float tpf) {
         explosionEntities.applyChanges();
+        entitySet.applyChanges();
         for (Entity explosion : explosionEntities) {
 
             ExplosionComponent explosionComponent = explosion.get(ExplosionComponent.class);

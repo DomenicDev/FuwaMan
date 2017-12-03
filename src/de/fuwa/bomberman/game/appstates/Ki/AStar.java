@@ -12,11 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AStar {
-    static int MapSizeX = 15;
-    static int MapSizeY = 11;
-    public static Path findPath(PositionComponent start, PositionComponent destination, EntityData entityData){
+    public static Path findPath(PositionComponent start, PositionComponent destination, EntityData entityData, Tile[][] map, boolean ignoreDangers, int MapSizeX, int MapSizeY){
 
-        Node[][] nodes = createMap(entityData, destination);
+        Node[][] nodes = createMap(entityData, destination, map, ignoreDangers, MapSizeX, MapSizeY);
 
         List<Node> closedList = new ArrayList<>();
 
@@ -34,7 +32,7 @@ public class AStar {
                 return calcPath(nodes[(int)start.getX()][(int)start.getY()], current);
             }
 
-            List<Node> adjacentNodes = getAdjacent(current, nodes, closedList);
+            List<Node> adjacentNodes = getAdjacent(current, nodes, closedList, MapSizeX, MapSizeY);
 
             for(int i = 0; i < adjacentNodes.size(); i++){
                 Node currentAdj = adjacentNodes.get(i);
@@ -55,7 +53,7 @@ public class AStar {
                 return new Path();
             }
         }
-        return new Path();
+        return null;
     }
 
     private static Node findLowestFInOpen(List<Node> openList){
@@ -96,7 +94,7 @@ public class AStar {
         return path;
     }
 
-    private static List<Node> getAdjacent(Node node, Node nodes[][], List<Node> closedList){
+    private static List<Node> getAdjacent(Node node, Node nodes[][], List<Node> closedList, int MapSizeX, int MapSizeY){
         List<Node> adjacentNodes = new ArrayList<>();
 
         int x = (int)node.getPos().getX();
@@ -123,7 +121,7 @@ public class AStar {
         return adjacentNodes;
     }
 
-    private static Node[][] createMap(EntityData entityData, PositionComponent destination){
+    private static Node[][] createMap(EntityData entityData, PositionComponent destination, Tile[][] map, boolean ignoreDangers, int MapSizeX, int MapSizeY){
         Node[][] nodes = new Node[MapSizeX][MapSizeY];
 
         EntitySet blockingEntities = entityData.getEntities(PositionComponent.class, CollisionComponent.class);
@@ -134,12 +132,24 @@ public class AStar {
             }
         }
 
+        //Set all the not passable blocks, so that the player cant walk over them
         for(Entity entity : blockingEntities){
             PlayerComponent playCom = entityData.getComponent(entity.getId(), PlayerComponent.class);
             if(playCom == null){
                 PositionComponent posCom = entity.get(PositionComponent.class);
 
                 nodes[(int)posCom.getX()][(int)posCom.getY()].setWalkable(false);
+            }
+        }
+
+        //Should the Ki be able the walk over explosions or not
+        if(!ignoreDangers){
+            for(int x = 0; x < map.length; x++){
+                for(int y = 0; y < map[x].length; y++){
+                    if(map[x][y].isDanger()){
+                        nodes[x][y].setWalkable(false);
+                    }
+                }
             }
         }
         return nodes;
