@@ -440,7 +440,7 @@ public class KiAppstate extends BaseAppState {
 
     public Tile[][] createPlayerSpecMap(Entity player){
         // set if the tile is reachable and how many blocks could be destroyed if a bomb is placed on this tile trough recursion.
-        Tile[][] playerMap = map.clone();
+        Tile[][] playerMap = map;
         PositionComponent pos = player.get(PositionComponent.class);
         PlayerComponent playCom = player.get(PlayerComponent.class);
 
