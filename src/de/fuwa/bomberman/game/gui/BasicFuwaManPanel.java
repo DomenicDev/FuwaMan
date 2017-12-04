@@ -43,7 +43,6 @@ public class BasicFuwaManPanel extends JPanel {
         topPanel.add(titlePanel);
 
         this.centerPanel = new TransparentPanel();
-        this.centerPanel.setLayout(new GridLayout(1, 3)); // we only fill the center element later
         add(centerPanel, BorderLayout.CENTER);
 
         // add components
