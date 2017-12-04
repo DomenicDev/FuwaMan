@@ -1,6 +1,6 @@
 package de.fuwa.bomberman.tests;
 
-import de.fuwa.bomberman.game.gui.MainMenu;
+import de.fuwa.bomberman.game.gui.SingleplayerMenu;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,7 +15,7 @@ public class TestGui {
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         //    frame.add(new MainMenu());
-        frame.add(new MainMenu());
+        frame.add(new SingleplayerMenu());
         frame.setVisible(true);
 
     }

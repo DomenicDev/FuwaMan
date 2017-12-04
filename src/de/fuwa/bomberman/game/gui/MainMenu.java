@@ -5,6 +5,7 @@ import java.awt.*;
 
 public class MainMenu extends BasicFuwaManPanel {
 
+    @Override
     protected void addComponents() {
         JPanel buttonPanel = new TransparentPanel();
         GridLayout l = new GridLayout(7, 1);

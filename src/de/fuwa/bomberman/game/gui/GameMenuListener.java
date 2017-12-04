@@ -12,4 +12,8 @@ public interface GameMenuListener {
 
     void onClickExit();
 
+    void onClickStartSingleplayerGame();
+
+    void onClickReturnToMainMenu();
+
 }
