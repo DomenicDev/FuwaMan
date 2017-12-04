@@ -1,5 +1,7 @@
 package de.fuwa.bomberman.game.gui;
 
+import de.fuwa.bomberman.game.utils.GameOptions;
+
 public interface GameMenuListener {
 
     void onClickSingleplayer();
@@ -12,7 +14,7 @@ public interface GameMenuListener {
 
     void onClickExit();
 
-    void onClickStartSingleplayerGame();
+    void onClickStartSingleplayerGame(GameOptions gameOptions);
 
     void onClickReturnToMainMenu();
 

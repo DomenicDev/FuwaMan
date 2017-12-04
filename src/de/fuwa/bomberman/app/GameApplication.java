@@ -162,6 +162,10 @@ public abstract class GameApplication {
     public void destroy(){
         // stop game thread (main game loop)
         this.gameLoop.stopGameLoop();
+        // close gui if it is still active
+        if (gameContext.isVisible()) {
+            gameContext.dispose();
+        }
     }
 
 }

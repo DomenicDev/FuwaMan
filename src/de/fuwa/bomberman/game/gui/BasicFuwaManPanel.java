@@ -12,6 +12,7 @@ public class BasicFuwaManPanel extends JPanel {
     private static final String PATH = "assets/Textures/";
     private static BufferedImage backgroundImage;
     private static BufferedImage titleImage;
+    protected static GameMenuListener listener;
 
     static {
         try {
@@ -22,7 +23,6 @@ public class BasicFuwaManPanel extends JPanel {
         }
     }
 
-    protected GameMenuListener listener;
     protected JPanel centerPanel; // used for buttons
     private JPanel topPanel; // used for the title
 
@@ -49,8 +49,8 @@ public class BasicFuwaManPanel extends JPanel {
         addComponents();
     }
 
-    public void setListener(GameMenuListener listener) {
-        this.listener = listener;
+    public static void setListener(GameMenuListener listener) {
+        BasicFuwaManPanel.listener = listener;
     }
 
     protected void addComponents() {

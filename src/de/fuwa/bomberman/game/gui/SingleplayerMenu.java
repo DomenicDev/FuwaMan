@@ -1,6 +1,7 @@
 package de.fuwa.bomberman.game.gui;
 
 import de.fuwa.bomberman.game.enums.Setting;
+import de.fuwa.bomberman.game.utils.GameOptions;
 
 import javax.swing.*;
 import java.awt.*;
@@ -46,7 +47,7 @@ public class SingleplayerMenu extends BasicFuwaManPanel {
 
         // start and return button
         JButton startButton = new JButton("Start Game");
-        startButton.addActionListener(e -> listener.onClickStartSingleplayerGame());
+        startButton.addActionListener(e -> listener.onClickStartSingleplayerGame(new GameOptions(settingsBox.getItemAt(settingsBox.getSelectedIndex()), 11, 11, numberOfEnemiesBox.getItemAt(numberOfEnemiesBox.getSelectedIndex()))));
         contentPanel.add(startButton);
 
         JButton returnButton = new JButton("Return");
