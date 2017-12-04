@@ -1,69 +1,40 @@
 package de.fuwa.bomberman.game.gui;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
-public class MainMenu extends JPanel {
+public class MainMenu extends BasicFuwaManPanel {
 
-    private BufferedImage leftImage;
-    private BufferedImage mainImage;
-    private BufferedImage rightImage;
+    protected void addComponents() {
+        JPanel buttonPanel = new TransparentPanel();
+        GridLayout l = new GridLayout(7, 1);
+        l.setVgap(25);
+        buttonPanel.setLayout(l);
+        this.centerPanel.add(new TransparentPanel());
+        this.centerPanel.add(buttonPanel);
+        this.centerPanel.add(new TransparentPanel());
 
-    private JPanel mainPanel, leftPanel, rightPanel;
+        buttonPanel.add(new TransparentPanel()); // empty space
 
-    public MainMenu() {
-        // first we want to load the images
-        loadImages();
+        JButton singleplayer = new JButton("Singleplayer");
+        singleplayer.addActionListener(e -> listener.onClickSingleplayer());
+        buttonPanel.add(singleplayer);
 
-        // after that we create our panels
-        createPanels();
+        JButton multiplayer = new JButton("Multiplayer");
+        multiplayer.addActionListener(e -> listener.onClickMultiplayer());
+        buttonPanel.add(multiplayer);
 
-        // create layout
-        setLayout(new BorderLayout());
+        JButton options = new JButton("Settings");
+        options.addActionListener(e -> listener.onClickOptions());
+        buttonPanel.add(options);
 
-        // add components
-        addComponents();
+        JButton credits = new JButton("Credits");
+        credits.addActionListener(e -> listener.onClickCredits());
+        buttonPanel.add(credits);
+
+        JButton close = new JButton("Exit Game");
+        close.addActionListener(e -> listener.onClickExit());
+        buttonPanel.add(close);
     }
 
-    private void loadImages() {
-        String path = "assets/Textures/";
-        try {
-            this.leftImage = ImageIO.read(new File(path + "Menu_left_001.png"));
-            this.mainImage = ImageIO.read(new File(path + "MENU_001.png"));
-            this.rightImage = ImageIO.read(new File(path + "Menu_right_001.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void createPanels() {
-        this.mainPanel = new MainMenuPanel(mainImage);
-        this.leftPanel = new MainMenuPanel(leftImage);
-        this.rightPanel = new MainMenuPanel(rightImage);
-    }
-
-    private void addComponents() {
-        add(mainPanel, BorderLayout.CENTER);
-        add(rightPanel, BorderLayout.WEST);
-        add(leftPanel, BorderLayout.EAST);
-    }
-
-    private class MainMenuPanel extends JPanel {
-
-        private BufferedImage image;
-
-        private MainMenuPanel(BufferedImage image) {
-            this.image = image;
-        }
-
-        @Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            g.drawImage(image, 0, 0, this);
-        }
-    }
 }

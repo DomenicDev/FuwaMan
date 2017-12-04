@@ -14,8 +14,8 @@ public class TestGui {
         frame.setSize(800, 800);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
+        //    frame.add(new MainMenu());
         frame.add(new MainMenu());
-
         frame.setVisible(true);
 
     }
