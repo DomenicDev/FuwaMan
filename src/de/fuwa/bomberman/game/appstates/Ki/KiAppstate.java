@@ -62,7 +62,6 @@ public class KiAppstate extends BaseAppState {
         playerOnBomb = physicsCharacterMovementAppState.getPlayerOnBomb();
 
         for(Entity entity : entitySet){
-            System.out.println("HIER: " + Thread.currentThread());
             kiWaitTimes.put(entity.getId(), 0.f);
             kidone.put(entity.getId(), false);
         }
@@ -83,7 +82,6 @@ public class KiAppstate extends BaseAppState {
             boolean force = false;
             KiAction kiAction = kiActions.get(entity.getId());
 
-            System.out.println(Thread.currentThread());
             kiWaitTimes.put(entity.getId(), kiWaitTimes.get(entity.getId()) - tpf);
             if(inDanger(entity, playermap)){
                 if(kidone.get(entity.getId())){

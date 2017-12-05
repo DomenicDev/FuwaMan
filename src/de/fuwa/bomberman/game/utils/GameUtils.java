@@ -21,7 +21,7 @@ public class GameUtils {
     }
 
     public static GameField createSimpleGameField() {
-        int width = 15;
+        int width = 11;
         int height = 11;
 
         GameField gameField = new GameField(width, height);
@@ -38,7 +38,7 @@ public class GameUtils {
 
     public static GameField createComplexGameField(){
         int width = 20;
-        int height = 15;
+        int height = 3;
         width = Math.max(11,width);
         height = Math.max(11,height);
         if(width%2==0)
