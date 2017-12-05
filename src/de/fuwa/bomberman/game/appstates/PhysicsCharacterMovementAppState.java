@@ -40,6 +40,8 @@ public class PhysicsCharacterMovementAppState extends BaseAppState {
     // it's possible that a character is "within" several bomb collision shapes
     private Map<EntityId, List<EntityId>> playerOnBomb = new HashMap<>();
 
+    public Map<EntityId, List<EntityId>> getPlayerOnBomb(){ return playerOnBomb;}
+
     @Override
     public void initialize(AppStateManager stateManager) {
         this.entityData = stateManager.getState(EntityDataState.class).getEntityData();

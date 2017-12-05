@@ -4,7 +4,7 @@ import de.fuwa.bomberman.es.EntityId;
 import de.fuwa.bomberman.game.components.BlockComponent;
 import de.fuwa.bomberman.game.components.PositionComponent;
 
-public class Tile {
+public class Tile{
     private PositionComponent pos;
     private boolean reachable;
     private boolean walkable;

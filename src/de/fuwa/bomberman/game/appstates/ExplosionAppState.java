@@ -31,6 +31,7 @@ public class ExplosionAppState extends BaseAppState {
     @Override
     public void update(float tpf) {
         explosionEntities.applyChanges();
+        entitySet.applyChanges();
         for (Entity explosion : explosionEntities) {
 
             ExplosionComponent explosionComponent = explosion.get(ExplosionComponent.class);
@@ -54,7 +55,6 @@ public class ExplosionAppState extends BaseAppState {
             float timer = explosionComponent.getTimer();
             timer -= tpf;
             if (timer <= 0) {
-                System.out.println("Explosion-End");
                 entityData.removeEntity(explosion.getId());
             } else {
                 entityData.setComponents(explosion.getId(), new ExplosionComponent(timer));
