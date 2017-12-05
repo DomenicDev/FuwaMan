@@ -63,36 +63,40 @@ public class TestGui extends GameApplication {
 
         @Override
         public void onClickExit() {
-            destroy();
+            addCallable(() -> destroy());
         }
 
         @Override
         public void onClickStartSingleplayerGame(GameOptions gameOptions) {
-            //       GameField gameField = GameUtils.createSimpleGameField(); // Todo: use values
-            //         getGameContext().createAndDisplayGameField(gameField.getSizeX(), gameField.getSizeY());
+            getStateManager().getGameApplication().addCallable(() -> {
+                //     System.out.println(Thread.currentThread());
+                //       GameField gameField = GameUtils.createSimpleGameField(); // Todo: use values
+                //         getGameContext().createAndDisplayGameField(gameField.getSizeX(), gameField.getSizeY());
 
-            mainGameAppState.addGameStateListener(getStateManager().getState(GameStateHandler.class));
+                mainGameAppState.addGameStateListener(getStateManager().getState(GameStateHandler.class));
 
-            // add player
-            mainGameAppState.addPlayer(player);
+                // add player
+                mainGameAppState.addPlayer(player);
 
-            // add kis
-            for (int i = 0; i < gameOptions.getNumberOfKis(); i++) {
-                mainGameAppState.addPlayer(new Player("Ki#" + i, true));
-            }
+                // add kis
+                for (int i = 0; i < gameOptions.getNumberOfKis(); i++) {
+                    mainGameAppState.addPlayer(new Player("Ki#" + i, true));
+                }
 
-            mainGameAppState.setupGame(GameUtils.createComplexGameField(), gameOptions.getSetting());
+                mainGameAppState.setupGame(GameUtils.createComplexGameField(), gameOptions.getSetting());
 
-            GameSession gameSession = mainGameAppState.getGameSession(player);
-            getStateManager().attachState(new GameSessionAppState(gameSession));
+                GameSession gameSession = mainGameAppState.getGameSession(player);
+                getStateManager().attachState(new GameSessionAppState(gameSession));
 
-            mainGameAppState.startGame();
+                mainGameAppState.startGame();
+            });
+
 
         }
 
         @Override
         public void onClickReturnToMainMenu() {
-            getGameContext().setScreen(mainMenu);
+            addCallable(() -> getGameContext().setScreen(mainMenu));
         }
     }
 }

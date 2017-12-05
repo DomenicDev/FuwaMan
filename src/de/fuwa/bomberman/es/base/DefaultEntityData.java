@@ -109,7 +109,7 @@ public class DefaultEntityData implements EntityData {
         entityDataBase.get(entityId).clear();
     }
 
-    protected void fireEntityChange(EntityChange entityChange) {
+    protected synchronized void fireEntityChange(EntityChange entityChange) {
         for (EntityChangeListener l : entityChangeListeners) {
             l.onEntityChange(entityChange);
         }

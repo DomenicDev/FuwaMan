@@ -139,10 +139,10 @@ public class DefaultEntitySet extends AbstractSet<Entity> implements EntitySet {
         }
     }
 
-    protected void onRelevantEntityChange(EntityChange change) {
+    protected synchronized void onRelevantEntityChange(EntityChange change) {
         EntityId changedEntityId = change.getEntityId();
         if (changes.get(changedEntityId) == null) {
-            this.changes.put(changedEntityId, new HashMap<>());
+            this.changes.put(changedEntityId, new ConcurrentHashMap<>());
         }
         this.changes.get(changedEntityId).put(change.getComponentClass(), change);
     }

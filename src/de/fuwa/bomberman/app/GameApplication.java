@@ -3,6 +3,8 @@ package de.fuwa.bomberman.app;
 import de.fuwa.bomberman.app.gui.GameContextFrame;
 import de.fuwa.bomberman.app.gui.GameContextListener;
 
+import java.util.concurrent.ConcurrentLinkedQueue;
+
 /**
  * The GameApplication is the heart of our application.
  * Here we initialize and run our game thread, create the gui context
@@ -18,6 +20,8 @@ public abstract class GameApplication {
     private GameContextFrame gameContext;
     private AppSettings appSettings;
     private GameLoop gameLoop;
+
+    private ConcurrentLinkedQueue<Callable> callables = new ConcurrentLinkedQueue<>();
 
     /**
      * This has to be implement by the subclass.
@@ -60,6 +64,10 @@ public abstract class GameApplication {
         gameThread.start();
     }
 
+    public void addCallable(Callable c) {
+        this.callables.add(c);
+    }
+
 
     /**
      * A basic game loop implementation.
@@ -80,7 +88,7 @@ public abstract class GameApplication {
         }
 
         @Override
-        public void run() {
+        public synchronized void run() {
             // active is a flag which can be set to false which will make
             // this thread being stopped
             while (active) {
@@ -105,6 +113,12 @@ public abstract class GameApplication {
                 for (AppState appState : getStateManager().getAppStates()) {
                     appState.render();
                 }
+
+                // execute callables
+                for (Callable c : callables) {
+                    c.run();
+                }
+                callables.clear();
 
                 // update gui
                 gameContext.updateGui();
