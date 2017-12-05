@@ -4,6 +4,7 @@ import de.fuwa.bomberman.es.*;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentMap;
 
 public class DefaultEntityData implements EntityData {
@@ -14,7 +15,7 @@ public class DefaultEntityData implements EntityData {
 
     private EntitySetChangeListener entitySetHandler = new EntitySetChangeListener();
 
-    private List<EntityChangeListener> entityChangeListeners = new ArrayList<>();
+    private ConcurrentLinkedQueue<EntityChangeListener> entityChangeListeners = new ConcurrentLinkedQueue<>();
 
     public DefaultEntityData() {
         addEntityChangeListener(entitySetHandler);
@@ -108,7 +109,7 @@ public class DefaultEntityData implements EntityData {
         entityDataBase.get(entityId).clear();
     }
 
-    protected void fireEntityChange(EntityChange entityChange) {
+    protected synchronized void fireEntityChange(EntityChange entityChange) {
         for (EntityChangeListener l : entityChangeListeners) {
             l.onEntityChange(entityChange);
         }
@@ -130,7 +131,7 @@ public class DefaultEntityData implements EntityData {
      */
     private class EntitySetChangeListener implements EntityChangeListener {
 
-        private Map<ComponentCombination, List<EntitySet>> entitySetsMap = new ConcurrentHashMap<>();
+        private Map<ComponentCombination, ConcurrentLinkedQueue<EntitySet>> entitySetsMap = new ConcurrentHashMap<>();
 
         /**
          * The specified EntitySet will now receive updates.
@@ -140,7 +141,7 @@ public class DefaultEntityData implements EntityData {
 
             boolean componentCombinationDoesExist = false;
 
-            for (Map.Entry<ComponentCombination, List<EntitySet>> e : entitySetsMap.entrySet()) {
+            for (Map.Entry<ComponentCombination, ConcurrentLinkedQueue<EntitySet>> e : entitySetsMap.entrySet()) {
                 if (e.getKey().hasSameTypes(entitySet.getComponentTypes())) {
                     e.getValue().add(entitySet);
                     componentCombinationDoesExist = true;
@@ -150,7 +151,7 @@ public class DefaultEntityData implements EntityData {
 
             if (!componentCombinationDoesExist) {
                 ComponentCombination combination = new ComponentCombination(entitySet.getComponentTypes());
-                List<EntitySet> list = new ArrayList<>();
+                ConcurrentLinkedQueue<EntitySet> list = new ConcurrentLinkedQueue<>();
                 list.add(entitySet);
                 entitySetsMap.put(combination, list);
             }
@@ -158,7 +159,7 @@ public class DefaultEntityData implements EntityData {
 
         private void releaseEntitySet(EntitySet entitySet) {
             if (entitySet == null) return;
-            for (List<EntitySet> list : entitySetsMap.values()) {
+            for (ConcurrentLinkedQueue<EntitySet> list : entitySetsMap.values()) {
                 for (EntitySet set : list) {
                     if (entitySet.equals(set)) {
                         list.remove(set);
@@ -174,7 +175,7 @@ public class DefaultEntityData implements EntityData {
             Class componentType = change.getComponentClass();
             EntityComponent component = change.getComponent();
 
-            for (Map.Entry<ComponentCombination, List<EntitySet>> e : entitySetsMap.entrySet()) {
+            for (Map.Entry<ComponentCombination, ConcurrentLinkedQueue<EntitySet>> e : entitySetsMap.entrySet()) {
                 ComponentCombination combination = e.getKey();
 
                 // we check if that combination contains the changed component type

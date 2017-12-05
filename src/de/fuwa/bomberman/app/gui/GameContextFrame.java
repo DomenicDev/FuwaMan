@@ -49,6 +49,8 @@ public class GameContextFrame extends JFrame {
 
         pack();
 
+        setFocusable(true);
+
         setVisible(true);
     }
 
@@ -57,9 +59,20 @@ public class GameContextFrame extends JFrame {
         repaint();
     }
 
+    public void setScreen(JPanel screen) {
+        clearContent();
+        gamePanel.add(screen);
+        gamePanel.setFocusable(true);
+    }
+
+    private void clearContent() {
+        this.gamePanel.removeAll();
+    }
+
     public VisualGameField createAndDisplayGameField(int sizeX, int sizeY) {
         VisualGameField visualGameField = new VisualGameField(sizeX, sizeY);
         visualGameField.setBackground(Color.CYAN);
+        clearContent();
         this.gamePanel.add(visualGameField);
         this.visualGameField = visualGameField;
         return visualGameField;

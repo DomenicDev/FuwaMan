@@ -30,7 +30,7 @@ public class AppStateManager {
         }
     }
 
-    void addStates() {
+    synchronized void addStates() {
         for (AppState appState : appStatesToAdd) {
             if (applicationStates.contains(appState)) {
                 continue;
@@ -45,7 +45,7 @@ public class AppStateManager {
         toInitialize.clear();
     }
 
-    void removeStates() {
+    synchronized void removeStates() {
         for (AppState appState : appStatesToRemove) {
             if (applicationStates.contains(appState)) {
                 applicationStates.remove(appState);

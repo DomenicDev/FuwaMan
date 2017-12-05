@@ -8,21 +8,19 @@ import de.fuwa.bomberman.es.EntityId;
 import de.fuwa.bomberman.es.EntitySet;
 import de.fuwa.bomberman.game.appstates.EntityDataState;
 import de.fuwa.bomberman.game.appstates.LogicalGameFieldAppState;
-import de.fuwa.bomberman.game.appstates.MainGameAppState;
 import de.fuwa.bomberman.game.appstates.PhysicsCharacterMovementAppState;
-import de.fuwa.bomberman.game.appstates.session.GameSessionAppState;
 import de.fuwa.bomberman.game.appstates.session.MultipleGameSessionAppState;
 import de.fuwa.bomberman.game.components.*;
 import de.fuwa.bomberman.game.enums.BlockType;
 import de.fuwa.bomberman.game.enums.ExplosionImpactType;
-import de.fuwa.bomberman.game.enums.KiActionType;
 import de.fuwa.bomberman.game.enums.MoveDirection;
 import de.fuwa.bomberman.game.session.GameSession;
-import de.fuwa.bomberman.game.utils.EntityCreator;
 import de.fuwa.bomberman.game.utils.GameUtils;
 
-import java.lang.reflect.Array;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class KiAppstate extends BaseAppState {
@@ -64,6 +62,7 @@ public class KiAppstate extends BaseAppState {
         playerOnBomb = physicsCharacterMovementAppState.getPlayerOnBomb();
 
         for(Entity entity : entitySet){
+            System.out.println("HIER: " + Thread.currentThread());
             kiWaitTimes.put(entity.getId(), 0.f);
             kidone.put(entity.getId(), false);
         }
@@ -84,6 +83,7 @@ public class KiAppstate extends BaseAppState {
             boolean force = false;
             KiAction kiAction = kiActions.get(entity.getId());
 
+            System.out.println(Thread.currentThread());
             kiWaitTimes.put(entity.getId(), kiWaitTimes.get(entity.getId()) - tpf);
             if(inDanger(entity, playermap)){
                 if(kidone.get(entity.getId())){
