@@ -104,11 +104,9 @@ public class FuwaManAppState extends BaseAppState implements GameMenuListener {
 
     @Override
     public void onClickConnectToGame(String ipAddress) {
-        System.out.println("hier");
         gameApplication.addCallable(new Callable() {
             @Override
             public void run() {
-                System.out.println(2d);
                 GameClient client = new GameClient();
                 if (client.connect(ipAddress, GameConstants.PORT)) {
                     GameStateHandler stateHandler = new GameStateHandler();

@@ -27,6 +27,7 @@ public class MultiplayerConnectMenu extends BasicFuwaManPanel {
         centerContentPanel.add(new JLabel("Host IP Address:"));
 
         JTextField ipTextField = new JTextField();
+        ipTextField.setText("localhost");
         ipTextField.setPreferredSize(new Dimension(100, 30));
         centerContentPanel.add(ipTextField);
 

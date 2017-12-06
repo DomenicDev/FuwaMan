@@ -61,7 +61,7 @@ public abstract class GameApplication {
         gameThread.start();
     }
 
-    public void addCallable(Callable c) {
+    public synchronized void addCallable(Callable c) {
         this.callables.add(c);
     }
 
@@ -133,10 +133,10 @@ public abstract class GameApplication {
                 }
 
                 // execute callables
-                for (Callable c : callables) {
+                Callable c;
+                while ((c = callables.poll()) != null) {
                     c.run();
                 }
-                callables.clear();
 
                 // update gui
                 gameContext.updateGui();
