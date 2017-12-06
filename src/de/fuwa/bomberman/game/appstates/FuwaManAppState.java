@@ -43,6 +43,7 @@ public class FuwaManAppState extends BaseAppState implements GameMenuListener {
     private void detachOldGame() {
         if (game != null) {
             stateManager.detachState(game);
+            this.game = null;
         }
     }
 
@@ -85,6 +86,15 @@ public class FuwaManAppState extends BaseAppState implements GameMenuListener {
     @Override
     public void onClickExit() {
         gameApplication.addCallable(() -> this.gameApplication.destroy());
+    }
+
+    @Override
+    public void onClickCloseGame() {
+        gameApplication.addCallable(() -> {
+            this.context.setScreen(mainMenu);
+            this.game.closeGame();
+            detachOldGame();
+        });
     }
 
     @Override

@@ -8,4 +8,6 @@ public interface GameStateListener {
 
     void onStartGame();
 
+    void onCloseGame();
+
 }

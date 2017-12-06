@@ -67,6 +67,11 @@ public class TestGui extends GameApplication {
         }
 
         @Override
+        public void onClickCloseGame() {
+
+        }
+
+        @Override
         public void onClickStartGame(GameOptions gameOptions) {
             getStateManager().getGameApplication().addCallable(() -> {
 

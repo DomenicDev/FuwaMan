@@ -43,4 +43,11 @@ public class GameStateHandler extends BaseAppState implements GameStateListener 
         // finally enable input --> will call game session methods
         GameInitializer.initInputAppStates(stateManager);
     }
+
+    @Override
+    public void onCloseGame() {
+        stateManager.detachState(stateManager.getState(SettingsAppState.class));
+        GameInitializer.removeVisualAndSoundAppStates(stateManager);
+        GameInitializer.removeInputAppStates(stateManager);
+    }
 }

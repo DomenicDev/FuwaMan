@@ -14,6 +14,8 @@ public interface GameMenuListener {
 
     void onClickExit();
 
+    void onClickCloseGame();
+
     void onClickStartGame(GameOptions gameOptions);
 
     void onClickReturnToMainMenu();

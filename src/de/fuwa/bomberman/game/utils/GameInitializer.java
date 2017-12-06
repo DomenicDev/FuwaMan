@@ -25,9 +25,10 @@ public class GameInitializer {
 
     public static void removeGameLogicAppStates(AppStateManager stateManager) {
         stateManager.detachState(stateManager.getState(PhysicsCharacterMovementAppState.class));
-        stateManager.detachState(stateManager.getState(BombAppState.class));
         stateManager.detachState(stateManager.getState(PowerUpAppState.class));
         stateManager.detachState(stateManager.getState(KiAppstate.class));
+        stateManager.detachState(stateManager.getState(ExplosionAppState.class));
+        stateManager.detachState(stateManager.getState(BombAppState.class));
     }
 
     /**
@@ -43,8 +44,20 @@ public class GameInitializer {
         stateManager.attachState(new ExplosionSoundAppState());
     }
 
+    public static void removeVisualAndSoundAppStates(AppStateManager stateManager) {
+        stateManager.detachState(stateManager.getState(VisualGameFieldAppState.class));
+        stateManager.detachState(stateManager.getState(VisualAppState.class));
+        stateManager.detachState(stateManager.getState(VisualPlayerAppState.class));
+
+        stateManager.detachState(stateManager.getState(ExplosionSoundAppState.class));
+    }
+
     public static void initInputAppStates(AppStateManager stateManager) {
         stateManager.attachState(new InputAppState());
+    }
+
+    public static void removeInputAppStates(AppStateManager stateManager) {
+        stateManager.detachState(stateManager.getState(InputAppState.class));
     }
 
     public static void initClientAppStates(AppStateManager stateManager) {

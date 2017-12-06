@@ -86,6 +86,8 @@ public class GameClient extends BaseAppState implements MessageListener<Client>,
         } else if (m instanceof OnGameStartMessage) {
             stateManager.getGameApplication().addCallable(() -> gameStateListener.onStartGame());
 
+        } else if (m instanceof OnCloseGameMessage) {
+            stateManager.getGameApplication().addCallable(() -> gameStateListener.onCloseGame());
         }
     }
 

@@ -162,5 +162,10 @@ public class GameServer extends BaseAppState implements ConnectionListener, Mess
         public void onStartGame() {
             sendToAllPlayers(new OnGameStartMessage());
         }
+
+        @Override
+        public void onCloseGame() {
+            sendToAllPlayers(new OnCloseGameMessage());
+        }
     }
 }

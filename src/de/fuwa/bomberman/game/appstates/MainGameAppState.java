@@ -86,10 +86,7 @@ public class MainGameAppState extends BaseAppState {
 
     public void removePlayer(Player player) {
         if (players.remove(player)) {
-            // Todo: correct the logic of this method
-            EntityId playerId = playerEntityIdMap.remove(player);
-            gameSessionAppState.removeGameSession(playerId);
-            entityData.removeEntity(playerId);
+
         }
     }
 
@@ -161,6 +158,12 @@ public class MainGameAppState extends BaseAppState {
         }
     }
 
+    public void closeGame() {
+        for (GameStateListener l : gameStateListeners) {
+            l.onCloseGame();
+        }
+    }
+
     private void createEntitiesForGameField(EntityData entityData, GameField gameField) {
         for (int y = 0; y < gameField.getSizeY(); y++) {
             for (int x = 0; x < gameField.getSizeX(); x++) {
@@ -210,6 +213,7 @@ public class MainGameAppState extends BaseAppState {
         stateManager.detachState(gameSessionHandler);
         stateManager.detachState(entityDataState);
         stateManager.detachState(stateManager.getState(LogicalGameFieldAppState.class));
+        stateManager.detachState(gameSessionAppState);
         GameInitializer.removeGameLogicAppStates(stateManager);
     }
 }

@@ -47,6 +47,7 @@ public class SingleplayerGame extends AbstractGame {
 
     @Override
     public void onCloseGame() {
+
     }
 
     @Override

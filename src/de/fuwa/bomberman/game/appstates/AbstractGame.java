@@ -11,6 +11,7 @@ public abstract class AbstractGame extends BaseAppState {
     protected MainGameAppState mainGameAppState;
     protected GameStateHandler gameStateHandler;
 
+
     @Override
     public void initialize(AppStateManager stateManager) {
         this.stateManager = stateManager;
@@ -33,6 +34,7 @@ public abstract class AbstractGame extends BaseAppState {
     protected abstract void onStartGame(GameOptions gameOptions);
 
     public void closeGame() {
+        mainGameAppState.closeGame();
         stateManager.detachState(mainGameAppState);
         stateManager.detachState(gameStateHandler);
 

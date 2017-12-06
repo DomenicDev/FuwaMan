@@ -483,4 +483,29 @@ public class KiAppstate extends BaseAppState {
             setIsReachableAndDestroyableBlocksFromThisPos(x, y-1, x, y, map, strenth);
         }
     }
+
+    @Override
+    public void cleanup() {
+        this.entitySet.close();
+        this.entitySet.clear();
+        this.entitySet = null;
+
+        this.entities.close();
+        this.entities.clear();
+        this.entities = null;
+
+        this.bombs.close();
+        this.bombs.clear();
+        this.bombs = null;
+
+        this.explosions.close();
+        this.explosions.clear();
+        this.explosions = null;
+
+        this.kiActions.clear();
+        this.kiWaitTimes.clear();
+        this.kidone.clear();
+
+        this.playerOnBomb.clear();
+    }
 }

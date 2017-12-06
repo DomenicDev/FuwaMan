@@ -87,5 +87,6 @@ public class InputAppState extends BaseAppState implements KeyListener {
     @Override
     public void cleanup() {
         this.frame.removeKeyListener(this);
+        this.gameSession = null;
     }
 }
