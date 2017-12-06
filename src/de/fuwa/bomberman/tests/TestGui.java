@@ -3,16 +3,16 @@ package de.fuwa.bomberman.tests;
 import de.fuwa.bomberman.app.AppSettings;
 import de.fuwa.bomberman.app.GameApplication;
 import de.fuwa.bomberman.game.appstates.MainGameAppState;
+import de.fuwa.bomberman.game.appstates.multiplayer.GameClient;
 import de.fuwa.bomberman.game.appstates.session.GameSessionAppState;
 import de.fuwa.bomberman.game.appstates.state.GameStateHandler;
-import de.fuwa.bomberman.game.gui.BasicFuwaManPanel;
-import de.fuwa.bomberman.game.gui.GameMenuListener;
-import de.fuwa.bomberman.game.gui.MainMenu;
-import de.fuwa.bomberman.game.gui.SingleplayerMenu;
+import de.fuwa.bomberman.game.gui.*;
 import de.fuwa.bomberman.game.session.GameSession;
+import de.fuwa.bomberman.game.utils.GameConstants;
 import de.fuwa.bomberman.game.utils.GameOptions;
-import de.fuwa.bomberman.game.utils.GameUtils;
 import de.fuwa.bomberman.game.utils.Player;
+
+import javax.swing.*;
 
 public class TestGui extends GameApplication {
 
@@ -20,6 +20,7 @@ public class TestGui extends GameApplication {
 
     private MainMenu mainMenu = new MainMenu();
     private SingleplayerMenu singleplayerMenu = new SingleplayerMenu();
+    private MultiplayerConnectMenu multiplayerConnectMenu = new MultiplayerConnectMenu();
 
     private Player player = new Player("Domenic");
 
@@ -31,8 +32,7 @@ public class TestGui extends GameApplication {
 
     @Override
     public void initGame() {
-        getStateManager().attachState(mainGameAppState);
-        getStateManager().attachState(new GameStateHandler());
+
 
         // set listener
         BasicFuwaManPanel.setListener(new GameMenuHandler());
@@ -48,7 +48,7 @@ public class TestGui extends GameApplication {
 
         @Override
         public void onClickMultiplayer() {
-
+            getGameContext().setScreen(multiplayerConnectMenu);
         }
 
         @Override
@@ -67,13 +67,19 @@ public class TestGui extends GameApplication {
         }
 
         @Override
-        public void onClickStartSingleplayerGame(GameOptions gameOptions) {
+        public void onClickStartGame(GameOptions gameOptions) {
             getStateManager().getGameApplication().addCallable(() -> {
+
+                getStateManager().attachState(mainGameAppState);
+
+                GameStateHandler gameStateHandler = new GameStateHandler();
+                getStateManager().attachState(gameStateHandler);
+
                 //     System.out.println(Thread.currentThread());
                 //       GameField gameField = GameUtils.createSimpleGameField(); // Todo: use values
                 //         getGameContext().createAndDisplayGameField(gameField.getSizeX(), gameField.getSizeY());
 
-                mainGameAppState.addGameStateListener(getStateManager().getState(GameStateHandler.class));
+                mainGameAppState.addGameStateListener(gameStateHandler);
 
                 // add player
                 mainGameAppState.addPlayer(player);
@@ -83,7 +89,7 @@ public class TestGui extends GameApplication {
                     mainGameAppState.addPlayer(new Player("Ki#" + i, true));
                 }
 
-                mainGameAppState.setupGame(GameUtils.createComplexGameField(), gameOptions.getSetting());
+                //      mainGameAppState.setupGame(GameUtils.createComplexGameField(), gameOptions.getSetting());
 
                 GameSession gameSession = mainGameAppState.getGameSession(player);
                 getStateManager().attachState(new GameSessionAppState(gameSession));
@@ -97,6 +103,27 @@ public class TestGui extends GameApplication {
         @Override
         public void onClickReturnToMainMenu() {
             addCallable(() -> getGameContext().setScreen(mainMenu));
+        }
+
+        @Override
+        public void onClickConnectToGame(String ipAddress) {
+            addCallable(() -> {
+                GameClient client = new GameClient();
+                if (client.connect(ipAddress, GameConstants.PORT)) {
+                    GameStateHandler stateHandler = new GameStateHandler();
+                    getStateManager().attachState(stateHandler);
+                    client.setGameStateListener(stateHandler);
+                    getStateManager().attachState(client);
+                    client.start();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Could not connect to this address!");
+                }
+            });
+        }
+
+        @Override
+        public void onClickOpenConnectScreen() {
+
         }
     }
 }

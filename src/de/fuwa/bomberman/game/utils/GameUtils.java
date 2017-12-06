@@ -2,6 +2,7 @@ package de.fuwa.bomberman.game.utils;
 
 import de.fuwa.bomberman.game.components.PositionComponent;
 import de.fuwa.bomberman.game.enums.BlockType;
+import de.fuwa.bomberman.game.enums.Setting;
 
 public class GameUtils {
 
@@ -67,5 +68,9 @@ public class GameUtils {
         int x = Math.round(pos.getX());
         int y = Math.round(pos.getY());
         return new PositionComponent(x,y);
+    }
+
+    public static GameOptions getTestGameOptions() {
+        return new GameOptions(Setting.Classic, GameUtils.createComplexGameField(), 1);
     }
 }

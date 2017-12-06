@@ -9,13 +9,9 @@ import de.fuwa.bomberman.game.appstates.session.GameSessionHandler;
 import de.fuwa.bomberman.game.appstates.session.MultipleGameSessionAppState;
 import de.fuwa.bomberman.game.components.PositionComponent;
 import de.fuwa.bomberman.game.enums.BlockType;
-import de.fuwa.bomberman.game.enums.Setting;
 import de.fuwa.bomberman.game.session.GameSession;
 import de.fuwa.bomberman.game.state.GameStateListener;
-import de.fuwa.bomberman.game.utils.EntityCreator;
-import de.fuwa.bomberman.game.utils.GameField;
-import de.fuwa.bomberman.game.utils.GameInitializer;
-import de.fuwa.bomberman.game.utils.Player;
+import de.fuwa.bomberman.game.utils.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,8 +38,11 @@ public class MainGameAppState extends BaseAppState {
 
     private EntityData entityData;
 
-    @Override
-    public void initialize(AppStateManager stateManager) {
+    public MainGameAppState() {
+
+    }
+
+    public MainGameAppState(AppStateManager stateManager) {
         this.stateManager = stateManager;
 
         this.gameSessionAppState = new MultipleGameSessionAppState();
@@ -53,7 +52,10 @@ public class MainGameAppState extends BaseAppState {
         this.entityData = new DefaultEntityData();
         this.entityDataState = new EntityDataState(entityData);
         stateManager.attachState(entityDataState);
+    }
 
+    public EntityData getEntityData() {
+        return entityData;
     }
 
     public void addGameStateListener(GameStateListener listener) {
@@ -66,8 +68,13 @@ public class MainGameAppState extends BaseAppState {
         }
     }
 
+    public int sizeOfAddedPlayers() {
+        return players.size();
+    }
+
     public void removePlayer(Player player) {
         if (players.remove(player)) {
+            // Todo: correct the logic of this method
             EntityId playerId = playerEntityIdMap.remove(player);
             gameSessionAppState.removeGameSession(playerId);
             entityData.removeEntity(playerId);
@@ -79,13 +86,17 @@ public class MainGameAppState extends BaseAppState {
         return this.gameSessionAppState.getGameSession(playerId);
     }
 
-    public void setupGame(GameField gameField, Setting setting) {
+    public void setupGame(GameOptions gameOptions) {
+        GameField gameField = gameOptions.getGameField();
         if (gameStateListeners.isEmpty()) {
             System.out.println("cannot start game if no players have joined the session");
             return;
         }
 
-
+        // first we want to add the kis
+        for (int i = 0; i < gameOptions.getNumberOfKis(); i++) {
+            addPlayer(new Player("Ki#" + i, true));
+        }
 
         // we initialize our logical game field app state
         this.stateManager.attachState(new LogicalGameFieldAppState(gameField.getSizeX(), gameField.getSizeY()));
@@ -126,7 +137,7 @@ public class MainGameAppState extends BaseAppState {
         }
 
         for (GameStateListener listener : gameStateListeners) {
-            listener.onSetupGame(setting, gameField.getSizeX(), gameField.getSizeY());
+            listener.onSetupGame(gameOptions.getSetting(), gameField.getSizeX(), gameField.getSizeY());
         }
 
     }

@@ -7,7 +7,9 @@ import de.fuwa.bomberman.game.utils.GameUtils;
 import javax.swing.*;
 import java.awt.*;
 
-public class SingleplayerMenu extends BasicFuwaManPanel {
+public class MultiplayerLobbyMenu extends BasicFuwaManPanel {
+
+    private DefaultListModel<String> playerListModel;
 
     @Override
     protected void addComponents() {
@@ -21,11 +23,17 @@ public class SingleplayerMenu extends BasicFuwaManPanel {
         this.centerPanel.add(contentPanel);
         this.centerPanel.add(new TransparentPanel());
 
-        // empty panel
+        // 1. row
         contentPanel.add(new TransparentPanel());
         contentPanel.add(new TransparentPanel());
 
-        // setting
+        // 2. row
+        contentPanel.add(new JLabel("Connected Players"));
+        this.playerListModel = new DefaultListModel<>();
+        JList<String> connectedPlayers = new JList<>(playerListModel);
+        contentPanel.add(connectedPlayers);
+
+        // 3. row
         JLabel settingsLabel = new JLabel("Choose Setting");
         contentPanel.add(settingsLabel);
 
@@ -35,29 +43,29 @@ public class SingleplayerMenu extends BasicFuwaManPanel {
         }
         contentPanel.add(settingsBox);
 
-        // number of enemies
-        JLabel numberEnemiesLabel = new JLabel("Select Number of Enemies");
-        contentPanel.add(numberEnemiesLabel);
-
-        JComboBox<Integer> numberOfEnemiesBox = new JComboBox<>();
-        for (int i = 1; i <= 3; i++) {
-            numberOfEnemiesBox.addItem(i);
-        }
-        contentPanel.add(numberOfEnemiesBox);
-
-
-        // start and return button
+        // 4. row
         JButton startButton = new JButton("Start Game");
-        startButton.addActionListener(e -> listener.onClickStartGame(new GameOptions(settingsBox.getItemAt(settingsBox.getSelectedIndex()), GameUtils.createComplexGameField(), numberOfEnemiesBox.getItemAt(numberOfEnemiesBox.getSelectedIndex()))));
+        startButton.addActionListener(e -> listener.onClickStartGame(new GameOptions(settingsBox.getItemAt(settingsBox.getSelectedIndex()), GameUtils.createComplexGameField(), 0)));
         contentPanel.add(startButton);
 
         JButton returnButton = new JButton("Return");
         returnButton.addActionListener(e -> listener.onClickReturnToMainMenu());
         contentPanel.add(returnButton);
 
+        // 5. row
+        contentPanel.add(new TransparentPanel());
+        contentPanel.add(new TransparentPanel());
+    }
 
-        // empty panel
-        contentPanel.add(new TransparentPanel());
-        contentPanel.add(new TransparentPanel());
+    public void clearListModel() {
+        playerListModel.removeAllElements();
+    }
+
+    public void addPlayerName(String playerName) {
+        playerListModel.addElement(playerName);
+    }
+
+    public void removePlayerName(String playerName) {
+        playerListModel.removeElement(playerName);
     }
 }

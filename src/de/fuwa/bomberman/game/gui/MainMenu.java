@@ -8,7 +8,7 @@ public class MainMenu extends BasicFuwaManPanel {
     @Override
     protected void addComponents() {
         JPanel buttonPanel = new TransparentPanel();
-        GridLayout l = new GridLayout(7, 1);
+        GridLayout l = new GridLayout(8, 1);
         l.setVgap(25);
         buttonPanel.setLayout(l);
         this.centerPanel.setLayout(new GridLayout(1, 3)); // we only fill the center element later
@@ -25,6 +25,10 @@ public class MainMenu extends BasicFuwaManPanel {
         JButton multiplayer = new JButton("Multiplayer");
         multiplayer.addActionListener(e -> listener.onClickMultiplayer());
         buttonPanel.add(multiplayer);
+
+        JButton connectToMultiplayer = new JButton("Connect to Game");
+        connectToMultiplayer.addActionListener(e -> listener.onClickOpenConnectScreen());
+        buttonPanel.add(connectToMultiplayer);
 
         JButton options = new JButton("Settings");
         options.addActionListener(e -> listener.onClickOptions());

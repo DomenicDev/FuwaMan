@@ -18,6 +18,13 @@ public class GameStateHandler extends BaseAppState implements GameStateListener 
 
     private AppStateManager stateManager;
 
+    public GameStateHandler() {
+    }
+
+    public GameStateHandler(AppStateManager stateManager) {
+        this.stateManager = stateManager;
+    }
+
     @Override
     public void initialize(AppStateManager stateManager) {
         this.stateManager = stateManager;

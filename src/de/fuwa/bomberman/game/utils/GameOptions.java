@@ -5,17 +5,15 @@ import de.fuwa.bomberman.game.enums.Setting;
 public class GameOptions {
 
     private Setting setting;
-    private int gameFieldSizeX;
-    private int getGameFieldSizeY;
+    private GameField gameField;
     private int numberOfKis;
 
     public GameOptions() {
     }
 
-    public GameOptions(Setting setting, int gameFieldSizeX, int getGameFieldSizeY, int numberOfKis) {
+    public GameOptions(Setting setting, GameField gameField, int numberOfKis) {
         this.setting = setting;
-        this.gameFieldSizeX = gameFieldSizeX;
-        this.getGameFieldSizeY = getGameFieldSizeY;
+        this.gameField = gameField;
         this.numberOfKis = numberOfKis;
     }
 
@@ -27,20 +25,12 @@ public class GameOptions {
         this.setting = setting;
     }
 
-    public int getGameFieldSizeX() {
-        return gameFieldSizeX;
+    public GameField getGameField() {
+        return gameField;
     }
 
-    public void setGameFieldSizeX(int gameFieldSizeX) {
-        this.gameFieldSizeX = gameFieldSizeX;
-    }
-
-    public int getGetGameFieldSizeY() {
-        return getGameFieldSizeY;
-    }
-
-    public void setGetGameFieldSizeY(int getGameFieldSizeY) {
-        this.getGameFieldSizeY = getGameFieldSizeY;
+    public void setGameField(GameField gameField) {
+        this.gameField = gameField;
     }
 
     public int getNumberOfKis() {

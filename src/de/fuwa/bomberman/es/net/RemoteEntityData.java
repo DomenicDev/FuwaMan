@@ -47,7 +47,6 @@ public class RemoteEntityData extends DefaultEntityData {
             if (m instanceof EntitySetInitialDataMessage) {
                 EntitySetInitialDataMessage im = (EntitySetInitialDataMessage) m;
                 RemoteEntitySet set = entitySets.get(im.getSetId());
-                System.out.println(set);
                 set.loadEntities(new ArrayList<>(Arrays.asList(im.getEntities())));
             } else if (m instanceof EntitySetChangeMessage) {
                 EntitySetChangeMessage cm = (EntitySetChangeMessage) m;

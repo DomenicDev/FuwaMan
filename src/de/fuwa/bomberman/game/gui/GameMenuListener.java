@@ -14,8 +14,11 @@ public interface GameMenuListener {
 
     void onClickExit();
 
-    void onClickStartSingleplayerGame(GameOptions gameOptions);
+    void onClickStartGame(GameOptions gameOptions);
 
     void onClickReturnToMainMenu();
 
+    void onClickConnectToGame(String ipAddress);
+
+    void onClickOpenConnectScreen();
 }
