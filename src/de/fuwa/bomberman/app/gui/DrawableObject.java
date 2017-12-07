@@ -8,6 +8,18 @@ import java.awt.*;
 public interface DrawableObject {
 
     /**
+     * @return the drawing layer of this object
+     */
+    DrawingLayer getLayer();
+
+    /**
+     * Define which layer this object shall be drawn in.
+     *
+     * @param layer the layer for this object
+     */
+    void setLayer(DrawingLayer layer);
+
+    /**
      * Sets the image which shall be drawn onto the screen.
      * @param image the image to draw onto the screen
      */

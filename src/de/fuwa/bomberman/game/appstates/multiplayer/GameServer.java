@@ -159,8 +159,13 @@ public class GameServer extends BaseAppState implements ConnectionListener, Mess
         }
 
         @Override
-        public void onStartGame() {
-            sendToAllPlayers(new OnGameStartMessage());
+        public void onStartGame(float matchDuration) {
+            sendToAllPlayers(new OnGameStartMessage(matchDuration));
+        }
+
+        @Override
+        public void onGameDecided(String winnerName) {
+            sendToAllPlayers(new OnGameDecidedMessage(winnerName));
         }
 
         @Override

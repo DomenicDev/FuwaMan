@@ -15,6 +15,7 @@ public class EntityCreator {
     public static EntityId createPlayer(EntityData entityData, EntityId playerId, float startX, float startY, String name, boolean isKi) {
         EntityId player = playerId != null ? playerId : entityData.createEntity();
         entityData.setComponents(player,
+                new AliveComponent(),
                 new PositionComponent(startX, startY),
                 new CollisionComponent(0.15f, 0.5f, 0.7f, 0.45f, false),
                 new ModelComponent(ModelType.Player, true),
