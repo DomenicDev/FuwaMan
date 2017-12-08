@@ -4,6 +4,7 @@ import de.fuwa.bomberman.app.AppStateManager;
 import de.fuwa.bomberman.game.appstates.*;
 import de.fuwa.bomberman.game.appstates.Ki.KiAppstate;
 import de.fuwa.bomberman.game.appstates.multiplayer.ClientSideInterpolationAppState;
+import de.fuwa.bomberman.game.appstates.sound.BackgroundMusicAppState;
 import de.fuwa.bomberman.game.appstates.sound.ExplosionSoundAppState;
 import de.fuwa.bomberman.game.appstates.visual.VisualAppState;
 import de.fuwa.bomberman.game.appstates.visual.VisualGameFieldAppState;
@@ -25,9 +26,10 @@ public class GameInitializer {
 
     public static void removeGameLogicAppStates(AppStateManager stateManager) {
         stateManager.detachState(stateManager.getState(PhysicsCharacterMovementAppState.class));
-        stateManager.detachState(stateManager.getState(BombAppState.class));
         stateManager.detachState(stateManager.getState(PowerUpAppState.class));
         stateManager.detachState(stateManager.getState(KiAppstate.class));
+        stateManager.detachState(stateManager.getState(ExplosionAppState.class));
+        stateManager.detachState(stateManager.getState(BombAppState.class));
     }
 
     /**
@@ -41,10 +43,24 @@ public class GameInitializer {
 
         // Sound App States
         stateManager.attachState(new ExplosionSoundAppState());
+        stateManager.attachState(new BackgroundMusicAppState());
+    }
+
+    public static void removeVisualAndSoundAppStates(AppStateManager stateManager) {
+        stateManager.detachState(stateManager.getState(VisualGameFieldAppState.class));
+        stateManager.detachState(stateManager.getState(VisualAppState.class));
+        stateManager.detachState(stateManager.getState(VisualPlayerAppState.class));
+
+        stateManager.detachState(stateManager.getState(ExplosionSoundAppState.class));
+        stateManager.detachState(stateManager.getState(BackgroundMusicAppState.class));
     }
 
     public static void initInputAppStates(AppStateManager stateManager) {
         stateManager.attachState(new InputAppState());
+    }
+
+    public static void removeInputAppStates(AppStateManager stateManager) {
+        stateManager.detachState(stateManager.getState(InputAppState.class));
     }
 
     public static void initClientAppStates(AppStateManager stateManager) {

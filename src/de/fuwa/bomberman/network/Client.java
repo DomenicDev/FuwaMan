@@ -47,7 +47,7 @@ public class Client {
      * Use {@link ClientStateListener} if you want to know when
      * the client has connected to the server
      */
-    public boolean start() {
+    public boolean connectToServer() {
         if (client != null) {
             return false;
         }
@@ -58,15 +58,20 @@ public class Client {
             this.input = new ObjectInputStream(client.getInputStream());
 
             this.handler = new ClientHandler();
-
-            Thread clientThread = new Thread(handler);
-            clientThread.start();
             return true;
         } catch (IOException e) {
             e.printStackTrace();
         }
         return false;
     }
+
+    public void start() {
+        Thread clientThread = new Thread(handler);
+        clientThread.start();
+        handler.send(new DefaultCommandMessage(Command.Join));
+    }
+
+
 
     /**
      * Closes the connection to the server.
@@ -112,7 +117,7 @@ public class Client {
     private class ClientHandler implements Runnable {
 
         ClientHandler() {
-            send(new DefaultCommandMessage(Command.Join));
+
         }
 
         private synchronized void send(Serializable message) {

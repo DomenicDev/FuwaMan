@@ -32,13 +32,14 @@ public class BasicFuwaManPanel extends JPanel {
 
         this.topPanel = new JPanel();
         this.topPanel.setLayout(new GridLayout(1, 1));
-        this.topPanel.setPreferredSize(new Dimension(800, 200));
+        this.topPanel.setPreferredSize(new Dimension(800, 300));
         this.topPanel.setOpaque(false);
         this.topPanel.setBackground(Color.CYAN);
         add(topPanel, BorderLayout.NORTH);
 
         // add title
-        JPanel titlePanel = new BackgroundImagePanel(titleImage, false);
+        JPanel titlePanel = new BackgroundImagePanel(titleImage, true);
+        titlePanel.setPreferredSize(new Dimension());
         titlePanel.setOpaque(false);
         topPanel.add(titlePanel);
 

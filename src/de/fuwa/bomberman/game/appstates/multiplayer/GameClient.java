@@ -36,14 +36,32 @@ public class GameClient extends BaseAppState implements MessageListener<Client>,
     @Override
     public void initialize(AppStateManager stateManager) {
         this.stateManager = stateManager;
-        this.gameStateListener = stateManager.getState(GameStateHandler.class);
+//        this.gameStateListener = stateManager.getState(GameStateHandler.class);
 
+//        this.client = new Client(hostIp, port);
+//        this.client.addMessageListener(this);
+//        this.client.addClientStateListener(this);
+//        this.client.start();
+    }
+
+    public boolean connect(String hostIp, int port) {
         this.client = new Client(hostIp, port);
         this.client.addMessageListener(this);
         this.client.addClientStateListener(this);
+        return client.connectToServer();
+    }
+
+    public void start() {
         this.client.start();
     }
 
+    public void setGameStateListener(GameStateHandler listener) {
+        this.gameStateListener = listener;
+    }
+
+    public Client getClient() {
+        return client;
+    }
 
     @Override
     public void onMessageReceived(Client source, AbstractMessage m) {
@@ -54,16 +72,23 @@ public class GameClient extends BaseAppState implements MessageListener<Client>,
         }
 
         if (m instanceof OnSetupGameMessage) {
-            OnSetupGameMessage sm = (OnSetupGameMessage) m;
-            stateManager.attachState(new EntityDataState(new RemoteEntityData(source)));
-            stateManager.attachState(new GameSessionAppState(new RemoteGameSession(source)));
-            this.gameStateListener.onSetupGame(sm.getSetting(), sm.getSizeX(), sm.getSizeY());
-            GameInitializer.initClientAppStates(stateManager);
+            stateManager.getGameApplication().addCallable(() -> {
+                OnSetupGameMessage sm = (OnSetupGameMessage) m;
+                stateManager.attachState(new EntityDataState(new RemoteEntityData(source)));
+                stateManager.attachState(new GameSessionAppState(new RemoteGameSession(source)));
+                gameStateListener.onSetupGame(sm.getSetting(), sm.getSizeX(), sm.getSizeY());
+                GameInitializer.initClientAppStates(stateManager);
+            });
 
             // at this point we setup our game, so we tell the server that we are ready
             source.send(new ReadyForGameStartMessage());
         } else if (m instanceof OnGameStartMessage) {
-            this.gameStateListener.onStartGame();
+            stateManager.getGameApplication().addCallable(() -> gameStateListener.onStartGame(((OnGameStartMessage) m).getMatchDuration()));
+
+        } else if (m instanceof OnCloseGameMessage) {
+            stateManager.getGameApplication().addCallable(() -> gameStateListener.onCloseGame());
+        } else if (m instanceof OnGameDecidedMessage) {
+            stateManager.getGameApplication().addCallable(() -> gameStateListener.onGameDecided(((OnGameDecidedMessage) m).getWinnerName()));
         }
     }
 

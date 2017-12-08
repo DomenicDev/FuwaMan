@@ -80,8 +80,8 @@ public class GameContextFrame extends JFrame {
 
     public void removeCurrentGameField() {
         if (this.visualGameField != null) {
-            this.gamePanel.remove(visualGameField);
-            this.visualGameField = null;
+            //   this.gamePanel.remove(visualGameField);
+            //   this.visualGameField = null;
         }
     }
 

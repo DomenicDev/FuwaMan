@@ -7,7 +7,6 @@ import de.fuwa.bomberman.app.GameApplication;
 import de.fuwa.bomberman.game.appstates.MainGameAppState;
 import de.fuwa.bomberman.game.appstates.session.GameSessionAppState;
 import de.fuwa.bomberman.game.appstates.state.GameStateHandler;
-import de.fuwa.bomberman.game.enums.Setting;
 import de.fuwa.bomberman.game.session.GameSession;
 import de.fuwa.bomberman.game.utils.GameUtils;
 import de.fuwa.bomberman.game.utils.Player;
@@ -46,7 +45,7 @@ public class KiTest extends GameApplication {
             mainGameAppState.addPlayer(ki3);
 
             //  we now want to setup and run the game
-            mainGameAppState.setupGame(GameUtils.createComplexGameField(), Setting.Classic);
+            mainGameAppState.setupGame(GameUtils.getTestGameOptions());
 
             //get game session and create holder class
             GameSession gameSession = mainGameAppState.getGameSession(player);

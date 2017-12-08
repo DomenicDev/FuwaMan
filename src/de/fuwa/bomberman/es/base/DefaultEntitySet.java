@@ -84,6 +84,11 @@ public class DefaultEntitySet extends AbstractSet<Entity> implements EntitySet {
     }
 
     @Override
+    public void clear() {
+        this.entities.clear();
+    }
+
+    @Override
     public Iterator<Entity> iterator() {
         return new EntityIterator();
     }

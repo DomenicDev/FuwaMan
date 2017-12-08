@@ -4,18 +4,16 @@ import de.fuwa.bomberman.app.AppStateManager;
 import de.fuwa.bomberman.app.BaseAppState;
 import de.fuwa.bomberman.es.EntityData;
 import de.fuwa.bomberman.es.EntityId;
+import de.fuwa.bomberman.es.EntitySet;
 import de.fuwa.bomberman.es.base.DefaultEntityData;
 import de.fuwa.bomberman.game.appstates.session.GameSessionHandler;
 import de.fuwa.bomberman.game.appstates.session.MultipleGameSessionAppState;
+import de.fuwa.bomberman.game.components.AliveComponent;
 import de.fuwa.bomberman.game.components.PositionComponent;
 import de.fuwa.bomberman.game.enums.BlockType;
-import de.fuwa.bomberman.game.enums.Setting;
 import de.fuwa.bomberman.game.session.GameSession;
 import de.fuwa.bomberman.game.state.GameStateListener;
-import de.fuwa.bomberman.game.utils.EntityCreator;
-import de.fuwa.bomberman.game.utils.GameField;
-import de.fuwa.bomberman.game.utils.GameInitializer;
-import de.fuwa.bomberman.game.utils.Player;
+import de.fuwa.bomberman.game.utils.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,17 +33,43 @@ public class MainGameAppState extends BaseAppState {
     private GameSessionHandler gameSessionHandler;
     private MultipleGameSessionAppState gameSessionAppState;
     private EntityDataState entityDataState;
+    // used as a return value
+    private static final Player NONE_WINNER = new Player(null);
 
     private List<GameStateListener> gameStateListeners = new ArrayList<>();
     private List<Player> players = new ArrayList<>();
     private Map<Player, EntityId> playerEntityIdMap = new HashMap<>();
-
     private EntityData entityData;
+    private GameOptions gameOptions; // current game options
+    private boolean gameRunning = false;
+    private float remainingTime = -1;
+    private EntitySet aliveEntities; // to get notified about players who died
+
+
+
+    public MainGameAppState() {
+
+    }
+
+    public MainGameAppState(AppStateManager stateManager) {
+        this.stateManager = stateManager;
+        init(stateManager);
+
+    }
 
     @Override
     public void initialize(AppStateManager stateManager) {
         this.stateManager = stateManager;
+        if (entityData == null && gameSessionAppState == null) {
+            init(stateManager);
+        }
+    }
 
+    public EntityData getEntityData() {
+        return entityData;
+    }
+
+    private void init(AppStateManager stateManager) {
         this.gameSessionAppState = new MultipleGameSessionAppState();
         stateManager.attachState(gameSessionAppState);
 
@@ -53,7 +77,6 @@ public class MainGameAppState extends BaseAppState {
         this.entityData = new DefaultEntityData();
         this.entityDataState = new EntityDataState(entityData);
         stateManager.attachState(entityDataState);
-
     }
 
     public void addGameStateListener(GameStateListener listener) {
@@ -66,11 +89,13 @@ public class MainGameAppState extends BaseAppState {
         }
     }
 
+    public int sizeOfAddedPlayers() {
+        return players.size();
+    }
+
     public void removePlayer(Player player) {
         if (players.remove(player)) {
-            EntityId playerId = playerEntityIdMap.remove(player);
-            gameSessionAppState.removeGameSession(playerId);
-            entityData.removeEntity(playerId);
+
         }
     }
 
@@ -79,13 +104,21 @@ public class MainGameAppState extends BaseAppState {
         return this.gameSessionAppState.getGameSession(playerId);
     }
 
-    public void setupGame(GameField gameField, Setting setting) {
+    public void setupGame(GameOptions gameOptions) {
+        this.gameOptions = gameOptions;
+        GameField gameField = gameOptions.getGameField();
         if (gameStateListeners.isEmpty()) {
             System.out.println("cannot start game if no players have joined the session");
             return;
         }
 
+        // first we want to add the kis
+        for (int i = 0; i < gameOptions.getNumberOfKis(); i++) {
+            addPlayer(new Player("Ki#" + i, true));
+        }
 
+        // create alive entity set
+        this.aliveEntities = entityData.getEntities(AliveComponent.class);
 
         // we initialize our logical game field app state
         this.stateManager.attachState(new LogicalGameFieldAppState(gameField.getSizeX(), gameField.getSizeY()));
@@ -126,15 +159,25 @@ public class MainGameAppState extends BaseAppState {
         }
 
         for (GameStateListener listener : gameStateListeners) {
-            listener.onSetupGame(setting, gameField.getSizeX(), gameField.getSizeY());
+            listener.onSetupGame(gameOptions.getSetting(), gameField.getSizeX(), gameField.getSizeY());
         }
 
     }
 
     public void startGame() {
-        gameSessionHandler.setGameStarted(true);
+        setGameRunning(true);
+        this.gameSessionHandler.setGameStarted(true);
+        this.remainingTime = gameOptions.getMatchDuration();
         for (GameStateListener l : gameStateListeners) {
-            l.onStartGame();
+            l.onStartGame(gameOptions.getMatchDuration());
+        }
+    }
+
+    public void closeGame() {
+        setGameRunning(false);
+        this.gameOptions = null;
+        for (GameStateListener l : gameStateListeners) {
+            l.onCloseGame();
         }
     }
 
@@ -182,11 +225,66 @@ public class MainGameAppState extends BaseAppState {
         return startPositions;
     }
 
+    private void setGameRunning(boolean running) {
+        this.gameRunning = running;
+    }
+
+    private void checkForWinner() {
+        // we check who is alive
+        int alivePlayersCount = aliveEntities.size();
+        if (alivePlayersCount == 1) {
+            for (Map.Entry<Player, EntityId> e : playerEntityIdMap.entrySet()) {
+                if (aliveEntities.containsId(e.getValue())) {
+                    // we have a winner
+                    setGameDecided(e.getKey());
+                }
+            }
+        } else if (alivePlayersCount == 0) {
+            // if there is no player alive probably all died in the same explosion
+            // we return this static value to indicate that the game is undecided
+            setGameDecided(NONE_WINNER);
+        }
+        // no player has won yet
+        // so we do nothing
+    }
+
+    private void setGameDecided(Player winner) {
+        setGameRunning(false);
+        for (GameStateListener l : gameStateListeners) {
+            l.onGameDecided(winner.getName());
+        }
+    }
+
+
+    @Override
+    public void update(float tpf) {
+        if (gameRunning) {
+
+            if (aliveEntities.applyChanges()) {
+                System.out.println(aliveEntities.size());
+                checkForWinner();
+            }
+
+            remainingTime -= tpf;
+            if (remainingTime <= 0) {
+                setGameRunning(false);
+                remainingTime = -1;
+                setGameDecided(NONE_WINNER); // timeout --> no one has won
+            }
+        }
+    }
+
     @Override
     public void cleanup() {
+        this.aliveEntities.close();
+        this.aliveEntities.clear();
+        this.aliveEntities = null;
+
+        this.gameOptions = null;
         stateManager.detachState(gameSessionHandler);
         stateManager.detachState(entityDataState);
         stateManager.detachState(stateManager.getState(LogicalGameFieldAppState.class));
+        stateManager.detachState(gameSessionAppState);
         GameInitializer.removeGameLogicAppStates(stateManager);
     }
 }

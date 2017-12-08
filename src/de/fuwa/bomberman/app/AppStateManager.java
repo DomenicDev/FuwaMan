@@ -19,13 +19,13 @@ public class AppStateManager {
     }
 
     public void attachState(AppState appState) {
-        if (appState != null) {
+        if (appState != null && !appStatesToAdd.contains(appState)) {
             this.appStatesToAdd.add(appState);
         }
     }
 
     public void detachState(AppState appState) {
-        if (appState != null) {
+        if (appState != null && !appStatesToRemove.contains(appState)) {
             this.appStatesToRemove.add(appState);
         }
     }

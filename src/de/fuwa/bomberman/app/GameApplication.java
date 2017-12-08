@@ -57,17 +57,32 @@ public abstract class GameApplication {
         gameContext.setAppSettings(this.appSettings);
         gameContext.buildContext();
 
-        // call user code
-        initGame();
-
         // start game thread
         gameThread.start();
     }
 
-    public void addCallable(Callable c) {
+    public synchronized void addCallable(Callable c) {
         this.callables.add(c);
     }
 
+
+    /**
+     * Called when the game is closed.
+     */
+    public void destroy() {
+        // stop game thread (main game loop)
+        this.gameLoop.stopGameLoop();
+
+        for (AppState appState : stateManager.getAppStates()) {
+            stateManager.detachState(appState);
+        }
+        stateManager.removeStates();
+
+        // close gui if it is still active
+        if (gameContext.isVisible()) {
+            gameContext.dispose();
+        }
+    }
 
     /**
      * A basic game loop implementation.
@@ -88,7 +103,10 @@ public abstract class GameApplication {
         }
 
         @Override
-        public synchronized void run() {
+        public void run() {
+            // call user code
+            initGame();
+
             // active is a flag which can be set to false which will make
             // this thread being stopped
             while (active) {
@@ -115,10 +133,10 @@ public abstract class GameApplication {
                 }
 
                 // execute callables
-                for (Callable c : callables) {
+                Callable c;
+                while ((c = callables.poll()) != null) {
                     c.run();
                 }
-                callables.clear();
 
                 // update gui
                 gameContext.updateGui();
@@ -129,17 +147,6 @@ public abstract class GameApplication {
                     e.printStackTrace();
                 }
             }
-        }
-    }
-
-    /**
-     * A basic gui event handler.
-     */
-    private class GuiEventHandler implements GameContextListener {
-
-        @Override
-        public void onExit() {
-            destroy();
         }
     }
 
@@ -171,14 +178,13 @@ public abstract class GameApplication {
     }
 
     /**
-     * Called when the game is closed.
+     * A basic gui event handler.
      */
-    public void destroy(){
-        // stop game thread (main game loop)
-        this.gameLoop.stopGameLoop();
-        // close gui if it is still active
-        if (gameContext.isVisible()) {
-            gameContext.dispose();
+    private class GuiEventHandler implements GameContextListener {
+
+        @Override
+        public void onExit() {
+            addCallable(() -> destroy());
         }
     }
 

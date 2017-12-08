@@ -15,10 +15,18 @@ public class TestClient extends GameApplication {
     @Override
     public void initGame() {
 
-        getStateManager().attachState(new GameStateHandler());
+        GameStateHandler stateHandler = new GameStateHandler();
+        getStateManager().attachState(stateHandler);
 
         GameClient client = new GameClient("localhost", 5555);
-        getStateManager().attachState(client);
+        if (client.connect("localhost", 5555)) {
+            System.out.println("hier");
+            client.setGameStateListener(stateHandler);
+            client.start();
+            getStateManager().attachState(client);
+        }
+
+
         //      client.connect("localhost", 5555);
 
     }
