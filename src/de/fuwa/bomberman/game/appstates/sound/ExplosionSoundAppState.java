@@ -2,7 +2,6 @@ package de.fuwa.bomberman.game.appstates.sound;
 
 import de.fuwa.bomberman.app.AppStateManager;
 import de.fuwa.bomberman.app.BaseAppState;
-import de.fuwa.bomberman.es.Entity;
 import de.fuwa.bomberman.es.EntityData;
 import de.fuwa.bomberman.es.EntitySet;
 import de.fuwa.bomberman.game.appstates.EntityDataState;
@@ -27,7 +26,7 @@ public class ExplosionSoundAppState extends BaseAppState {
     public void update(float tpf) {
         if (explosions.applyChanges()) {
 
-            for (Entity entity : explosions.getAddedEntities()) {
+            if (explosions.getAddedEntities().size() > 0) {
                 createSound();
             }
 

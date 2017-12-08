@@ -7,6 +7,7 @@ public class GameOptions {
     private Setting setting;
     private GameField gameField;
     private int numberOfKis;
+    private float matchDuration;
 
     public GameOptions() {
     }
@@ -15,6 +16,15 @@ public class GameOptions {
         this.setting = setting;
         this.gameField = gameField;
         this.numberOfKis = numberOfKis;
+        this.matchDuration = GameConstants.DEFAULT_MATCH_DURATION;
+    }
+
+    public float getMatchDuration() {
+        return matchDuration;
+    }
+
+    public void setMatchDuration(float matchDuration) {
+        this.matchDuration = matchDuration;
     }
 
     public Setting getSetting() {

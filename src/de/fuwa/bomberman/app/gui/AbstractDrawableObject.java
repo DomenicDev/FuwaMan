@@ -9,6 +9,17 @@ public abstract class AbstractDrawableObject implements DrawableObject {
 
     private float x, y; // the logical x and y position
     private Image imageToDraw;
+    private DrawingLayer drawingLayer = DrawingLayer.Middle;
+
+    @Override
+    public DrawingLayer getLayer() {
+        return this.drawingLayer;
+    }
+
+    @Override
+    public void setLayer(DrawingLayer layer) {
+        this.drawingLayer = layer;
+    }
 
     @Override
     public final void setImageToDraw(Image image) {

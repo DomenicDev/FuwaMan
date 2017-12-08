@@ -9,7 +9,8 @@ import de.fuwa.bomberman.game.MultiPlayerGame;
 import de.fuwa.bomberman.game.SingleplayerGame;
 import de.fuwa.bomberman.game.appstates.multiplayer.GameClient;
 import de.fuwa.bomberman.game.appstates.state.GameStateHandler;
-import de.fuwa.bomberman.game.gui.*;
+import de.fuwa.bomberman.game.gui.BasicFuwaManPanel;
+import de.fuwa.bomberman.game.gui.GameMenuListener;
 import de.fuwa.bomberman.game.utils.GameConstants;
 import de.fuwa.bomberman.game.utils.GameOptions;
 
@@ -21,23 +22,22 @@ public class FuwaManAppState extends BaseAppState implements GameMenuListener {
     private GameContextFrame context;
     private AppStateManager stateManager;
     private GameApplication gameApplication;
-
-    private MainMenu mainMenu = new MainMenu();
-    private SingleplayerMenu singleplayerMenu = new SingleplayerMenu();
-    private MultiplayerConnectMenu multiplayerConnectMenu = new MultiplayerConnectMenu();
-    private MultiplayerLobbyMenu multiplayerLobbyMenu = new MultiplayerLobbyMenu();
+    private FuwaManGuiHolderAppState guiHolder;
 
     @Override
     public void initialize(AppStateManager stateManager) {
         this.stateManager = stateManager;
         this.gameApplication = stateManager.getGameApplication();
 
+        this.guiHolder = new FuwaManGuiHolderAppState();
+        stateManager.attachState(guiHolder);
+
         // define listener
         BasicFuwaManPanel.setListener(this);
 
         // go to main menu
         this.context = stateManager.getGameApplication().getGameContext();
-        this.context.setScreen(mainMenu);
+        this.context.setScreen(guiHolder.getMainMenu());
     }
 
     private void detachOldGame() {
@@ -50,7 +50,7 @@ public class FuwaManAppState extends BaseAppState implements GameMenuListener {
     @Override
     public void onClickSingleplayer() {
         gameApplication.addCallable(() -> {
-            context.setScreen(singleplayerMenu);
+            context.setScreen(guiHolder.getSingleplayerMenu());
 
             // create single player game
             detachOldGame();
@@ -65,7 +65,7 @@ public class FuwaManAppState extends BaseAppState implements GameMenuListener {
         gameApplication.addCallable(() -> {
             detachOldGame();
             // change screen
-            context.setScreen(multiplayerLobbyMenu);
+            context.setScreen(guiHolder.getMultiplayerLobbyMenu());
             // create multi player session
             game = new MultiPlayerGame();
             stateManager.attachState(game);
@@ -91,7 +91,7 @@ public class FuwaManAppState extends BaseAppState implements GameMenuListener {
     @Override
     public void onClickCloseGame() {
         gameApplication.addCallable(() -> {
-            this.context.setScreen(mainMenu);
+            this.context.setScreen(guiHolder.getMainMenu());
             this.game.closeGame();
             detachOldGame();
         });
@@ -107,7 +107,7 @@ public class FuwaManAppState extends BaseAppState implements GameMenuListener {
     public void onClickReturnToMainMenu() {
         gameApplication.addCallable(() -> {
             detachOldGame();
-            context.setScreen(mainMenu);
+            context.setScreen(guiHolder.getMainMenu());
         });
 
     }
@@ -133,6 +133,6 @@ public class FuwaManAppState extends BaseAppState implements GameMenuListener {
 
     @Override
     public void onClickOpenConnectScreen() {
-        gameApplication.addCallable(() -> this.context.setScreen(multiplayerConnectMenu));
+        gameApplication.addCallable(() -> this.context.setScreen(guiHolder.getMultiplayerConnectMenu()));
     }
 }

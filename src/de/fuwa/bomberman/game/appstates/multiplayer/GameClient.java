@@ -73,7 +73,6 @@ public class GameClient extends BaseAppState implements MessageListener<Client>,
 
         if (m instanceof OnSetupGameMessage) {
             stateManager.getGameApplication().addCallable(() -> {
-                System.out.println("onsetup");
                 OnSetupGameMessage sm = (OnSetupGameMessage) m;
                 stateManager.attachState(new EntityDataState(new RemoteEntityData(source)));
                 stateManager.attachState(new GameSessionAppState(new RemoteGameSession(source)));
@@ -84,10 +83,12 @@ public class GameClient extends BaseAppState implements MessageListener<Client>,
             // at this point we setup our game, so we tell the server that we are ready
             source.send(new ReadyForGameStartMessage());
         } else if (m instanceof OnGameStartMessage) {
-            stateManager.getGameApplication().addCallable(() -> gameStateListener.onStartGame());
+            stateManager.getGameApplication().addCallable(() -> gameStateListener.onStartGame(((OnGameStartMessage) m).getMatchDuration()));
 
         } else if (m instanceof OnCloseGameMessage) {
             stateManager.getGameApplication().addCallable(() -> gameStateListener.onCloseGame());
+        } else if (m instanceof OnGameDecidedMessage) {
+            stateManager.getGameApplication().addCallable(() -> gameStateListener.onGameDecided(((OnGameDecidedMessage) m).getWinnerName()));
         }
     }
 

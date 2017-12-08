@@ -3,10 +3,7 @@ package de.fuwa.bomberman.game.appstates.visual;
 import de.fuwa.bomberman.app.AppStateManager;
 import de.fuwa.bomberman.app.AssetLoader;
 import de.fuwa.bomberman.app.BaseAppState;
-import de.fuwa.bomberman.app.gui.DrawableObject;
-import de.fuwa.bomberman.app.gui.SpriteSheetImageObject;
-import de.fuwa.bomberman.app.gui.StaticImageObject;
-import de.fuwa.bomberman.app.gui.VisualGameField;
+import de.fuwa.bomberman.app.gui.*;
 import de.fuwa.bomberman.es.Entity;
 import de.fuwa.bomberman.es.EntityData;
 import de.fuwa.bomberman.es.EntityId;
@@ -97,6 +94,7 @@ public class VisualAppState extends BaseAppState {
         DrawableObject drawableObject = null;
         if (modelType == ModelType.Player) {
             drawableObject = new SpriteSheetImageObject(assetLoader.loadSingleImage(PLAYER_PATH + "player_green.png"), 4, 4);
+            drawableObject.setLayer(DrawingLayer.Foreground);
         } else if (modelType == ModelType.UndestroyableTile) {
             drawableObject = new StaticImageObject(assetLoader.loadSingleImage(SETTINGS_PATH + "undes_block_01.png"));
         } else if(modelType == ModelType.DestroyableTile){

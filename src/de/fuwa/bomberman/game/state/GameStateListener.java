@@ -6,8 +6,11 @@ public interface GameStateListener {
 
     void onSetupGame(Setting setting, int gameFieldSizeX, int gameFieldSizeY);
 
-    void onStartGame();
+    void onStartGame(float matchDuration);
+
+    void onGameDecided(String winnerName);
 
     void onCloseGame();
+
 
 }
