@@ -276,9 +276,11 @@ public class MainGameAppState extends BaseAppState {
 
     @Override
     public void cleanup() {
-        this.aliveEntities.close();
-        this.aliveEntities.clear();
-        this.aliveEntities = null;
+        if (aliveEntities != null) {
+            this.aliveEntities.close();
+            this.aliveEntities.clear();
+            this.aliveEntities = null;
+        }
 
         this.gameOptions = null;
         stateManager.detachState(gameSessionHandler);
