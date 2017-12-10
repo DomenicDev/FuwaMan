@@ -8,6 +8,8 @@ public class GameConstants {
 
     // GAME SPECIFIC CONSTANTS
     public static final float DEFAULT_MATCH_DURATION = 240f; // 240 seconds = 4 minutes
+    public static final int MIN_GAME_FIELD_SIZE = 11;
+    public static final int MAX_GAME_FIELD_SIZE = 30;
 
     // MULTIPLAYER CONSTANTS
     public static final int PORT = 5555;
