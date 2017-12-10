@@ -9,7 +9,7 @@ public class MainMenu extends BasicFuwaManPanel {
     protected void addComponents() {
         JPanel buttonPanel = new TransparentPanel();
         GridLayout l = new GridLayout(8, 1);
-        l.setVgap(25);
+        l.setVgap(10);
         buttonPanel.setLayout(l);
         this.centerPanel.setLayout(new GridLayout(1, 3)); // we only fill the center element later
         this.centerPanel.add(new TransparentPanel());
