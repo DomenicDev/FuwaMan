@@ -16,8 +16,6 @@ public class MainMenu extends BasicFuwaManPanel {
         this.centerPanel.add(buttonPanel);
         this.centerPanel.add(new TransparentPanel());
 
-        buttonPanel.add(new TransparentPanel()); // empty space
-
         JButton singleplayer = new JButton("Singleplayer");
         singleplayer.addActionListener(e -> listener.onClickSingleplayer());
         buttonPanel.add(singleplayer);
@@ -29,6 +27,10 @@ public class MainMenu extends BasicFuwaManPanel {
         JButton connectToMultiplayer = new JButton("Connect to Game");
         connectToMultiplayer.addActionListener(e -> listener.onClickOpenConnectScreen());
         buttonPanel.add(connectToMultiplayer);
+
+        JButton openLevelEditorButton = new JButton("Open Level Editor");
+        openLevelEditorButton.addActionListener(e -> listener.onClickOpenLevelEditor());
+        buttonPanel.add(openLevelEditorButton);
 
         JButton options = new JButton("Settings");
         options.addActionListener(e -> listener.onClickOptions());

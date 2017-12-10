@@ -14,6 +14,8 @@ public interface GameMenuListener {
 
     void onClickExit();
 
+    void onClickOpenLevelEditor();
+
     void onClickCloseGame();
 
     void onClickStartGame(GameOptions gameOptions);
