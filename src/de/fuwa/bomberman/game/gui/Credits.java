@@ -9,6 +9,7 @@ import java.awt.*;
 
 public class Credits extends BasicFuwaManPanel {
 
+
     @Override
     protected void addComponents() {
         JPanel contentPanel;
