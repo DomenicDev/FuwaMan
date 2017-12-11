@@ -13,6 +13,8 @@ public class FuwaManGuiHolderAppState extends BaseAppState {
     private MultiplayerConnectMenu multiplayerConnectMenu;
     private MultiplayerLobbyMenu multiplayerLobbyMenu;
     private InGameGui inGameGui;
+    private LevelEditorMenu levelEditorMenu;
+    private Credits credits;
 
     public FuwaManGuiHolderAppState() {
         this.mainMenu = new MainMenu();
@@ -20,6 +22,8 @@ public class FuwaManGuiHolderAppState extends BaseAppState {
         this.multiplayerConnectMenu = new MultiplayerConnectMenu();
         this.multiplayerLobbyMenu = new MultiplayerLobbyMenu();
         this.inGameGui = new InGameGui();
+        this.levelEditorMenu = new LevelEditorMenu();
+        this.credits = new Credits();
     }
 
     public MainMenu getMainMenu() {
@@ -41,4 +45,10 @@ public class FuwaManGuiHolderAppState extends BaseAppState {
     public InGameGui getInGameGui() {
         return inGameGui;
     }
+
+    public LevelEditorMenu getLevelEditorMenu() {
+        return levelEditorMenu;
+    }
+
+    public Credits getCredits () {return credits; }
 }

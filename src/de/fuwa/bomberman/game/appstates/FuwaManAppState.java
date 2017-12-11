@@ -80,12 +80,17 @@ public class FuwaManAppState extends BaseAppState implements GameMenuListener {
 
     @Override
     public void onClickCredits() {
-
+        gameApplication.addCallable(() -> context.setScreen(guiHolder.getCredits()));
     }
 
     @Override
     public void onClickExit() {
         gameApplication.addCallable(() -> this.gameApplication.destroy());
+    }
+
+    @Override
+    public void onClickOpenLevelEditor() {
+        gameApplication.addCallable(() -> context.setScreen(guiHolder.getCredits()));
     }
 
     @Override

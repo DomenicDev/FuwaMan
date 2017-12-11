@@ -67,6 +67,11 @@ public class TestGui extends GameApplication {
         }
 
         @Override
+        public void onClickOpenLevelEditor() {
+
+        }
+
+        @Override
         public void onClickCloseGame() {
 
         }
