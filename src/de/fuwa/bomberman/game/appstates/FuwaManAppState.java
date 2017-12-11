@@ -80,7 +80,7 @@ public class FuwaManAppState extends BaseAppState implements GameMenuListener {
 
     @Override
     public void onClickCredits() {
-
+        gameApplication.addCallable(() -> context.setScreen(guiHolder.getCredits()));
     }
 
     @Override
@@ -90,7 +90,7 @@ public class FuwaManAppState extends BaseAppState implements GameMenuListener {
 
     @Override
     public void onClickOpenLevelEditor() {
-        gameApplication.addCallable(() -> context.setScreen(guiHolder.getLevelEditorMenu()));
+        gameApplication.addCallable(() -> context.setScreen(guiHolder.getCredits()));
     }
 
     @Override
