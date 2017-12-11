@@ -69,7 +69,7 @@ public class KiAppstate extends BaseAppState {
     }
 
     @Override
-    public void update(float tpf){
+    public void update(float tpf) {
         entitySet.applyChanges();
         entities.applyChanges();
         bombs.applyChanges();
@@ -469,8 +469,11 @@ public class KiAppstate extends BaseAppState {
         PositionComponent pos = player.get(PositionComponent.class);
         PlayerComponent playCom = player.get(PlayerComponent.class);
 
+        if (pos == null) return playerMap;
+
         for(EntityId entityId : playerOnBomb.get(player.getId())){
             PositionComponent posCom = entityData.getComponent(entityId, PositionComponent.class);
+            if (posCom == null) continue;
             playerMap[(int)posCom.getX()][(int)posCom.getY()].setWalkable(true);
         }
 
