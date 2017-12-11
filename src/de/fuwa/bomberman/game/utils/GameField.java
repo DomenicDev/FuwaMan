@@ -2,13 +2,17 @@ package de.fuwa.bomberman.game.utils;
 
 import de.fuwa.bomberman.game.enums.BlockType;
 
+import java.io.Serializable;
+
 /**
  * The GameField is a convenient class for representing the current game field
  * within a 2D array.
  * <p>
  * This type can also be used as a wrapper for the level editor.
  */
-public class GameField {
+public class GameField implements Serializable {
+
+    private static final long serialVersionUID = 6529685098267757690L;
 
     private BlockType[][] gameField;
     private int sizeX;
@@ -36,4 +40,8 @@ public class GameField {
         return sizeY;
     }
 
+    @Override
+    public String toString() {
+        return sizeX + "x" + sizeY;
+    }
 }

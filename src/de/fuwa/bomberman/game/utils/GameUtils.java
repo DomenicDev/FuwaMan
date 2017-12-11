@@ -37,9 +37,11 @@ public class GameUtils {
         return gameField;
     }
 
-    public static GameField createComplexGameField(){
-        int width = 20;
-        int height = 3;
+    public static GameField createComplexGameField() {
+        return createComplexGameField(15, 11);
+    }
+
+    public static GameField createComplexGameField(int width, int height) {
         width = Math.max(11,width);
         height = Math.max(11,height);
         if(width%2==0)
