@@ -9,6 +9,7 @@ import de.fuwa.bomberman.game.appstates.state.GameStateHandler;
 import de.fuwa.bomberman.game.session.GameSession;
 import de.fuwa.bomberman.game.utils.GameConstants;
 import de.fuwa.bomberman.game.utils.GameOptions;
+import de.fuwa.bomberman.game.utils.GameUtils;
 import de.fuwa.bomberman.game.utils.Player;
 
 public class MultiPlayerGame extends AbstractGame {
@@ -34,7 +35,7 @@ public class MultiPlayerGame extends AbstractGame {
         stateManager.attachState(server);
 
         // we add the host
-        this.player = new Player(System.getProperty("user.name"), false);
+        this.player = GameUtils.createDefaultHumanPlayer();
         mainGameAppState.addPlayer(player);
     }
 
@@ -76,7 +77,13 @@ public class MultiPlayerGame extends AbstractGame {
 
     @Override
     public void cleanup() {
-        super.cleanup();
+        System.out.println("cleanup");
+        stateManager.detachState(gameSessionAppState);
+        stateManager.detachState(mainGameAppState);
+        //   stateManager.detachState(gameStateHandler);
         stateManager.detachState(server);
+        super.cleanup();
+        System.out.println("cleanup ende");
+
     }
 }

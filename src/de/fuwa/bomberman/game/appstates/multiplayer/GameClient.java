@@ -4,6 +4,7 @@ import de.fuwa.bomberman.app.AppStateManager;
 import de.fuwa.bomberman.app.BaseAppState;
 import de.fuwa.bomberman.es.net.RemoteEntityData;
 import de.fuwa.bomberman.game.appstates.EntityDataState;
+import de.fuwa.bomberman.game.appstates.FuwaManAppState;
 import de.fuwa.bomberman.game.appstates.multiplayer.messages.*;
 import de.fuwa.bomberman.game.appstates.session.GameSessionAppState;
 import de.fuwa.bomberman.game.appstates.state.GameStateHandler;
@@ -100,7 +101,11 @@ public class GameClient extends BaseAppState implements MessageListener<Client>,
 
     @Override
     public void onClientDisconnected() {
-
+        stateManager.getGameApplication().addCallable(() -> {
+            if (stateManager.getState(FuwaManAppState.class) != null) {
+                stateManager.getState(FuwaManAppState.class).onClickCloseGame();
+            }
+        });
     }
 
     private class RemoteGameSession implements GameSession {

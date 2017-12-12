@@ -34,8 +34,11 @@ public abstract class AbstractGame extends BaseAppState {
     protected abstract void onStartGame(GameOptions gameOptions);
 
     public void closeGame() {
-        mainGameAppState.closeGame();
-        stateManager.detachState(mainGameAppState);
+        if (mainGameAppState != null) {
+            mainGameAppState.closeGame();
+            stateManager.detachState(mainGameAppState);
+        }
+
         stateManager.detachState(gameStateHandler);
 
         onCloseGame();

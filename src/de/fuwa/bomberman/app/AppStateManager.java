@@ -11,6 +11,7 @@ public class AppStateManager {
     private ConcurrentLinkedQueue<AppState> appStatesToRemove = new ConcurrentLinkedQueue<>();
     private ConcurrentLinkedQueue<AppState> appStatesToAdd = new ConcurrentLinkedQueue<>();
     private ConcurrentLinkedQueue<AppState> toInitialize = new ConcurrentLinkedQueue<>();
+    private ConcurrentLinkedQueue<AppState> toCleanup = new ConcurrentLinkedQueue<>();
 
     private GameApplication app;
 
@@ -47,12 +48,17 @@ public class AppStateManager {
 
     synchronized void removeStates() {
         for (AppState appState : appStatesToRemove) {
-            if (applicationStates.contains(appState)) {
-                applicationStates.remove(appState);
-                appState.cleanup();
+            if (!applicationStates.contains(appState)) {
+                continue;
             }
+            toCleanup.add(appState);
         }
-        this.appStatesToRemove.clear(); // clear buffer
+        this.appStatesToRemove.clear();
+        for (AppState appState : toCleanup) {
+            this.applicationStates.remove(appState);
+            appState.cleanup();
+        }
+        this.toCleanup.clear(); // clear buffer
     }
 
     public <T extends AppState> T getState(Class<T> stateType) {

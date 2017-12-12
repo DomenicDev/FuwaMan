@@ -16,6 +16,7 @@ public class FuwaManGuiHolderAppState extends BaseAppState {
     private OptionsMenu optionsMenu;
     private LevelEditorMenu levelEditorMenu;
     private Credits credits;
+    private ClientWaitingLobbyMenu clientWaitingLobbyMenu;
 
     public FuwaManGuiHolderAppState() {
         this.mainMenu = new MainMenu();
@@ -26,6 +27,7 @@ public class FuwaManGuiHolderAppState extends BaseAppState {
         this.optionsMenu = new OptionsMenu();
         this.levelEditorMenu = new LevelEditorMenu();
         this.credits = new Credits();
+        this.clientWaitingLobbyMenu = new ClientWaitingLobbyMenu();
     }
 
     public MainMenu getMainMenu() {
@@ -56,4 +58,8 @@ public class FuwaManGuiHolderAppState extends BaseAppState {
     }
 
     public Credits getCredits () {return credits; }
+
+    public ClientWaitingLobbyMenu getClientWaitingLobbyMenu() {
+        return clientWaitingLobbyMenu;
+    }
 }

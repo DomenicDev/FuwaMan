@@ -53,7 +53,8 @@ public class SingleplayerGame extends AbstractGame {
 
     @Override
     public void cleanup() {
-        stateManager.detachState(this.gameSessionAppState);
+        stateManager.detachState(mainGameAppState);
+        stateManager.detachState(gameSessionAppState);
         super.cleanup();
     }
 }

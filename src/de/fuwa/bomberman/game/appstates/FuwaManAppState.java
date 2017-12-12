@@ -6,15 +6,12 @@ import de.fuwa.bomberman.app.Callable;
 import de.fuwa.bomberman.app.GameApplication;
 import de.fuwa.bomberman.app.gui.GameContextFrame;
 import de.fuwa.bomberman.game.MultiPlayerGame;
+import de.fuwa.bomberman.game.RemoteMultiplayerGame;
 import de.fuwa.bomberman.game.SingleplayerGame;
 import de.fuwa.bomberman.game.appstates.multiplayer.GameClient;
-import de.fuwa.bomberman.game.appstates.sound.BackgroundMusicAppState;
-import de.fuwa.bomberman.game.appstates.sound.ExplosionSoundAppState;
 import de.fuwa.bomberman.game.appstates.sound.SoundVolumeAppState;
-import de.fuwa.bomberman.game.appstates.state.GameStateHandler;
 import de.fuwa.bomberman.game.gui.BasicFuwaManPanel;
 import de.fuwa.bomberman.game.gui.GameMenuListener;
-import de.fuwa.bomberman.game.gui.OptionsMenu;
 import de.fuwa.bomberman.game.utils.GameConstants;
 import de.fuwa.bomberman.game.utils.GameOptions;
 
@@ -179,10 +176,15 @@ public class FuwaManAppState extends BaseAppState implements GameMenuListener {
             public void run() {
                 GameClient client = new GameClient();
                 if (client.connect(ipAddress, GameConstants.PORT)) {
-                    GameStateHandler stateHandler = new GameStateHandler();
-                    stateManager.attachState(stateHandler);
-                    client.setGameStateListener(stateHandler);
+                    //   GameStateHandler stateHandler = new GameStateHandler();
+                    // stateManager.attachState(stateHandler);
+                    // client.setGameStateListener(stateHandler);
                     stateManager.attachState(client);
+
+                    detachOldGame();
+                    game = new RemoteMultiplayerGame(client);
+                    stateManager.attachState(game);
+                    context.setScreen(guiHolder.getClientWaitingLobbyMenu());
                     client.start();
                 } else {
                     JOptionPane.showMessageDialog(null, "Could not connect to this address!");

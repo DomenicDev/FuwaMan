@@ -116,6 +116,12 @@ public abstract class GameApplication {
                 float tpf = (float) (now - lastTimeStamp) / 1000000000L;
                 this.lastTimeStamp = now; // update our lastTimeStamp
 
+                // execute callables
+                Callable c;
+                while ((c = callables.poll()) != null) {
+                    c.run();
+                }
+
                 // first thing we want to do is
                 // adding and removing the app states
                 // which are listed in the buffer
@@ -132,11 +138,6 @@ public abstract class GameApplication {
                     appState.render();
                 }
 
-                // execute callables
-                Callable c;
-                while ((c = callables.poll()) != null) {
-                    c.run();
-                }
 
                 // update gui
                 gameContext.updateGui();

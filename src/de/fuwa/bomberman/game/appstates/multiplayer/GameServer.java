@@ -143,6 +143,7 @@ public class GameServer extends BaseAppState implements ConnectionListener, Mess
 
     @Override
     public void cleanup() {
+        System.out.println("close server");
         this.server.close();
         this.connectionPlayerMap.clear();
     }
