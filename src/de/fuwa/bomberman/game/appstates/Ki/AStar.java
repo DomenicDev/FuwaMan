@@ -43,7 +43,7 @@ public class AStar {
                 }
                 else{
                     if(currentAdj.getG() > current.getG()){
-                        current.setPrevious(current);
+                        currentAdj.setPrevious(current);
                         currentAdj.setG(current.getG());
                     }
                 }

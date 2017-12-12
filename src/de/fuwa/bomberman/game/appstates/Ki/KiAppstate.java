@@ -91,32 +91,27 @@ public class KiAppstate extends BaseAppState {
                 else{
                     if(kiAction != null){
                         Path path = kiAction.getPath();
-                        if (path.getMoves().size() != 0) {
+                        if (path.getMoves().size() > 0) {
                             for (int i = 0; i < path.getMoves().size() - 1; i++) {
                                 path.removeMove(path.getMove(i));
                             }
                             Move move = path.getMove(0);
-                            if (path.getMoves().size() > 0) {
-                                if (!playermap[(int) move.getPos().getX()][(int) move.getPos().getY()].isWalkable()) {
-                                    MoveDirection movedir = move.getDir();
-                                    PositionComponent newpos;
-                                    if (movedir == MoveDirection.Up) {
-                                        newpos = new PositionComponent(move.getPos().getX(), move.getPos().getY() + 1);
-                                    } else if (movedir == MoveDirection.Down) {
-                                        newpos = new PositionComponent(move.getPos().getX(), move.getPos().getY() - 1);
-                                    } else if (movedir == MoveDirection.Left) {
-                                        newpos = new PositionComponent(move.getPos().getX() + 1, move.getPos().getY());
-                                    } else {
-                                        newpos = new PositionComponent(move.getPos().getX() - 1, move.getPos().getY() + 1);
-                                    }
-                                    PositionComponent pos = entity.get(PositionComponent.class);
-                                    KiAction kiAction2 = new KiAction(AStar.findPath(pos, newpos, entityData, playermap, true, MapSizeX, MapSizeY), false, 0);
-                                    kiActions.put(entity.getId(), kiAction2);
-
-
-                                    System.out.println("test");
-                                    kidone.put(entity.getId(), false);
+                            if (!playermap[(int) move.getPos().getX()][(int) move.getPos().getY()].isWalkable()) {
+                                MoveDirection movedir = move.getDir();
+                                PositionComponent newpos;
+                                if (movedir == MoveDirection.Up) {
+                                    newpos = new PositionComponent(move.getPos().getX(), move.getPos().getY() + 1);
+                                } else if (movedir == MoveDirection.Down) {
+                                    newpos = new PositionComponent(move.getPos().getX(), move.getPos().getY() - 1);
+                                } else if (movedir == MoveDirection.Left) {
+                                    newpos = new PositionComponent(move.getPos().getX() + 1, move.getPos().getY());
+                                } else {
+                                    newpos = new PositionComponent(move.getPos().getX() - 1, move.getPos().getY() + 1);
                                 }
+                                PositionComponent pos = entity.get(PositionComponent.class);
+                                KiAction kiAction2 = new KiAction(AStar.findPath(pos, newpos, entityData, playermap, true, MapSizeX, MapSizeY), false, 0);
+                                kiActions.put(entity.getId(), kiAction2);
+                                kidone.put(entity.getId(), false);
                             }
                         }
                     }
@@ -124,11 +119,12 @@ public class KiAppstate extends BaseAppState {
                 force = true;
             }
             else if(kiAction == null){
-                decideNextAction(entity, playermap);
+                kiActions.put(entity.getId(), Decider.decideNextAction(playermap, entityData, entity, bombs, MapSizeX, MapSizeY));
                 kidone.put(entity.getId(), false);
             }
 
             kiAction = kiActions.get(entity.getId());
+
             if(force){
                 doAction(entity, kiAction);
             }
@@ -284,120 +280,6 @@ public class KiAppstate extends BaseAppState {
             }
         }
         return false;
-    }
-
-    public void decideNextAction(Entity entity, Tile[][] playermap){
-
-        float bestChanceToDestroyBlock = 0;
-        float bestChanceToPickUpPowerUp = 0;
-        float bestChanceToPlaceBombNearPlayer = 0;
-
-        List<KiActionChance> chancesToDestroyBlock = new ArrayList<>();
-        List<KiActionChance> chancesToPickUpPowerUp = new ArrayList<>();
-        List<KiActionChance> chancesToPlaceBombNearPlayer = new ArrayList<>();
-
-        // Find the best move for each Action above
-        for(int y = 0; y < MapSizeY; y++){
-            for(int x = 0; x < MapSizeX; x++){
-                if(playermap[x][y].isReachable()){
-                    float temp;
-                    float distance = playermap[x][y].getDistanceFromPlayer();
-                    if(distance == 0) distance = 0.5f;
-                    //chanceToDestroyBlock
-                        if(distance < 5){
-                            temp = playermap[x][y].getDestroyableBlocksFromThisPos() / distance;
-                            chancesToDestroyBlock.add(new KiActionChance(playermap[x][y], temp));
-                            if(bestChanceToDestroyBlock < temp) bestChanceToDestroyBlock = temp;
-                        }
-
-                    //chanceToPickUpPowerUp
-                    if(distance < 10){
-                        if(playermap[x][y].isPowerUp()){
-                            temp = 10 / distance;
-                            chancesToPickUpPowerUp.add(new KiActionChance(playermap[x][y], temp));
-                            if(bestChanceToPickUpPowerUp < temp) bestChanceToPickUpPowerUp = temp;
-                        }
-                    }
-
-                    //chanceToPlaceBombNearPlayer
-                    if(playermap[x][y].getPlayer() != null){
-                        if(playermap[x][y].getPlayer().getId() != entity.getId().getId()){
-                            temp = 10 / distance;
-                            chancesToPlaceBombNearPlayer.add(new KiActionChance(playermap[x][y], temp));
-                            if(bestChanceToPlaceBombNearPlayer < temp) bestChanceToPlaceBombNearPlayer = temp;
-                        }
-                    }
-                }
-            }
-        }
-        // change the float values of the chance to that if you take the sum of all values you get solution 1.0
-        float divider = bestChanceToDestroyBlock + bestChanceToPickUpPowerUp + bestChanceToPlaceBombNearPlayer;
-        bestChanceToDestroyBlock /= divider;
-        bestChanceToPickUpPowerUp /= divider;
-        bestChanceToPlaceBombNearPlayer /= divider;
-
-        // Decide what of there 3 things to do trough random numbers. After that take look at all actions of this category and decide on what to do trough random numbers
-        float randomNum = ThreadLocalRandom.current().nextFloat();
-
-        Tile tile;
-        KiAction kiAction;
-        PositionComponent pos = entity.get(PositionComponent.class);
-        PlayerComponent playCom = entity.get(PlayerComponent.class);
-
-
-        int maxBombs = playCom.getBombAmount();
-        int curBombs = 0;
-        for(Entity bomb : bombs){
-            BombComponent boCom = bomb.get(BombComponent.class);
-            if(boCom.getCreator().getId() == entity.getId().getId()){
-                curBombs++;
-            }
-        }
-        if(bestChanceToDestroyBlock == 0.f && bestChanceToPickUpPowerUp == 0.f && bestChanceToPlaceBombNearPlayer == 0.f){
-            kiAction = new KiAction(AStar.findPath(pos, pos, entityData, playermap,false, MapSizeX, MapSizeY), false, 1);
-        }
-        else if(curBombs >= maxBombs){
-            if(bestChanceToPickUpPowerUp > 0){
-                tile = decideAction(chancesToPickUpPowerUp);
-                kiAction = new KiAction(AStar.findPath(pos, tile.getPos(), entityData, playermap, false, MapSizeX, MapSizeY), false, 0);
-            }
-            else {
-                kiAction = new KiAction(AStar.findPath(pos, pos, entityData, playermap, false, MapSizeX, MapSizeY), false, 1);
-            }
-        }
-        else if(randomNum <= bestChanceToDestroyBlock){// Destroy Block
-            tile = decideAction(chancesToDestroyBlock);
-            kiAction = new KiAction(AStar.findPath(pos, tile.getPos(), entityData, playermap,false, MapSizeX, MapSizeY), true, 0);
-        }
-        else if(randomNum <= bestChanceToDestroyBlock + bestChanceToPickUpPowerUp){ // PickUp PowerUp
-            tile = decideAction(chancesToPickUpPowerUp);
-            kiAction = new KiAction(AStar.findPath(pos, tile.getPos(), entityData, playermap, false, MapSizeX, MapSizeY), false, 0);
-        }
-        else if(randomNum <= bestChanceToDestroyBlock + bestChanceToPickUpPowerUp + bestChanceToPlaceBombNearPlayer){ //Place a bomb next to an player
-            tile = decideAction(chancesToPlaceBombNearPlayer);
-            kiAction = new KiAction(AStar.findPath(pos, tile.getPos(), entityData, playermap, false, MapSizeX, MapSizeY), true, 0);
-        }
-        else {
-            kiAction = new KiAction(AStar.findPath(pos, pos, entityData, playermap, false, MapSizeX, MapSizeY), false, 1);
-        }
-        kiActions.put(entity.getId(), kiAction);
-    }
-
-    public Tile decideAction(List<KiActionChance> chances){
-        float sum = 0;
-        float end = 0;
-        float random = ThreadLocalRandom.current().nextFloat();
-        for(KiActionChance kiActionChance : chances){
-            sum += kiActionChance.getChance();
-        }
-        for(KiActionChance kiActionChance : chances){
-            kiActionChance.setChance(kiActionChance.getChance() / sum);
-            if(end+kiActionChance.getChance() >= random){
-                return  kiActionChance.getTile();
-            }
-            else end += kiActionChance.getChance();
-        }
-        return null;
     }
 
     public void createMap(){
