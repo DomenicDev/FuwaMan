@@ -38,28 +38,42 @@ public class InputAppState extends BaseAppState implements KeyListener {
             return;
         }
 
-        if (!up && e.getKeyCode() == KeyEvent.VK_W) {
+        if (e.getKeyCode() == KeyEvent.VK_UP) {
             up = true;
-        } else if (e.getKeyCode() == KeyEvent.VK_A) {
+            System.out.println("W-press");
+        }
+        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
             left = true;
-        } else if (e.getKeyCode() == KeyEvent.VK_S) {
+            System.out.println("A-press");
+        }
+        if (e.getKeyCode() == KeyEvent.VK_DOWN) {
             down = true;
-        } else if (e.getKeyCode() == KeyEvent.VK_D) {
+            System.out.println("S-press");
+        }
+        if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             right = true;
+            System.out.println("D-press");
         }
 
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_W) {
+        if (e.getKeyCode() == KeyEvent.VK_UP) {
             up = false;
-        } else if (e.getKeyCode() == KeyEvent.VK_A) {
+            System.out.println("W-released");
+        }
+        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
             left = false;
-        } else if (e.getKeyCode() == KeyEvent.VK_S) {
+            System.out.println("A-released");
+        }
+        if (e.getKeyCode() == KeyEvent.VK_DOWN) {
             down = false;
-        } else if (e.getKeyCode() == KeyEvent.VK_D) {
+            System.out.println("S-released");
+        }
+        if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             right = false;
+            System.out.println("D-released");
         }
     }
 
@@ -67,14 +81,22 @@ public class InputAppState extends BaseAppState implements KeyListener {
     public void update(float tpf) {
         if (up) {
             moveDirection = MoveDirection.Up;
-        } else if (down) {
+            System.out.println("MOVE UP");
+        }
+        else if (down) {
             moveDirection = MoveDirection.Down;
-        } else if (left) {
+            System.out.println("MOVE DOWN");
+        }
+        else if (left) {
             moveDirection = MoveDirection.Left;
-        } else if (right) {
+            System.out.println("MOVE LEFT");
+        }
+        else if (right) {
             moveDirection = MoveDirection.Right;
-        } else {
+            System.out.println("MOVE RIGHT");
+        }else{
             moveDirection = MoveDirection.Idle;
+
         }
 
         if (moveDirection != lastMoveDir) {
