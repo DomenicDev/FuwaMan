@@ -1,15 +1,22 @@
 package de.fuwa.bomberman.game.gui;
 
 import de.fuwa.bomberman.app.gui.VisualGameField;
+import de.fuwa.bomberman.es.EntityId;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class InGameGui extends JPanel {
 
+    private JPanel playerInfoPanel;
+
     private VisualGameField visualGameField;
-    private JLabel timerPanel;
+    private JLabel timerLabel;
     private JLabel statusLabel;
+
+    private Map<EntityId, PlayerInfo> players = new HashMap<>();
 
     public InGameGui() {
 
@@ -17,11 +24,20 @@ public class InGameGui extends JPanel {
 
         JPanel topPanel = new JPanel();
         topPanel.setPreferredSize(new Dimension(1, 100));
+        topPanel.setLayout(new GridLayout(1, 2));
         add(topPanel, BorderLayout.NORTH);
 
-        this.timerPanel = new JLabel("TIMER: ");
-        this.timerPanel.setFont(new Font("Broadway", Font.BOLD, 20));
+        JPanel timerPanel = new JPanel();
+        timerPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        this.timerLabel = new JLabel("TIMER: ");
+        this.timerLabel.setFont(new Font("Broadway", Font.BOLD, 20));
+        timerPanel.add(timerLabel);
         topPanel.add(timerPanel);
+
+        this.playerInfoPanel = new JPanel();
+        this.playerInfoPanel.setLayout(new GridLayout(1, 1));
+        this.playerInfoPanel.setBackground(Color.BLACK);
+        topPanel.add(playerInfoPanel);
 
         this.visualGameField = new VisualGameField();
         add(visualGameField, BorderLayout.CENTER);
@@ -40,6 +56,33 @@ public class InGameGui extends JPanel {
         bottomPanel.add(exitGame);
     }
 
+    public void addPlayerInfo(EntityId playerId, String name) {
+        if (this.players.containsKey(playerId)) {
+            return;
+        }
+
+        PlayerInfo playerInfo = new PlayerInfo(name);
+        playerInfoPanel.add(playerInfo);
+
+        this.players.put(playerId, playerInfo);
+
+        // create new layout for player info panel
+        playerInfoPanel.setLayout(new GridLayout(1, this.players.size()));
+
+
+    }
+
+    public void refreshScoreForPlayer(EntityId playerId, int score) {
+        PlayerInfo playerInfo = this.players.get(playerId);
+        if (playerInfo != null) {
+            playerInfo.setScore(score);
+        }
+    }
+
+    public void removePlayerInfo(EntityId playerId) {
+
+    }
+
     public void setStatusText(String statusText) {
         this.statusLabel.setText("STATUS:   " + statusText);
     }
@@ -53,11 +96,32 @@ public class InGameGui extends JPanel {
         } else {
             secondsText += "0" + seconds;
         }
-        this.timerPanel.setText("TIMER: " + minutes + ":" + secondsText);
+        this.timerLabel.setText("TIMER: " + minutes + ":" + secondsText);
     }
 
     public VisualGameField getVisualGameField() {
         return visualGameField;
     }
 
+
+    private class PlayerInfo extends JPanel {
+
+        private JLabel scoreLabel;
+        private Font f = new Font("Helvita", Font.BOLD, 16);
+
+        private PlayerInfo(String name) {
+            JLabel nameLabel = new JLabel(name);
+            nameLabel.setFont(f);
+            scoreLabel = new JLabel("SCORE: ");
+            scoreLabel.setFont(f);
+            setLayout(new GridLayout(2, 1));
+            add(nameLabel);
+            add(scoreLabel);
+        }
+
+        private void setScore(int score) {
+            this.scoreLabel.setText("SCORE: " + score);
+        }
+
+    }
 }
