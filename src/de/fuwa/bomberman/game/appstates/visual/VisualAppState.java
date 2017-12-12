@@ -95,13 +95,20 @@ public class VisualAppState extends BaseAppState {
         if (modelType == ModelType.Player) {
             drawableObject = new SpriteSheetImageObject(assetLoader.loadSingleImage(PLAYER_PATH + "player_green.png"), 4, 4);
             drawableObject.setLayer(DrawingLayer.Foreground);
+        } else if (modelType == ModelType.Player2) {
+            drawableObject = new SpriteSheetImageObject(assetLoader.loadSingleImage(PLAYER_PATH + "player_red.png"), 4, 4);
+            drawableObject.setLayer(DrawingLayer.Foreground);
+        } else if (modelType == ModelType.Player3) {
+            drawableObject = new SpriteSheetImageObject(assetLoader.loadSingleImage(PLAYER_PATH + "player_white.png"), 4, 4);
+            drawableObject.setLayer(DrawingLayer.Foreground);
+        } else if (modelType == ModelType.Player4) {
+            drawableObject = new SpriteSheetImageObject(assetLoader.loadSingleImage(PLAYER_PATH + "player_yellow.png"), 4, 4);
+            drawableObject.setLayer(DrawingLayer.Foreground);
         } else if (modelType == ModelType.UndestroyableTile) {
             drawableObject = new StaticImageObject(assetLoader.loadSingleImage(SETTINGS_PATH + "undes_block_01.png"));
         } else if(modelType == ModelType.DestroyableTile){
             drawableObject = new StaticImageObject(assetLoader.loadSingleImage(SETTINGS_PATH + "des_block_01.png"));
-        }
-
-        else if (modelType == ModelType.Bomb) {
+        } else if (modelType == ModelType.Bomb) {
             drawableObject = new StaticImageObject(assetLoader.loadSingleImage(SETTINGS_PATH + "bomb_01.png"));
         } else if(modelType == ModelType.Explosion){
             drawableObject = new StaticImageObject(assetLoader.loadSingleImage(TEXTURE_PATH + "Explosion.png"));
