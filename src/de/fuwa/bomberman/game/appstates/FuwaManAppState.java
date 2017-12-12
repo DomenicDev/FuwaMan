@@ -35,6 +35,7 @@ public class FuwaManAppState extends BaseAppState implements GameMenuListener {
         this.gameApplication = stateManager.getGameApplication();
 
         this.soundVolumeAppState = new SoundVolumeAppState();
+        stateManager.attachState(soundVolumeAppState);
 
         this.guiHolder = new FuwaManGuiHolderAppState();
         stateManager.attachState(guiHolder);
@@ -102,11 +103,14 @@ public class FuwaManAppState extends BaseAppState implements GameMenuListener {
         soundVolumeAppState.setVolume(soundVolumeAppState.getMax()-soundVolumeAppState.getUnchanged());
         System.out.println(soundVolumeAppState.getVolume());
 
-        onClickReturnToMainMenu();
+        gameApplication.addCallable(() -> {
+            detachOldGame();
+            context.setScreen(guiHolder.getMainMenu());
+        });
     }
     @Override
-    public void onClickVolumeDown(){
-        System.out.println(soundVolumeAppState.getVolume());
+    public void onClickVolumeUp(){
+
         if(soundVolumeAppState.getUnchanged()<soundVolumeAppState.getMax()){
             soundVolumeAppState.setUnchanged(soundVolumeAppState.getUnchanged()+10.0f);
             if(soundVolumeAppState.getUnchanged()>=soundVolumeAppState.getMax()){
@@ -117,7 +121,7 @@ public class FuwaManAppState extends BaseAppState implements GameMenuListener {
 
     }
     @Override
-    public void onClickVolumeUp(){
+    public void onClickVolumeDown(){
 
         if(soundVolumeAppState.getUnchanged()>0){
             soundVolumeAppState.setUnchanged(soundVolumeAppState.getUnchanged()-10.0f);

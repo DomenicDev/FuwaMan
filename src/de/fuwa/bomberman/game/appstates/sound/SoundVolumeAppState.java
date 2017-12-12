@@ -6,7 +6,7 @@ public class SoundVolumeAppState extends BaseAppState {
 
     private final float max = 80.0f;
     private float volume = 0.0f;
-    private float unchanged = 0.0f;
+    private float unchanged = 80.0f;
 
     public float getMax() {
         return max;

@@ -17,7 +17,7 @@ public class BackgroundMusicAppState extends BaseAppState {
     public void initialize(AppStateManager stateManager) {
         // load music file
         try {
-            //soundVolume = new SoundVolumeAppState();
+            soundVolume = stateManager.getState(SoundVolumeAppState.class);
             File musicFile = new File("assets/Sounds/FuwaMan_Main_Theme.wav");
             AudioInputStream inputStream = AudioSystem.getAudioInputStream(musicFile);
             this.musicClip = AudioSystem.getClip();
@@ -25,7 +25,7 @@ public class BackgroundMusicAppState extends BaseAppState {
             FloatControl gainControl =
                     (FloatControl) musicClip.getControl(FloatControl.Type.MASTER_GAIN);
             System.out.println();
-           // gainControl.setValue(-(soundVolume.getVolume()));                        //change Volume
+           gainControl.setValue(-(soundVolume.getVolume()));                        //change Volume
             this.musicClip.loop(Clip.LOOP_CONTINUOUSLY);
             this.musicClip.start();
         } catch (UnsupportedAudioFileException | LineUnavailableException | IOException e) {

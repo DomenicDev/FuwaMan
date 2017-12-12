@@ -23,6 +23,7 @@ public class ExplosionSoundAppState extends BaseAppState {
     public void initialize(AppStateManager stateManager) {
         EntityData entityData = stateManager.getState(EntityDataState.class).getEntityData();
         this.explosions = entityData.getEntities(ExplosionComponent.class);
+        this.soundVolume = stateManager.getState(SoundVolumeAppState.class);
     }
 
     @Override
@@ -38,7 +39,6 @@ public class ExplosionSoundAppState extends BaseAppState {
 
     private void createSound() {
         try {
-            this.soundVolume = new SoundVolumeAppState();
             // Open an audio input stream.
             // from a wave File
             File soundFile = new File(SOUND_PATH + "bomb.wav");
@@ -50,7 +50,7 @@ public class ExplosionSoundAppState extends BaseAppState {
             FloatControl gainControl =
                     (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
             //System.out.println(soundVolumeAppState.volume);
-            //gainControl.setValue(-(soundVolume.getVolume())); //change Volume
+            gainControl.setValue(-(soundVolume.getVolume())); //change Volume
             clip.start();
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             e.printStackTrace();
