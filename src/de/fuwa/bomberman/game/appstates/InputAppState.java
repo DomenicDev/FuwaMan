@@ -61,19 +61,15 @@ public class InputAppState extends BaseAppState implements KeyListener {
     public void keyReleased(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_UP) {
             up = false;
-            System.out.println("W-released");
         }
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
             left = false;
-            System.out.println("A-released");
         }
         if (e.getKeyCode() == KeyEvent.VK_DOWN) {
             down = false;
-            System.out.println("S-released");
         }
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             right = false;
-            System.out.println("D-released");
         }
     }
 
@@ -81,19 +77,15 @@ public class InputAppState extends BaseAppState implements KeyListener {
     public void update(float tpf) {
         if (up) {
             moveDirection = MoveDirection.Up;
-            System.out.println("MOVE UP");
         }
         else if (down) {
             moveDirection = MoveDirection.Down;
-            System.out.println("MOVE DOWN");
         }
         else if (left) {
             moveDirection = MoveDirection.Left;
-            System.out.println("MOVE LEFT");
         }
         else if (right) {
             moveDirection = MoveDirection.Right;
-            System.out.println("MOVE RIGHT");
         }else{
             moveDirection = MoveDirection.Idle;
 
