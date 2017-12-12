@@ -8,6 +8,8 @@ import de.fuwa.bomberman.game.enums.*;
 
 public class EntityCreator {
 
+    public static int playerModelCounter = 0;
+
     public static EntityId createPlayer(EntityData entityData, float startX, float startY, String name) {
         return createPlayer(entityData, null, startX, startY, name, false);
     }
@@ -18,12 +20,30 @@ public class EntityCreator {
                 new AliveComponent(),
                 new PositionComponent(startX, startY),
                 new CollisionComponent(0.15f, 0.5f, 0.7f, 0.45f, false),
-                new ModelComponent(ModelType.Player, true),
                 new NameComponent(name),
                 new WalkableComponent(MoveDirection.Idle, 2),
                 new PlayerComponent(1, 1),
                 new ExplosionImpactComponent(ExplosionImpactType.Disappear)
         );
+
+        ModelType modelType = ModelType.Player; // default
+        switch (playerModelCounter % 4) {
+            case 0:
+                modelType = ModelType.Player;
+                break;
+            case 1:
+                modelType = ModelType.Player2;
+                break;
+            case 2:
+                modelType = ModelType.Player3;
+                break;
+            case 3:
+                modelType = ModelType.Player4;
+                break;
+        }
+
+        playerModelCounter++;
+        entityData.setComponent(playerId, new ModelComponent(modelType, true));
 
         if (isKi) {
             entityData.setComponent(playerId, new KIComponent());
