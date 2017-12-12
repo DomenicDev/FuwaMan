@@ -55,7 +55,7 @@ public class FuwaManAppState extends BaseAppState implements GameMenuListener {
     }
     @Override
     public void onClickFullscreen(){
-
+    context.getGraphicsConfiguration().getDevice().setFullScreenWindow(context);
     }
 
     @Override
