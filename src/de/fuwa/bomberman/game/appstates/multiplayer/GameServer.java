@@ -4,6 +4,7 @@ import de.fuwa.bomberman.app.AppStateManager;
 import de.fuwa.bomberman.app.BaseAppState;
 import de.fuwa.bomberman.es.base.DefaultEntityData;
 import de.fuwa.bomberman.es.net.HostedEntityDataHandler;
+import de.fuwa.bomberman.game.appstates.FuwaManGuiHolderAppState;
 import de.fuwa.bomberman.game.appstates.MainGameAppState;
 import de.fuwa.bomberman.game.appstates.multiplayer.messages.*;
 import de.fuwa.bomberman.game.enums.Setting;
@@ -100,7 +101,8 @@ public class GameServer extends BaseAppState implements ConnectionListener, Mess
 
             mainGameAppState.addPlayer(player);
 
-
+            // we add the player to the lobby menu
+            stateManager.getState(FuwaManGuiHolderAppState.class).getMultiplayerLobbyMenu().addPlayerName(player.getName());
 
             // to inform the client about the add we send the message back
             source.send(m);
