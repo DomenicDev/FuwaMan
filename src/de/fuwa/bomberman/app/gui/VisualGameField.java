@@ -86,6 +86,19 @@ public class VisualGameField extends JPanel {
             graphics2D.drawImage(background, 0, 0, getWidth(), getHeight(), this);
         }
 
+        float gameFieldWidth = sizeX * GameConstants.TILE_SIZE * scale;
+        float gameFieldHeight = sizeY * GameConstants.TILE_SIZE * scale;
+
+        float gameFieldMidPointX = gameFieldWidth / 2;
+        float gameFieldMidPointY = gameFieldHeight / 2;
+
+        float screenMidPointX = getWidth() / 2;
+        float screenMidPointY = getHeight() / 2;
+
+        float offsetX = screenMidPointX - gameFieldMidPointX;
+        float offsetY = screenMidPointY - gameFieldMidPointY;
+
+        graphics2D.translate(offsetX, offsetY);
         graphics2D.scale(scale, scale);
 
         drawImages(backgroundObjects, graphics2D);
@@ -97,6 +110,7 @@ public class VisualGameField extends JPanel {
     }
 
     private void drawImages(ConcurrentLinkedQueue<DrawableObject> drawables, Graphics2D graphics2D) {
+
         for (DrawableObject object : drawables) {
             int screenPosX = (int) (object.getX() * GameConstants.TILE_SIZE);
             int screenPosY = (int) (object.getY() * GameConstants.TILE_SIZE);
