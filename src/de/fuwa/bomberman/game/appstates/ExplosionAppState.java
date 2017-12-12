@@ -42,7 +42,11 @@ public class ExplosionAppState extends BaseAppState {
                 PositionComponent posCom = entity.get(PositionComponent.class);
 
                 if (GameUtils.inSameCell(pos, posCom)) {
-                    if (explosionImpactType == ExplosionImpactType.Disappear || explosionImpactType == ExplosionImpactType.DisappearAndStopExplosion) {
+                    if (explosionImpactType == ExplosionImpactType.DisappearAndStopExplosion) {
+                        entityData.setComponent(explosionComponent.getCreator(), new ScoreComponent(entityData.getComponent(explosionComponent.getCreator(), ScoreComponent.class).getScore() + 10));
+                        entityData.removeEntity(entity.getId());
+                    } else if(explosionImpactType == ExplosionImpactType.Disappear){
+                        entityData.setComponent(explosionComponent.getCreator(), new ScoreComponent(entityData.getComponent(explosionComponent.getCreator(), ScoreComponent.class).getScore() + 100));
                         entityData.removeEntity(entity.getId());
                     } else if (explosionImpactType == ExplosionImpactType.Explode) {
                         BombComponent bomCom = entityData.getComponent(entity.getId(), BombComponent.class);
@@ -57,21 +61,21 @@ public class ExplosionAppState extends BaseAppState {
             if (timer <= 0) {
                 entityData.removeEntity(explosion.getId());
             } else {
-                entityData.setComponents(explosion.getId(), new ExplosionComponent(timer));
+                entityData.setComponents(explosion.getId(), new ExplosionComponent(timer, explosionComponent.getCreator()));
             }
         }
     }
 
-    public void createExplosion(PositionComponent pos, int radius) {
+    public void createExplosion(PositionComponent pos, BombComponent bombComponent) {
         explosionEntities.applyChanges();
         entitySet.applyChanges();
         pos = GameUtils.getCellPosition(pos);
 
-        EntityCreator.createExplosion(entityData, pos);
+        EntityCreator.createExplosion(entityData, pos, bombComponent.getCreator());
 
         int temp[][] = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
         for (int i = 0; i < 4; i++) {
-            for (int j = 1; j <= radius; j++) {
+            for (int j = 1; j <= bombComponent.getRadius(); j++) {
 
                 int x = (int) (pos.getX() + j * temp[i][0]);
                 int y = (int) (pos.getY() + j * temp[i][1]);
@@ -85,6 +89,7 @@ public class ExplosionAppState extends BaseAppState {
                         if (explosionImpactType == ExplosionImpactType.StopExplosion) {
                             stop = true;
                         } else if (explosionImpactType == ExplosionImpactType.DisappearAndStopExplosion) {
+                            entityData.setComponent(bombComponent.getCreator(), new ScoreComponent(entityData.getComponent(bombComponent.getCreator(), ScoreComponent.class).getScore() + 10));
                             DropPowerUpComponent droPowCom = entityData.getComponent(entity.getId(), DropPowerUpComponent.class);
                             if (droPowCom != null) {
                                 addPotentialPowerUp(posCom);
@@ -95,7 +100,7 @@ public class ExplosionAppState extends BaseAppState {
                     }
                 }
                 if (stop) break;
-                else EntityCreator.createExplosion(entityData, x, y);
+                else EntityCreator.createExplosion(entityData, x, y, bombComponent.getCreator());
             }
         }
     }

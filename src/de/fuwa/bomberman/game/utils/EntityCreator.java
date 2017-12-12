@@ -23,7 +23,8 @@ public class EntityCreator {
                 new NameComponent(name),
                 new WalkableComponent(MoveDirection.Idle, 2),
                 new PlayerComponent(1, 1),
-                new ExplosionImpactComponent(ExplosionImpactType.Disappear)
+                new ExplosionImpactComponent(ExplosionImpactType.Disappear),
+                new ScoreComponent(0)
         );
 
         ModelType modelType = ModelType.Player; // default
@@ -123,18 +124,18 @@ public class EntityCreator {
 
         return bomb;
     }
-    public static EntityId createExplosion(EntityData entityData, PositionComponent pos){
+    public static EntityId createExplosion(EntityData entityData, PositionComponent pos, EntityId player){
         pos = GameUtils.getCellPosition(pos);
-        return createExplosion(entityData,(int)pos.getX(), (int)pos.getY());
+        return createExplosion(entityData,(int)pos.getX(), (int)pos.getY(), player);
     }
 
-    public static EntityId createExplosion(EntityData entityData, int centreX, int centreY){
+    public static EntityId createExplosion(EntityData entityData, int centreX, int centreY, EntityId player){
         EntityId explosion = entityData.createEntity();
 
         entityData.setComponents(explosion,
                 new PositionComponent(centreX,centreY),
                 new ModelComponent(ModelType.Explosion, false),
-                new ExplosionComponent(1f)
+                new ExplosionComponent(1f, player)
         );
         return explosion;
     }
