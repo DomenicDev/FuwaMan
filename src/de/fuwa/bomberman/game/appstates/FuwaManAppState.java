@@ -8,9 +8,13 @@ import de.fuwa.bomberman.app.gui.GameContextFrame;
 import de.fuwa.bomberman.game.MultiPlayerGame;
 import de.fuwa.bomberman.game.SingleplayerGame;
 import de.fuwa.bomberman.game.appstates.multiplayer.GameClient;
+import de.fuwa.bomberman.game.appstates.sound.BackgroundMusicAppState;
+import de.fuwa.bomberman.game.appstates.sound.ExplosionSoundAppState;
+import de.fuwa.bomberman.game.appstates.sound.SoundVolumeAppState;
 import de.fuwa.bomberman.game.appstates.state.GameStateHandler;
 import de.fuwa.bomberman.game.gui.BasicFuwaManPanel;
 import de.fuwa.bomberman.game.gui.GameMenuListener;
+import de.fuwa.bomberman.game.gui.OptionsMenu;
 import de.fuwa.bomberman.game.utils.GameConstants;
 import de.fuwa.bomberman.game.utils.GameOptions;
 
@@ -23,11 +27,14 @@ public class FuwaManAppState extends BaseAppState implements GameMenuListener {
     private AppStateManager stateManager;
     private GameApplication gameApplication;
     private FuwaManGuiHolderAppState guiHolder;
+    private SoundVolumeAppState soundVolumeAppState;
 
     @Override
     public void initialize(AppStateManager stateManager) {
         this.stateManager = stateManager;
         this.gameApplication = stateManager.getGameApplication();
+
+        this.soundVolumeAppState = new SoundVolumeAppState();
 
         this.guiHolder = new FuwaManGuiHolderAppState();
         stateManager.attachState(guiHolder);
@@ -45,6 +52,15 @@ public class FuwaManAppState extends BaseAppState implements GameMenuListener {
             stateManager.detachState(game);
             this.game = null;
         }
+    }
+    @Override
+    public void onClickFullscreen(){
+
+    }
+
+    @Override
+    public void onClickWindow(){
+
     }
 
     @Override
@@ -75,7 +91,41 @@ public class FuwaManAppState extends BaseAppState implements GameMenuListener {
 
     @Override
     public void onClickOptions() {
+        gameApplication.addCallable(() -> {
+            detachOldGame();
+            context.setScreen(guiHolder.getOptionsMenu());
+        });
+    }
+    @Override
+    public void onClickSaveChanges(){
+        //volume = max-unchanged;
+        soundVolumeAppState.setVolume(soundVolumeAppState.getMax()-soundVolumeAppState.getUnchanged());
+        System.out.println(soundVolumeAppState.getVolume());
 
+        onClickReturnToMainMenu();
+    }
+    @Override
+    public void onClickVolumeDown(){
+        System.out.println(soundVolumeAppState.getVolume());
+        if(soundVolumeAppState.getUnchanged()<soundVolumeAppState.getMax()){
+            soundVolumeAppState.setUnchanged(soundVolumeAppState.getUnchanged()+10.0f);
+            if(soundVolumeAppState.getUnchanged()>=soundVolumeAppState.getMax()){
+                soundVolumeAppState.setUnchanged(soundVolumeAppState.getMax());
+            }
+        }
+        System.out.println(soundVolumeAppState.getUnchanged());
+
+    }
+    @Override
+    public void onClickVolumeUp(){
+
+        if(soundVolumeAppState.getUnchanged()>0){
+            soundVolumeAppState.setUnchanged(soundVolumeAppState.getUnchanged()-10.0f);
+            if(soundVolumeAppState.getUnchanged()<=0){
+                soundVolumeAppState.setUnchanged(0);
+            }
+        }
+        System.out.println(soundVolumeAppState.getUnchanged());
     }
 
     @Override
@@ -110,6 +160,7 @@ public class FuwaManAppState extends BaseAppState implements GameMenuListener {
 
     @Override
     public void onClickReturnToMainMenu() {
+        soundVolumeAppState.setUnchanged(soundVolumeAppState.getVolume());
         gameApplication.addCallable(() -> {
             detachOldGame();
             context.setScreen(guiHolder.getMainMenu());

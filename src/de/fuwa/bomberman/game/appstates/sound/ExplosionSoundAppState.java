@@ -5,7 +5,9 @@ import de.fuwa.bomberman.app.BaseAppState;
 import de.fuwa.bomberman.es.EntityData;
 import de.fuwa.bomberman.es.EntitySet;
 import de.fuwa.bomberman.game.appstates.EntityDataState;
+import de.fuwa.bomberman.game.appstates.FuwaManAppState;
 import de.fuwa.bomberman.game.components.ExplosionComponent;
+import de.fuwa.bomberman.tests.TestGui;
 
 import javax.sound.sampled.*;
 import java.io.File;
@@ -15,6 +17,9 @@ public class ExplosionSoundAppState extends BaseAppState {
 
     private static final String SOUND_PATH = "assets/Sounds/";
     private EntitySet explosions;
+
+    private SoundVolumeAppState soundVolume;
+
 
     @Override
     public void initialize(AppStateManager stateManager) {
@@ -35,6 +40,7 @@ public class ExplosionSoundAppState extends BaseAppState {
 
     private void createSound() {
         try {
+            this.soundVolume = new SoundVolumeAppState();
             // Open an audio input stream.
             // from a wave File
             File soundFile = new File(SOUND_PATH + "bomb.wav");
@@ -43,10 +49,10 @@ public class ExplosionSoundAppState extends BaseAppState {
             Clip clip = AudioSystem.getClip();
             // Open audio clip and load samples from the audio input stream.
             clip.open(audioIn);
-            /*FloatControl gainControl =
+            FloatControl gainControl =
                     (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-            gainControl.setValue(-10.0f); // Reduce volume by 10 decibels.
-            */
+            //System.out.println(soundVolumeAppState.volume);
+            //gainControl.setValue(-(soundVolume.getVolume())); //change Volume
             clip.start();
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             e.printStackTrace();

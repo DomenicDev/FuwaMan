@@ -1,5 +1,6 @@
 package de.fuwa.bomberman.game.gui;
 
+import de.fuwa.bomberman.game.appstates.sound.SoundVolumeAppState;
 import de.fuwa.bomberman.game.utils.GameOptions;
 
 public interface GameMenuListener {
@@ -25,4 +26,15 @@ public interface GameMenuListener {
     void onClickConnectToGame(String ipAddress);
 
     void onClickOpenConnectScreen();
+
+    void onClickFullscreen();
+
+    void onClickWindow();
+
+    void onClickVolumeUp();
+
+    void onClickVolumeDown();
+
+    void onClickSaveChanges();
+
 }
