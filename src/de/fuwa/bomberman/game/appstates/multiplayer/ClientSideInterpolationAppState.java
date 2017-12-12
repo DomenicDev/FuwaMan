@@ -14,6 +14,7 @@ import de.fuwa.bomberman.game.components.WalkableComponent;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * This app state interpolates the positions of dynamic game objects such as characters.
@@ -23,7 +24,7 @@ public class ClientSideInterpolationAppState extends BaseAppState {
 
     private EntitySet dynamics;
     private VisualAppState visualAppState;
-    private Map<EntityId, Position> current = new HashMap<>();
+    private Map<EntityId, Position> current = new ConcurrentHashMap<>();
 
     @Override
     public void initialize(AppStateManager stateManager) {
