@@ -8,7 +8,7 @@ public class FinalMainGame extends GameApplication {
 
     public static void main(String[] args) {
         FinalMainGame game = new FinalMainGame();
-        AppSettings settings = new AppSettings(800, 800, false);
+        AppSettings settings = new AppSettings(1024, 720, false);
         game.start(settings);
     }
 
