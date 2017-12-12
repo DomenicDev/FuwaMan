@@ -8,8 +8,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class VisualGameField extends JPanel {
@@ -19,7 +17,7 @@ public class VisualGameField extends JPanel {
 
     private BufferedImage background;
 
-    private List<DrawableObject> backgroundObjects, middleObjects, foregroundObjects;
+    private ConcurrentLinkedQueue<DrawableObject> backgroundObjects, middleObjects, foregroundObjects;
 
 
     private ConcurrentLinkedQueue<DrawableObject> graphicalObjects = new ConcurrentLinkedQueue<>();
@@ -29,9 +27,9 @@ public class VisualGameField extends JPanel {
     }
 
     public VisualGameField(int sizeX, int sizeY) {
-        this.backgroundObjects = new ArrayList<>();
-        this.middleObjects = new ArrayList<>();
-        this.foregroundObjects = new ArrayList<>();
+        this.backgroundObjects = new ConcurrentLinkedQueue<>();
+        this.middleObjects = new ConcurrentLinkedQueue<>();
+        this.foregroundObjects = new ConcurrentLinkedQueue<>();
 
         setSize(sizeX, sizeY);
         try {
@@ -96,7 +94,7 @@ public class VisualGameField extends JPanel {
         Toolkit.getDefaultToolkit().sync();
     }
 
-    private void drawImages(List<DrawableObject> drawables, Graphics2D graphics2D) {
+    private void drawImages(ConcurrentLinkedQueue<DrawableObject> drawables, Graphics2D graphics2D) {
         for (DrawableObject object : drawables) {
             int screenPosX = (int) (object.getX() * GameConstants.TILE_SIZE);
             int screenPosY = (int) (object.getY() * GameConstants.TILE_SIZE);

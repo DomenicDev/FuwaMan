@@ -69,7 +69,7 @@ public class KiAppstate extends BaseAppState {
     }
 
     @Override
-    public void update(float tpf){
+    public void update(float tpf) {
         entitySet.applyChanges();
         entities.applyChanges();
         bombs.applyChanges();
@@ -93,6 +93,32 @@ public class KiAppstate extends BaseAppState {
                         Path path = kiAction.getPath();
                         for(int i = 0; i < path.getMoves().size()-1; i++){
                             path.removeMove(path.getMove(i));
+                        }
+                        Move move = path.getMove(0);
+                        if (path.getMoves().size() > 0) {
+                            if (!playermap[(int) move.getPos().getX()][(int) move.getPos().getY()].isWalkable()) {
+                                MoveDirection movedir = move.getDir();
+                                PositionComponent newpos;
+                                if (movedir == MoveDirection.Up) {
+                                    movedir = MoveDirection.Down;
+                                    newpos = new PositionComponent(move.getPos().getX(), move.getPos().getY() + 1);
+                                } else if (movedir == MoveDirection.Down) {
+                                    movedir = MoveDirection.Up;
+                                    newpos = new PositionComponent(move.getPos().getX(), move.getPos().getY() - 1);
+                                } else if (movedir == MoveDirection.Left) {
+                                    movedir = MoveDirection.Right;
+                                    newpos = new PositionComponent(move.getPos().getX() + 1, move.getPos().getY());
+                                } else {
+                                    movedir = MoveDirection.Left;
+                                    newpos = new PositionComponent(move.getPos().getX() - 1, move.getPos().getY() + 1);
+                                }
+                                path.removeMove(move);
+                                path.addMove(new Move(newpos, movedir));
+
+
+                                System.out.println("test");
+                                kidone.put(entity.getId(), false);
+                            }
                         }
                     }
                 }
@@ -443,8 +469,11 @@ public class KiAppstate extends BaseAppState {
         PositionComponent pos = player.get(PositionComponent.class);
         PlayerComponent playCom = player.get(PlayerComponent.class);
 
+        if (pos == null) return playerMap;
+
         for(EntityId entityId : playerOnBomb.get(player.getId())){
             PositionComponent posCom = entityData.getComponent(entityId, PositionComponent.class);
+            if (posCom == null) continue;
             playerMap[(int)posCom.getX()][(int)posCom.getY()].setWalkable(true);
         }
 
