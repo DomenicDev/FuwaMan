@@ -3,7 +3,6 @@ package de.fuwa.bomberman.game.appstates.sound;
 import de.fuwa.bomberman.app.AppStateManager;
 import de.fuwa.bomberman.app.BaseAppState;
 import de.fuwa.bomberman.game.appstates.FuwaManAppState;
-import de.fuwa.bomberman.tests.TestGui;
 
 import javax.sound.sampled.*;
 import java.io.File;
