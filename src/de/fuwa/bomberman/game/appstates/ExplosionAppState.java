@@ -46,7 +46,9 @@ public class ExplosionAppState extends BaseAppState {
                         entityData.setComponent(explosionComponent.getCreator(), new ScoreComponent(entityData.getComponent(explosionComponent.getCreator(), ScoreComponent.class).getScore() + 10));
                         entityData.removeEntity(entity.getId());
                     } else if(explosionImpactType == ExplosionImpactType.Disappear){
-                        entityData.setComponent(explosionComponent.getCreator(), new ScoreComponent(entityData.getComponent(explosionComponent.getCreator(), ScoreComponent.class).getScore() + 100));
+                        if (entityData.getComponent(explosionComponent.getCreator(), ScoreComponent.class) != null) {
+                            entityData.setComponent(explosionComponent.getCreator(), new ScoreComponent(entityData.getComponent(explosionComponent.getCreator(), ScoreComponent.class).getScore() + 100));
+                        }
                         entityData.removeEntity(entity.getId());
                     } else if (explosionImpactType == ExplosionImpactType.Explode) {
                         BombComponent bomCom = entityData.getComponent(entity.getId(), BombComponent.class);
