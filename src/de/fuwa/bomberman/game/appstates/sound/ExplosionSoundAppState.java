@@ -5,7 +5,6 @@ import de.fuwa.bomberman.app.BaseAppState;
 import de.fuwa.bomberman.es.EntityData;
 import de.fuwa.bomberman.es.EntitySet;
 import de.fuwa.bomberman.game.appstates.EntityDataState;
-import de.fuwa.bomberman.game.appstates.FuwaManAppState;
 import de.fuwa.bomberman.game.components.ExplosionComponent;
 
 import javax.sound.sampled.*;
