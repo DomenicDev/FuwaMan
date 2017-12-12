@@ -11,7 +11,7 @@ import de.fuwa.bomberman.game.enums.MoveDirection;
 import de.fuwa.bomberman.game.session.GameSession;
 import de.fuwa.bomberman.game.state.GameStateListener;
 import de.fuwa.bomberman.game.utils.GameInitializer;
-import de.fuwa.bomberman.game.utils.Player;
+import de.fuwa.bomberman.game.utils.GameUtils;
 import de.fuwa.bomberman.network.Client;
 import de.fuwa.bomberman.network.ClientStateListener;
 import de.fuwa.bomberman.network.MessageListener;
@@ -95,7 +95,7 @@ public class GameClient extends BaseAppState implements MessageListener<Client>,
     @Override
     public void onClientConnected(Client c) {
         System.out.println("connected");
-        c.send(new JoinGameMessage(new Player("TestClient")));
+        c.send(new JoinGameMessage(GameUtils.createDefaultHumanPlayer()));
     }
 
     @Override

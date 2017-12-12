@@ -6,11 +6,12 @@ import de.fuwa.bomberman.game.appstates.session.GameSessionAppState;
 import de.fuwa.bomberman.game.appstates.state.GameStateHandler;
 import de.fuwa.bomberman.game.session.GameSession;
 import de.fuwa.bomberman.game.utils.GameOptions;
+import de.fuwa.bomberman.game.utils.GameUtils;
 import de.fuwa.bomberman.game.utils.Player;
 
 public class SingleplayerGame extends AbstractGame {
 
-    private Player player = new Player(System.getProperty("user.name"), false);
+    private Player player = GameUtils.createDefaultHumanPlayer();
     private GameSessionAppState gameSessionAppState;
 
     @Override

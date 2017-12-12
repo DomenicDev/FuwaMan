@@ -75,4 +75,8 @@ public class GameUtils {
     public static GameOptions getTestGameOptions() {
         return new GameOptions(Setting.Classic, GameUtils.createComplexGameField(), 1);
     }
+
+    public static Player createDefaultHumanPlayer() {
+        return new Player(System.getProperty("user.name"), false);
+    }
 }
