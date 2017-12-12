@@ -80,7 +80,11 @@ public class InGameGui extends JPanel {
     }
 
     public void removePlayerInfo(EntityId playerId) {
-
+        PlayerInfo info = this.players.get(playerId);
+        if (info != null) {
+            this.playerInfoPanel.remove(info);
+            this.playerInfoPanel.setLayout(new GridLayout(1, players.size()));
+        }
     }
 
     public void setStatusText(String statusText) {
