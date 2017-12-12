@@ -2,12 +2,8 @@ package de.fuwa.bomberman.app.gui;
 
 import de.fuwa.bomberman.game.utils.GameConstants;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class VisualGameField extends JPanel {
@@ -15,7 +11,7 @@ public class VisualGameField extends JPanel {
     private int sizeX;
     private int sizeY;
 
-    private BufferedImage background;
+    private Image background;
 
     private ConcurrentLinkedQueue<DrawableObject> backgroundObjects, middleObjects, foregroundObjects;
 
@@ -32,12 +28,16 @@ public class VisualGameField extends JPanel {
         this.foregroundObjects = new ConcurrentLinkedQueue<>();
 
         setSize(sizeX, sizeY);
-        try {
+        /*try {
             background = ImageIO.read(new File("assets/Textures/ground.jpg"));
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
 
+    }
+
+    public void setBackground(DrawableObject object) {
+        this.background = object.getImageToDraw();
     }
 
     public final void setSize(int sizeX, int sizeY) {
@@ -82,7 +82,9 @@ public class VisualGameField extends JPanel {
         float scale = Math.min(scaleX, scaleY);
 
         // draw background first
-        graphics2D.drawImage(background, 0, 0, getWidth(), getHeight(), this);
+        if (background != null) {
+            graphics2D.drawImage(background, 0, 0, getWidth(), getHeight(), this);
+        }
 
         graphics2D.scale(scale, scale);
 

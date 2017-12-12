@@ -7,6 +7,7 @@ import de.fuwa.bomberman.game.appstates.multiplayer.ClientSideInterpolationAppSt
 import de.fuwa.bomberman.game.appstates.sound.BackgroundMusicAppState;
 import de.fuwa.bomberman.game.appstates.sound.ExplosionSoundAppState;
 import de.fuwa.bomberman.game.appstates.visual.VisualAppState;
+import de.fuwa.bomberman.game.appstates.visual.VisualBackgroundAppState;
 import de.fuwa.bomberman.game.appstates.visual.VisualGameFieldAppState;
 import de.fuwa.bomberman.game.appstates.visual.VisualPlayerAppState;
 
@@ -40,6 +41,7 @@ public class GameInitializer {
         stateManager.attachState(new VisualGameFieldAppState(sizeX, sizeY));
         stateManager.attachState(new VisualAppState());
         stateManager.attachState(new VisualPlayerAppState());
+        stateManager.attachState(new VisualBackgroundAppState());
 
         // Sound App States
         stateManager.attachState(new ExplosionSoundAppState());
@@ -50,6 +52,7 @@ public class GameInitializer {
         stateManager.detachState(stateManager.getState(VisualGameFieldAppState.class));
         stateManager.detachState(stateManager.getState(VisualAppState.class));
         stateManager.detachState(stateManager.getState(VisualPlayerAppState.class));
+        stateManager.detachState(stateManager.getState(VisualBackgroundAppState.class));
 
         stateManager.detachState(stateManager.getState(ExplosionSoundAppState.class));
         stateManager.detachState(stateManager.getState(BackgroundMusicAppState.class));
