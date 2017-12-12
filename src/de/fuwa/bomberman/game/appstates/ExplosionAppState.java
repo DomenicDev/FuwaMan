@@ -91,7 +91,9 @@ public class ExplosionAppState extends BaseAppState {
                         if (explosionImpactType == ExplosionImpactType.StopExplosion) {
                             stop = true;
                         } else if (explosionImpactType == ExplosionImpactType.DisappearAndStopExplosion) {
-                            entityData.setComponent(bombComponent.getCreator(), new ScoreComponent(entityData.getComponent(bombComponent.getCreator(), ScoreComponent.class).getScore() + 10));
+                            if (entityData.getComponent(bombComponent.getCreator(), ScoreComponent.class) != null) {
+                                entityData.setComponent(bombComponent.getCreator(), new ScoreComponent(entityData.getComponent(bombComponent.getCreator(), ScoreComponent.class).getScore() + 10));
+                            }
                             DropPowerUpComponent droPowCom = entityData.getComponent(entity.getId(), DropPowerUpComponent.class);
                             if (droPowCom != null) {
                                 addPotentialPowerUp(posCom);
