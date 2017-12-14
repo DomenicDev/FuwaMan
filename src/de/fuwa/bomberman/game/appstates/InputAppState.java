@@ -40,19 +40,15 @@ public class InputAppState extends BaseAppState implements KeyListener {
 
         if (e.getKeyCode() == KeyEvent.VK_UP) {
             up = true;
-            System.out.println("W-press");
         }
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
             left = true;
-            System.out.println("A-press");
         }
         if (e.getKeyCode() == KeyEvent.VK_DOWN) {
             down = true;
-            System.out.println("S-press");
         }
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             right = true;
-            System.out.println("D-press");
         }
 
     }
