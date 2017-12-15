@@ -31,9 +31,7 @@ public interface GameMenuListener {
 
     void onClickWindow();
 
-    void onClickVolumeUp();
-
-    void onClickVolumeDown();
+    void onVolumeChange(float volume);
 
     void onClickSaveChanges();
 
