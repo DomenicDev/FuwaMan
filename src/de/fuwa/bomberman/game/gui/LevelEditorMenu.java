@@ -119,10 +119,11 @@ public class LevelEditorMenu extends JPanel {
         for (int y = 0; y < gameFieldSizeY; y++) {
             for (int x = 0; x < gameFieldSizeX; x++) {
                 this.visualGameField[y][x] = new JButton();
-                this.visualGameField[y][x].addActionListener(new ButtonClickHandler(x, y));
                 this.editor.add(visualGameField[y][x]);
                 if (isReservedPosition(x, y)) {
                     setBlockType(x, y, BlockType.Undestroyable);
+                } else {
+                    this.visualGameField[y][x].addActionListener(new ButtonClickHandler(x, y));
                 }
             }
         }
