@@ -30,7 +30,7 @@ public class ExternalDataManager {
                 return (GameField) o;
             }
         } catch (IOException | ClassNotFoundException e) {
-            Logger.getLogger(ExternalDataManager.class).log(Level.SEVERE, "Failed to load '" + name + "'. Probably not a object file!");
+            Logger.getLogger(ExternalDataManager.class).log(Level.WARNING, "Failed to load '" + name + "'. Probably not a object file!");
         }
         return null;
     }
