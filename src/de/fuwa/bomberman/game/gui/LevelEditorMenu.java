@@ -120,12 +120,20 @@ public class LevelEditorMenu extends JPanel {
             for (int x = 0; x < gameFieldSizeX; x++) {
                 this.visualGameField[y][x] = new JButton();
                 this.editor.add(visualGameField[y][x]);
-                if (isReservedPosition(x, y)) {
-                    setBlockType(x, y, BlockType.Undestroyable);
-                } else {
+                if (!isReservedPosition(x, y)) {
                     this.visualGameField[y][x].addActionListener(new ButtonClickHandler(x, y));
                 }
             }
+        }
+
+        // create border
+        for (int x = 0; x < this.gameFieldSizeX; x++) {
+            setBlockType(x, 0, BlockType.Undestroyable);
+            setBlockType(x, this.gameFieldSizeY - 1, BlockType.Undestroyable);
+        }
+        for (int y = 0; y < this.gameFieldSizeY; y++) {
+            setBlockType(0, y, BlockType.Undestroyable);
+            setBlockType(this.gameFieldSizeX - 1, y, BlockType.Undestroyable);
         }
     }
 
@@ -166,7 +174,11 @@ public class LevelEditorMenu extends JPanel {
     }
 
     private boolean isReservedPosition(int x, int y) {
-        return (y == 0 || x == 0 || y == this.gameFieldSizeY - 1 || x == this.gameFieldSizeX - 1);
+        return (y == 0 || x == 0 || y == this.gameFieldSizeY - 1 || x == this.gameFieldSizeX - 1) ||
+                (x == 1 && y == 1) || (x == 2 && y == 1) || (x == 1 && y == 2) ||
+                (x == this.gameFieldSizeX - 2 && y == 1) || (x == this.gameFieldSizeX - 3 && y == 1) || (x == this.gameFieldSizeX - 2 && y == 2) ||
+                (x == 1 && y == this.gameFieldSizeY - 2) || (x == 1 && y == this.gameFieldSizeY - 3) || (x == 2 && y == this.gameFieldSizeY - 2) ||
+                (x == this.gameFieldSizeX - 2 && y == this.gameFieldSizeY - 2) || (x == this.gameFieldSizeX - 3 && y == this.gameFieldSizeY - 2) || (x == this.gameFieldSizeX - 2 && y == this.gameFieldSizeY - 3);
     }
 
     private void scaleImages(int iconWidth, int iconHeight) {
