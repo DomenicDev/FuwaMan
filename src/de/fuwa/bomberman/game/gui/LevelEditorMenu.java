@@ -195,12 +195,13 @@ public class LevelEditorMenu extends JPanel {
             }
         }
         String name = JOptionPane.showInputDialog("Please enter a name for this map");
-        if (ExternalDataManager.writeCustomMap(name, gameField)) {
-            JOptionPane.showMessageDialog(null, "Saved Map");
-        } else {
-            JOptionPane.showMessageDialog(null, "Could not save map");
+        if (name != null) {
+            if (ExternalDataManager.writeCustomMap(name, gameField)) {
+                JOptionPane.showMessageDialog(null, "Saved Map");
+            } else {
+                JOptionPane.showMessageDialog(null, "Could not save map");
+            }
         }
-
     }
 
     private void refreshIconsForButtons() {
