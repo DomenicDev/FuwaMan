@@ -12,6 +12,8 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 public class LevelEditorMenu extends JPanel {
 
@@ -28,6 +30,8 @@ public class LevelEditorMenu extends JPanel {
     private BlockType selectedBlockType;
 
     private JSpinner widthSpinner, heightSpinner;
+
+    private boolean sprayPaintEnabled = false;
 
     public LevelEditorMenu() {
         this(GameConstants.MIN_GAME_FIELD_SIZE, GameConstants.MIN_GAME_FIELD_SIZE);
@@ -47,7 +51,6 @@ public class LevelEditorMenu extends JPanel {
 
         JPanel widthPanel = new JPanel();
         widthPanel.add(new JLabel("Width"));
-
 
         SizeChangeHandler sizeChangeHandler = new SizeChangeHandler();
 
@@ -121,7 +124,8 @@ public class LevelEditorMenu extends JPanel {
                 this.visualGameField[y][x] = new JButton();
                 this.editor.add(visualGameField[y][x]);
                 if (!isReservedPosition(x, y)) {
-                    this.visualGameField[y][x].addActionListener(new ButtonClickHandler(x, y));
+                    //    this.visualGameField[y][x].addActionListener(new ButtonClickHandler(x, y));
+                    this.visualGameField[y][x].addMouseListener(new GameFieldSprayHandler(x, y));
                 }
             }
         }
@@ -272,5 +276,51 @@ public class LevelEditorMenu extends JPanel {
         }
 
     }
+
+    /**
+     * Every tile will have its own instance of this listener
+     */
+    private class GameFieldSprayHandler implements MouseListener {
+
+        private int x, y;
+
+        public GameFieldSprayHandler(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+            if (e.getButton() == MouseEvent.BUTTON1) {
+                sprayPaintEnabled = true;
+            }
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            if (e.getButton() == MouseEvent.BUTTON1) {
+                sprayPaintEnabled = false;
+            }
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            if (sprayPaintEnabled) {
+                setBlockType(x, y, selectedBlockType);
+            }
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+
+        }
+    }
+
+
 
 }
