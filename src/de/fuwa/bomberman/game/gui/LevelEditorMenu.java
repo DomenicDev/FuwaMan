@@ -62,32 +62,9 @@ public class LevelEditorMenu extends JPanel {
         sizeList.addActionListener(sizeChangeHandler);
         sizePanel.add(sizeList);
 
-        /*this.sizeComboBox = new JComboBox(sizeBox);
-        sizeComboBox.getSelectedIndex();
-        sizeComboBox.addActionListener(sizeChangeHandler);
-        sizePanel.add(sizeComboBox);
-        */
-
-        /*
-        SizeChangeHandler sizeChangeHandler = new SizeChangeHandler();
-
-        SpinnerNumberModel model = new SpinnerNumberModel(GameConstants.MIN_GAME_FIELD_SIZE, GameConstants.MIN_GAME_FIELD_SIZE, 30, 1);
-        this.widthSpinner = new JSpinner(model);
-        widthSpinner.addChangeListener(sizeChangeHandler);
-        widthPanel.add(widthSpinner);
-        sizePanel.add(widthPanel);
-
-        SpinnerModel model1 = new SpinnerNumberModel(GameConstants.MIN_GAME_FIELD_SIZE, GameConstants.MIN_GAME_FIELD_SIZE, 30, 1);
-        JPanel heightPanel = new JPanel();
-        heightPanel.add(new JLabel("Height"));
-        this.heightSpinner = new JSpinner(model1);
-        this.heightSpinner.addChangeListener(new SizeChangeHandler());
-        heightPanel.add(heightSpinner);
-        sizePanel.add(heightPanel);
-        */
-
         topPanel.add(sizePanel);
 
+        
         JPanel blockTypePanel = new JPanel();
         blockTypePanel.setBorder(BorderFactory.createTitledBorder("Select block type to place"));
         JComboBox<BlockType> typeBox = new JComboBox<>();
