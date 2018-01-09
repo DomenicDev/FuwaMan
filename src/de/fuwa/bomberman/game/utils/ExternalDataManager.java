@@ -35,15 +35,16 @@ public class ExternalDataManager {
         return null;
     }
 
-    public static List<GameField> readAllCustomMaps() {
+    public static List<NamedGameField> readAllCustomMaps() {
         File usermapFolder = new File(DIRECTORY);
         File[] maps = usermapFolder.listFiles();
         if (maps != null) {
-            List<GameField> list = new ArrayList<>(maps.length);
+            List<NamedGameField> list = new ArrayList<>(maps.length);
             for (File f : maps) {
-                GameField s = readCustomMap(f.getName());
-                if (s != null) {
-                    list.add(s);
+                GameField field = readCustomMap(f.getName());
+                String name = f.getName();
+                if (field != null) {
+                    list.add(new NamedGameField(name, field));
                 }
             }
             return list;

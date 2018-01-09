@@ -35,11 +35,15 @@ public class SingleplayerMenu extends BasicFuwaManPanel {
 
         JLabel mapLabel = new JLabel("Choose Map");
         contentPanel.add(mapLabel);
-        JComboBox<GameField> mapBox = new JComboBox<>();
-        mapBox.addItem(GameUtils.createComplexGameField(GameConstants.MIN_GAME_FIELD_SIZE, GameConstants.MIN_GAME_FIELD_SIZE));
-        List<GameField> customMaps = ExternalDataManager.readAllCustomMaps();
+        JComboBox<NamedGameField> mapBox = new JComboBox<>();
+        // add predefined maps
+        mapBox.addItem(new NamedGameField("Small", GameUtils.createComplexGameField(GameConstants.MIN_GAME_FIELD_SIZE, GameConstants.MIN_GAME_FIELD_SIZE)));
+        mapBox.addItem(new NamedGameField("Medium", GameUtils.createComplexGameField((GameConstants.MIN_GAME_FIELD_SIZE + GameConstants.MAX_GAME_FIELD_SIZE) / 2, (GameConstants.MIN_GAME_FIELD_SIZE + GameConstants.MAX_GAME_FIELD_SIZE) / 2)));
+        mapBox.addItem(new NamedGameField("Large", GameUtils.createComplexGameField(GameConstants.MAX_GAME_FIELD_SIZE, GameConstants.MAX_GAME_FIELD_SIZE)));
+        // add custom maps
+        List<NamedGameField> customMaps = ExternalDataManager.readAllCustomMaps();
         if (customMaps != null) {
-            for (GameField customMap : customMaps) {
+            for (NamedGameField customMap : customMaps) {
                 mapBox.addItem(customMap);
             }
         }
@@ -60,7 +64,7 @@ public class SingleplayerMenu extends BasicFuwaManPanel {
 
         // start and return button
         JButton startButton = new JButton("Start Game");
-        startButton.addActionListener(e -> listener.onClickStartGame(new GameOptions(settingsBox.getItemAt(settingsBox.getSelectedIndex()), mapBox.getItemAt(mapBox.getSelectedIndex()), numberOfEnemiesBox.getItemAt(numberOfEnemiesBox.getSelectedIndex()))));
+        startButton.addActionListener(e -> listener.onClickStartGame(new GameOptions(settingsBox.getItemAt(settingsBox.getSelectedIndex()), mapBox.getItemAt(mapBox.getSelectedIndex()).getGameField(), numberOfEnemiesBox.getItemAt(numberOfEnemiesBox.getSelectedIndex()))));
         contentPanel.add(startButton);
 
         JButton returnButton = new JButton("Return");
