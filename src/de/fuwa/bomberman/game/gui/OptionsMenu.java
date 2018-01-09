@@ -24,6 +24,8 @@ public class OptionsMenu extends BasicFuwaManPanel {
 
         buttonPanel.add(new TransparentPanel()); // empty space
 
+        JLabel volumeLabel = new JLabel("Volume", SwingConstants.CENTER);
+        buttonPanel.add(volumeLabel);
         //Boxgridlayer hinzufügen für groesseren layer
 
         JSlider volume = new JSlider();

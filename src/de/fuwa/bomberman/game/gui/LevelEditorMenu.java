@@ -12,8 +12,7 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.beans.PropertyChangeListener;
 
 public class LevelEditorMenu extends JPanel {
 
@@ -29,9 +28,10 @@ public class LevelEditorMenu extends JPanel {
     private ImageIcon destructableBlock;
     private BlockType selectedBlockType;
 
-    private JSpinner widthSpinner, heightSpinner;
 
-    private boolean sprayPaintEnabled = false;
+    //private JSpinner widthSpinner, heightSpinner;
+    private JComboBox sizeList;
+
 
     public LevelEditorMenu() {
         this(GameConstants.MIN_GAME_FIELD_SIZE, GameConstants.MIN_GAME_FIELD_SIZE);
@@ -49,9 +49,26 @@ public class LevelEditorMenu extends JPanel {
         sizePanel.setLayout(new GridLayout(2, 1));
         sizePanel.setBorder(BorderFactory.createTitledBorder("Game field size"));
 
-        JPanel widthPanel = new JPanel();
-        widthPanel.add(new JLabel("Width"));
+        //JPanel widthPanel = new JPanel();
+        //widthPanel.add(new JLabel("Width"));
 
+        SizeChangeHandler sizeChangeHandler = new SizeChangeHandler();
+
+
+        String[] sizeBox = { "11","13","15","17","19","21","23","25","27","29"};
+        this.sizeList = new JComboBox(sizeBox);
+        JLabel labelText = new JLabel();
+        sizeList.setSelectedIndex(0);
+        sizeList.addActionListener(sizeChangeHandler);
+        sizePanel.add(sizeList);
+
+        /*this.sizeComboBox = new JComboBox(sizeBox);
+        sizeComboBox.getSelectedIndex();
+        sizeComboBox.addActionListener(sizeChangeHandler);
+        sizePanel.add(sizeComboBox);
+        */
+
+        /*
         SizeChangeHandler sizeChangeHandler = new SizeChangeHandler();
 
         SpinnerNumberModel model = new SpinnerNumberModel(GameConstants.MIN_GAME_FIELD_SIZE, GameConstants.MIN_GAME_FIELD_SIZE, 30, 1);
@@ -67,6 +84,7 @@ public class LevelEditorMenu extends JPanel {
         this.heightSpinner.addChangeListener(new SizeChangeHandler());
         heightPanel.add(heightSpinner);
         sizePanel.add(heightPanel);
+        */
 
         topPanel.add(sizePanel);
 
@@ -124,8 +142,7 @@ public class LevelEditorMenu extends JPanel {
                 this.visualGameField[y][x] = new JButton();
                 this.editor.add(visualGameField[y][x]);
                 if (!isReservedPosition(x, y)) {
-                    //    this.visualGameField[y][x].addActionListener(new ButtonClickHandler(x, y));
-                    this.visualGameField[y][x].addMouseListener(new GameFieldSprayHandler(x, y));
+                    this.visualGameField[y][x].addActionListener(new ButtonClickHandler(x, y));
                 }
             }
         }
@@ -234,15 +251,51 @@ public class LevelEditorMenu extends JPanel {
         }
     }
 
-    private class SizeChangeHandler implements ChangeListener {
+    private class SizeChangeHandler implements ChangeListener, ActionListener {
+
 
         @Override
         public void stateChanged(ChangeEvent e) {
-            if (e.getSource() == widthSpinner) {
+            /*if (e.getSource() == widthSpinner) {
                 gameFieldSizeX = (int) widthSpinner.getValue();
             } else {
                 gameFieldSizeY = (int) heightSpinner.getValue();
             }
+            initGameField(gameFieldSizeX, gameFieldSizeY);
+            */
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if(e.getSource() == sizeList){
+                JComboBox cb = (JComboBox)e.getSource();
+                String size = (String)cb.getSelectedItem();
+                switch(size){
+                    case "11": gameFieldSizeX = gameFieldSizeY = 11;
+                    break;
+                    case "13": gameFieldSizeX = gameFieldSizeY = 13;
+                    break;
+                    case "15": gameFieldSizeX = gameFieldSizeY = 15;
+                        break;
+                    case "17": gameFieldSizeX = gameFieldSizeY = 17;
+                        break;
+                    case "19": gameFieldSizeX = gameFieldSizeY = 19;
+                        break;
+                    case "21": gameFieldSizeX = gameFieldSizeY = 21;
+                        break;
+                    case "23": gameFieldSizeX = gameFieldSizeY = 23;
+                        break;
+                    case "25": gameFieldSizeX = gameFieldSizeY = 25;
+                        break;
+                    case "27": gameFieldSizeX = gameFieldSizeY = 27;
+                        break;
+                    case "29": gameFieldSizeX = gameFieldSizeY = 29;
+                        break;
+                    default:
+                        System.out.println("Whoops. Seems like your selected size can't be used!");
+                }
+            }
+
             initGameField(gameFieldSizeX, gameFieldSizeY);
         }
     }
@@ -276,51 +329,5 @@ public class LevelEditorMenu extends JPanel {
         }
 
     }
-
-    /**
-     * Every tile will have its own instance of this listener
-     */
-    private class GameFieldSprayHandler implements MouseListener {
-
-        private int x, y;
-
-        public GameFieldSprayHandler(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-
-        @Override
-        public void mouseClicked(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mousePressed(MouseEvent e) {
-            if (e.getButton() == MouseEvent.BUTTON1) {
-                sprayPaintEnabled = true;
-            }
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent e) {
-            if (e.getButton() == MouseEvent.BUTTON1) {
-                sprayPaintEnabled = false;
-            }
-        }
-
-        @Override
-        public void mouseEntered(MouseEvent e) {
-            if (sprayPaintEnabled) {
-                setBlockType(x, y, selectedBlockType);
-            }
-        }
-
-        @Override
-        public void mouseExited(MouseEvent e) {
-
-        }
-    }
-
-
 
 }
