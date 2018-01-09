@@ -3,7 +3,10 @@ package de.fuwa.bomberman.game.gui;
 import de.fuwa.bomberman.game.appstates.sound.SoundVolumeAppState;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 
 public class OptionsMenu extends BasicFuwaManPanel {
 
@@ -22,9 +25,24 @@ public class OptionsMenu extends BasicFuwaManPanel {
         buttonPanel.add(new TransparentPanel()); // empty space
 
         //Boxgridlayer hinzufügen für groesseren layer
+
         JSlider volume = new JSlider();
+        JButton bntvolume = new JButton("Volumne: "+ volume.getValue()+" %");
+        bntvolume.setToolTipText("Mute");
+        bntvolume.addActionListener(e -> listener.onVolumeChange(0));
+        bntvolume.addActionListener(new AbstractAction() {
+            public void actionPerformed(ActionEvent e) {
+                volume.setValue(0);
+            }
+        });
+        buttonPanel.add(bntvolume);
         volume.setValue(40);volume.setMaximum(80);volume.setMinimum(0);volume.setToolTipText("Volume");
         volume.addChangeListener(e -> listener.onVolumeChange(volume.getValue()));
+        volume.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent e) {
+                bntvolume.setText("Volumne: "+ volume.getValue()+" %");
+            }
+        });
         buttonPanel.add(volume);
 
         JButton fullscreen = new JButton("Fullscreen");
