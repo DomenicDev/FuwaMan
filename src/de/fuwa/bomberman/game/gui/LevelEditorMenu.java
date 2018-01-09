@@ -342,6 +342,7 @@ public class LevelEditorMenu extends JPanel {
         public void mousePressed(MouseEvent e) {
             if (e.getButton() == MouseEvent.BUTTON1) {
                 sprayPaintEnabled = true;
+                setBlockType(x, y, selectedBlockType);
             }
         }
 
