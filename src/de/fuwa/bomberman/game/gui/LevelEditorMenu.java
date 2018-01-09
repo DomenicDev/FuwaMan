@@ -12,7 +12,8 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 public class LevelEditorMenu extends JPanel {
 
@@ -32,6 +33,7 @@ public class LevelEditorMenu extends JPanel {
     //private JSpinner widthSpinner, heightSpinner;
     private JComboBox sizeList;
 
+    private boolean sprayPaintEnabled = false;
 
     public LevelEditorMenu() {
         this(GameConstants.MIN_GAME_FIELD_SIZE, GameConstants.MIN_GAME_FIELD_SIZE);
@@ -55,7 +57,7 @@ public class LevelEditorMenu extends JPanel {
         SizeChangeHandler sizeChangeHandler = new SizeChangeHandler();
 
 
-        String[] sizeBox = { "11","13","15","17","19","21","23","25","27","29"};
+        String[] sizeBox = {"11", "13", "15", "17", "19", "21", "23", "25", "27", "29"};
         this.sizeList = new JComboBox(sizeBox);
         JLabel labelText = new JLabel();
         sizeList.setSelectedIndex(0);
@@ -64,7 +66,7 @@ public class LevelEditorMenu extends JPanel {
 
         topPanel.add(sizePanel);
 
-        
+
         JPanel blockTypePanel = new JPanel();
         blockTypePanel.setBorder(BorderFactory.createTitledBorder("Select block type to place"));
         JComboBox<BlockType> typeBox = new JComboBox<>();
@@ -119,7 +121,8 @@ public class LevelEditorMenu extends JPanel {
                 this.visualGameField[y][x] = new JButton();
                 this.editor.add(visualGameField[y][x]);
                 if (!isReservedPosition(x, y)) {
-                    this.visualGameField[y][x].addActionListener(new ButtonClickHandler(x, y));
+                    //    this.visualGameField[y][x].addActionListener(new ButtonClickHandler(x, y));
+                    this.visualGameField[y][x].addMouseListener(new GameFieldSprayHandler(x, y));
                 }
             }
         }
@@ -244,29 +247,39 @@ public class LevelEditorMenu extends JPanel {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if(e.getSource() == sizeList){
-                JComboBox cb = (JComboBox)e.getSource();
-                String size = (String)cb.getSelectedItem();
-                switch(size){
-                    case "11": gameFieldSizeX = gameFieldSizeY = 11;
-                    break;
-                    case "13": gameFieldSizeX = gameFieldSizeY = 13;
-                    break;
-                    case "15": gameFieldSizeX = gameFieldSizeY = 15;
+            if (e.getSource() == sizeList) {
+                JComboBox cb = (JComboBox) e.getSource();
+                String size = (String) cb.getSelectedItem();
+                switch (size) {
+                    case "11":
+                        gameFieldSizeX = gameFieldSizeY = 11;
                         break;
-                    case "17": gameFieldSizeX = gameFieldSizeY = 17;
+                    case "13":
+                        gameFieldSizeX = gameFieldSizeY = 13;
                         break;
-                    case "19": gameFieldSizeX = gameFieldSizeY = 19;
+                    case "15":
+                        gameFieldSizeX = gameFieldSizeY = 15;
                         break;
-                    case "21": gameFieldSizeX = gameFieldSizeY = 21;
+                    case "17":
+                        gameFieldSizeX = gameFieldSizeY = 17;
                         break;
-                    case "23": gameFieldSizeX = gameFieldSizeY = 23;
+                    case "19":
+                        gameFieldSizeX = gameFieldSizeY = 19;
                         break;
-                    case "25": gameFieldSizeX = gameFieldSizeY = 25;
+                    case "21":
+                        gameFieldSizeX = gameFieldSizeY = 21;
                         break;
-                    case "27": gameFieldSizeX = gameFieldSizeY = 27;
+                    case "23":
+                        gameFieldSizeX = gameFieldSizeY = 23;
                         break;
-                    case "29": gameFieldSizeX = gameFieldSizeY = 29;
+                    case "25":
+                        gameFieldSizeX = gameFieldSizeY = 25;
+                        break;
+                    case "27":
+                        gameFieldSizeX = gameFieldSizeY = 27;
+                        break;
+                    case "29":
+                        gameFieldSizeX = gameFieldSizeY = 29;
                         break;
                     default:
                         System.out.println("Whoops. Seems like your selected size can't be used!");
@@ -303,6 +316,53 @@ public class LevelEditorMenu extends JPanel {
                 return preferredDim;
             }
             return super.getPreferredSize();
+        }
+
+    }
+
+    /**
+     * Every tile will have its own instance of this listener
+     */
+
+    private class GameFieldSprayHandler implements MouseListener {
+
+        private int x, y;
+
+        public GameFieldSprayHandler(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+        }
+
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+            if (e.getButton() == MouseEvent.BUTTON1) {
+                sprayPaintEnabled = true;
+            }
+        }
+
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            if (e.getButton() == MouseEvent.BUTTON1) {
+                sprayPaintEnabled = false;
+            }
+        }
+
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            if (sprayPaintEnabled) {
+                setBlockType(x, y, selectedBlockType);
+            }
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
         }
 
     }
