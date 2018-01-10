@@ -2,7 +2,6 @@ package de.fuwa.bomberman.game.appstates.Ki;
 
 import de.fuwa.bomberman.es.Entity;
 import de.fuwa.bomberman.es.EntityData;
-import de.fuwa.bomberman.es.EntitySet;
 import de.fuwa.bomberman.game.components.CollisionComponent;
 import de.fuwa.bomberman.game.components.PlayerComponent;
 import de.fuwa.bomberman.game.components.PositionComponent;
@@ -29,6 +28,8 @@ public class AStar {
             openList.remove(current);
 
             if(current.getPos().getX() == destination.getX() && current.getPos().getY() == destination.getY()){
+                closedList.clear();
+                openList.clear();
                 return calcPath(nodes[(int)start.getX()][(int)start.getY()], current);
             }
 
@@ -50,10 +51,13 @@ public class AStar {
             }
 
             if(openList.isEmpty()){
-                return new Path();
+                done = true;
             }
         }
-        return null;
+        closedList.clear();
+        openList.clear();
+        return new Path();
+
     }
 
     private static Node findLowestFInOpen(List<Node> openList){
@@ -124,7 +128,7 @@ public class AStar {
     private static Node[][] createMap(EntityData entityData, PositionComponent destination, Tile[][] map, boolean ignoreDangers, int MapSizeX, int MapSizeY){
         Node[][] nodes = new Node[MapSizeX][MapSizeY];
 
-        EntitySet blockingEntities = entityData.getEntities(PositionComponent.class, CollisionComponent.class);
+        List<Entity> blockingEntities = entityData.findEntities(PositionComponent.class, CollisionComponent.class);
 
         for(int i = 0; i < MapSizeY; i++){
             for(int j = 0; j < MapSizeX; j++){
@@ -152,6 +156,8 @@ public class AStar {
                 }
             }
         }
+        blockingEntities.clear();
+        blockingEntities = null;
         return nodes;
     }
 }
