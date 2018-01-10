@@ -1,9 +1,5 @@
 package de.fuwa.bomberman.game.gui;
 
-import de.fuwa.bomberman.game.enums.Setting;
-import de.fuwa.bomberman.game.utils.GameOptions;
-import de.fuwa.bomberman.game.utils.GameUtils;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -30,12 +26,12 @@ public class Credits extends BasicFuwaManPanel {
         JLabel text = new JLabel();
         //add Text
         text.setText("" +
-                 "<html>Domenic Cassisi<br />Projektleiter, Programmierung & MusikDesign<br />" +
-                 "<br />Thomas Fuhr<br />Graphik & GameDesign" +
-                 "<br /><br />Niels Schneider<br />Graphik & Programmierung <br />" +
-                 "<br />Tim Scheifler<br />GameDesign<br />" +
-                 "<br />Ilja Mascharov<br />Graphik & Programmierung<br />" +
-                 "<br />Thank you all for working so good!!</html>"
+                "<html>Domenic Cassisi<br />Projektleiter, Programmierung & MusikDesign<br />" +
+                "<br />Thomas Fuhr<br />Graphik & GameDesign" +
+                "<br /><br />Niels Schneider<br />Graphik & Programmierung <br />" +
+                "<br />Tim Scheifler<br />GameDesign<br />" +
+                "<br />Ilja Mascharov<br />Graphik & Programmierung<br />" +
+                "<br />Thank you all for working so good!!</html>"
         );
         // add scrollPane and set panel transparent
         scrollPane = new JScrollPane(panel = new TransparentPanel());
@@ -46,9 +42,14 @@ public class Credits extends BasicFuwaManPanel {
         scrollPane.getViewport().setOpaque(false); //transparent
         contentPanel.add(scrollPane);
 
+        JPanel returnPanel = new TransparentPanel();
+        returnPanel.setLayout(new GridLayout(2, 1));
         // add Returnbutton to get into MainMenu
         JButton returnButton = new JButton("Return");
         returnButton.addActionListener(e -> listener.onClickReturnToMainMenu());
-        contentPanel.add(returnButton);
-}
+        returnPanel.add(returnButton);
+
+        contentPanel.add(returnPanel);
+        //  contentPanel.add(new TransparentPanel());
+    }
 }
