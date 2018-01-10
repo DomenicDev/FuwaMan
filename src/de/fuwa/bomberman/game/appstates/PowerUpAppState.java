@@ -43,7 +43,7 @@ public class PowerUpAppState extends BaseAppState {
 
                     if (powerUpType == powerUpType.SpeedUp) {
                         WalkableComponent walkCom = entity2.get(WalkableComponent.class);
-                        float newSpeed = (float)Math.pow(1.1, -3 * walkCom.getSpeed());
+                        float newSpeed = walkCom.getSpeed() + (float) Math.pow(1.1, -3 * walkCom.getSpeed());
                         entityData.setComponents(entity2.getId(), new PlayerComponent(playCom.getBombStrength(), playCom.getBombAmount()), new WalkableComponent(walkCom.getMoveDirection(), newSpeed));
                     } else if (powerUpType == powerUpType.BombStrengthUp) {
                         entityData.setComponent(entity2.getId(), new PlayerComponent(playCom.getBombStrength() + 1, playCom.getBombAmount()));
