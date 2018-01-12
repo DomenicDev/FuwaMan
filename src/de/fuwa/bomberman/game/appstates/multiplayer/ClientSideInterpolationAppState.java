@@ -12,7 +12,6 @@ import de.fuwa.bomberman.game.appstates.visual.VisualAppState;
 import de.fuwa.bomberman.game.components.PositionComponent;
 import de.fuwa.bomberman.game.components.WalkableComponent;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -61,7 +60,9 @@ public class ClientSideInterpolationAppState extends BaseAppState {
             current.get(entityId).set(x, y);
             // apply interpolated pos
             DrawableObject drawableObject = visualAppState.getDrawableObject(entityId);
-            drawableObject.set(x, y);
+            if (drawableObject != null) {
+                drawableObject.set(x, y);
+            }
         }
 
     }
