@@ -1,11 +1,10 @@
 package de.fuwa.bomberman.game.utils;
 
-import com.sun.istack.internal.logging.Logger;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ExternalDataManager {
 
@@ -30,7 +29,7 @@ public class ExternalDataManager {
                 return (GameField) o;
             }
         } catch (IOException | ClassNotFoundException e) {
-            Logger.getLogger(ExternalDataManager.class).log(Level.WARNING, "Failed to load '" + name + "'. Probably not a object file!");
+            Logger.getLogger(ExternalDataManager.class.getName()).log(Level.WARNING, "Failed to load '" + name + "'. Probably not a object file!");
         }
         return null;
     }
