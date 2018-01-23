@@ -28,13 +28,13 @@ public class MultiplayerLobbyMenu extends BasicFuwaManPanel {
         contentPanel.add(new TransparentPanel());
 
         // 2. row
-        contentPanel.add(new JLabel("Connected Players"));
+        contentPanel.add(GuiUtils.createLabel("Connected Players"));
         this.playerListModel = new DefaultListModel<>();
         JList<String> connectedPlayers = new JList<>(playerListModel);
         contentPanel.add(connectedPlayers);
 
         // 3. row
-        JLabel settingsLabel = new JLabel("Choose Setting");
+        JLabel settingsLabel = GuiUtils.createLabel("Choose Setting");
         contentPanel.add(settingsLabel);
 
         JComboBox<Setting> settingsBox = new JComboBox<>();
@@ -44,11 +44,11 @@ public class MultiplayerLobbyMenu extends BasicFuwaManPanel {
         contentPanel.add(settingsBox);
 
         // 4. row
-        JButton startButton = new JButton("Start Game");
+        JButton startButton = GuiUtils.createButton("Start Game");
         startButton.addActionListener(e -> listener.onClickStartGame(new GameOptions(settingsBox.getItemAt(settingsBox.getSelectedIndex()), GameUtils.createComplexGameField(), 0)));
         contentPanel.add(startButton);
 
-        JButton returnButton = new JButton("Return");
+        JButton returnButton = GuiUtils.createButton("Return");
         returnButton.addActionListener(e -> listener.onClickReturnToMainMenu());
         contentPanel.add(returnButton);
 

@@ -24,7 +24,7 @@ public class MultiplayerConnectMenu extends BasicFuwaManPanel {
         centerContentPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         p.add(centerContentPanel);
 
-        centerContentPanel.add(new JLabel("Host IP Address:"));
+        centerContentPanel.add(GuiUtils.createLabel("Host IP Address:"));
 
         JTextField ipTextField = new JTextField();
         ipTextField.setText("localhost");
@@ -36,12 +36,12 @@ public class MultiplayerConnectMenu extends BasicFuwaManPanel {
         bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         contentPanel.add(bottomPanel, BorderLayout.SOUTH);
 
-        JButton connectButton = new JButton("Connect");
+        JButton connectButton = GuiUtils.createButton("Connect");
         connectButton.setPreferredSize(new Dimension(150, 35));
         connectButton.addActionListener(e -> listener.onClickConnectToGame(ipTextField.getText().trim()));
         bottomPanel.add(connectButton);
 
-        JButton returnButton = new JButton("Return");
+        JButton returnButton = GuiUtils.createButton("Return");
         returnButton.setPreferredSize(new Dimension(150, 35));
         returnButton.addActionListener(e -> listener.onClickReturnToMainMenu());
         bottomPanel.add(returnButton);

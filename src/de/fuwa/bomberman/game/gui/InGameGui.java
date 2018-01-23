@@ -51,7 +51,7 @@ public class InGameGui extends JPanel {
         this.statusLabel.setFont(new Font("Broadway", Font.BOLD, 20));
         bottomPanel.add(statusLabel);
 
-        JButton exitGame = new JButton("Exit Game");
+        JButton exitGame = GuiUtils.createButton("Exit Game");
         exitGame.addActionListener(e -> BasicFuwaManPanel.listener.onClickCloseGame());
         bottomPanel.add(exitGame);
     }
