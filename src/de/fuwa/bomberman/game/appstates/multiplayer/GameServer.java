@@ -89,6 +89,12 @@ public class GameServer extends BaseAppState implements ConnectionListener, Mess
     @Override
     public void onMessageReceived(HostedConnection source, AbstractMessage m) {
         if (m instanceof JoinGameMessage) {
+
+            // we first check if we even can add more players
+            if (++playerCounter >= 5) {
+                return;
+            }
+
             // we add the player object contained in the message
             JoinGameMessage jm = (JoinGameMessage) m;
             Player player = jm.getPlayer();
@@ -107,17 +113,9 @@ public class GameServer extends BaseAppState implements ConnectionListener, Mess
             // to inform the client about the add we send the message back
             source.send(m);
 
-            if (++playerCounter >= MIN_PLAYERS) {
 
-
-            }
         } else if (m instanceof ReadyForGameStartMessage) {
             readyCounter++;
-            if (readyCounter >= MIN_PLAYERS) {
-                System.out.println("start game");
-                //     readyCounter = 0; // we reset the ready counter for next round
-                //     mainGameAppState.startGame();
-            }
         }
 
         // -------------------------------------
@@ -143,7 +141,6 @@ public class GameServer extends BaseAppState implements ConnectionListener, Mess
 
     @Override
     public void cleanup() {
-        System.out.println("close server");
         this.server.close();
         this.connectionPlayerMap.clear();
     }

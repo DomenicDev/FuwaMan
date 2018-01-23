@@ -21,17 +21,10 @@ import de.fuwa.bomberman.network.messages.AbstractMessage;
 public class GameClient extends BaseAppState implements MessageListener<Client>, ClientStateListener {
 
     private Client client;
-    private String hostIp;
-    private int port;
     private GameStateListener gameStateListener;
     private AppStateManager stateManager;
 
     public GameClient() {
-    }
-
-    public GameClient(String hostIp, int port) {
-        this.hostIp = hostIp;
-        this.port = port;
     }
 
     @Override
@@ -66,12 +59,6 @@ public class GameClient extends BaseAppState implements MessageListener<Client>,
 
     @Override
     public void onMessageReceived(Client source, AbstractMessage m) {
-        if (m instanceof JoinGameMessage) {
-            // we have been accepted so we can create
-            // our game session
-
-        }
-
         if (m instanceof OnSetupGameMessage) {
             stateManager.getGameApplication().addCallable(() -> {
                 OnSetupGameMessage sm = (OnSetupGameMessage) m;
@@ -95,7 +82,6 @@ public class GameClient extends BaseAppState implements MessageListener<Client>,
 
     @Override
     public void onClientConnected(Client c) {
-        System.out.println("connected");
         c.send(new JoinGameMessage(GameUtils.createDefaultHumanPlayer()));
     }
 
@@ -103,16 +89,29 @@ public class GameClient extends BaseAppState implements MessageListener<Client>,
     public void onClientDisconnected() {
         stateManager.getGameApplication().addCallable(() -> {
             if (stateManager.getState(FuwaManAppState.class) != null) {
-                stateManager.getState(FuwaManAppState.class).onClickCloseGame();
+                stateManager.getState(FuwaManAppState.class).onClickReturnToMainMenu();
             }
         });
+    }
+
+    public void close() {
+        this.client.close();
+    }
+
+    @Override
+    public void cleanup() {
+        this.stateManager.detachState(stateManager.getState(EntityDataState.class));
+        this.stateManager.detachState(stateManager.getState(GameSessionAppState.class));
+        if (getClient() != null) {
+            getClient().close();
+        }
     }
 
     private class RemoteGameSession implements GameSession {
 
         private Client client;
 
-        public RemoteGameSession(Client client) {
+        RemoteGameSession(Client client) {
             this.client = client;
         }
 
@@ -126,5 +125,4 @@ public class GameClient extends BaseAppState implements MessageListener<Client>,
             client.send(new ApplyMoveDirectionMessage(direction));
         }
     }
-
 }

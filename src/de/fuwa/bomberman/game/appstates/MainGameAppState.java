@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * This class controls the overall main game state logic.
@@ -28,6 +30,8 @@ import java.util.Map;
  * and inform all clients about the game state events.
  */
 public class MainGameAppState extends BaseAppState {
+
+    private static Logger logger = Logger.getLogger(MainGameAppState.class.getName());
 
     private AppStateManager stateManager;
     private GameSessionHandler gameSessionHandler;
@@ -45,11 +49,6 @@ public class MainGameAppState extends BaseAppState {
     private float remainingTime = -1;
     private EntitySet aliveEntities; // to get notified about players who died
 
-
-
-    public MainGameAppState() {
-
-    }
 
     public MainGameAppState(AppStateManager stateManager) {
         this.stateManager = stateManager;
@@ -108,7 +107,7 @@ public class MainGameAppState extends BaseAppState {
         this.gameOptions = gameOptions;
         GameField gameField = gameOptions.getGameField();
         if (gameStateListeners.isEmpty()) {
-            System.out.println("cannot start game if no players have joined the session");
+            logger.log(Level.INFO, "cannot start game if no players have joined the session");
             return;
         }
 
@@ -197,7 +196,7 @@ public class MainGameAppState extends BaseAppState {
     private PositionComponent[] getStartPositions(int amountPlayers, int width, int height) {
         // this algorithm only works for maximum 4 players
         if (amountPlayers > 0 && amountPlayers > 4) {
-            System.out.println("cannot create start position for 0 or more than 4 players");
+            logger.log(Level.WARNING, "Cannot create start position for 0 or more than 4 players. Null is returned.");
             return null;
         }
 
@@ -261,7 +260,6 @@ public class MainGameAppState extends BaseAppState {
         if (gameRunning) {
 
             if (aliveEntities.applyChanges()) {
-                System.out.println(aliveEntities.size());
                 checkForWinner();
             }
 

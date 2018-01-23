@@ -47,9 +47,7 @@ public class ExplosionSoundAppState extends BaseAppState {
             Clip clip = AudioSystem.getClip();
             // Open audio clip and load samples from the audio input stream.
             clip.open(audioIn);
-            FloatControl gainControl =
-                    (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-            //System.out.println(soundVolumeAppState.volume);
+            FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
             gainControl.setValue(-(soundVolume.getVolume())); //change Volume
             clip.start();
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {

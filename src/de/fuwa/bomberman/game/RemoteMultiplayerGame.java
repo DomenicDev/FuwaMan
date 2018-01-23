@@ -28,7 +28,9 @@ public class RemoteMultiplayerGame extends AbstractGame {
 
     @Override
     public void onCloseGame() {
-
+        if (gameClient != null) {
+            gameClient.close();
+        }
     }
 
     @Override

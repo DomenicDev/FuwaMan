@@ -33,7 +33,6 @@ public class BombAppState extends BaseAppState {
             float timer = bombComponent.getTimer();
             timer -= tpf;
             if(timer <= 0){
-                System.out.println("Boom!");
                 explosionAppState.createExplosion(bomb.get(PositionComponent.class), bombComponent);
                 entityData.removeEntity(bomb.getId());
             }else{

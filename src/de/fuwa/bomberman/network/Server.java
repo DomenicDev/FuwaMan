@@ -10,6 +10,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A server is the endpoint clients connect to.
@@ -17,6 +19,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * handles each of them separately in its own thread.
  */
 public class Server {
+
+    private static Logger logger = Logger.getLogger(Server.class.getName());
 
     private ServerSocket server;
     private List<HostedConnection> connections = new ArrayList<>();
@@ -67,7 +71,7 @@ public class Server {
         try {
             server.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.log(Level.WARNING, "Server could not close properly.");
         }
     }
 
@@ -81,9 +85,7 @@ public class Server {
 
 
     void onConnectionRemoved(HostedConnection connection) {
-        System.out.println(connections.size());
         this.connections.remove(connection);
-        System.out.println(connections.size());
         for (ConnectionListener l : connectionListeners) {
             l.onClientDisconnected(connection);
         }
@@ -123,14 +125,15 @@ public class Server {
                     new HostedConnection(Server.this, client);
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.log(Level.INFO, "Closing server.");
             } finally {
                 try {
                     if (!server.isClosed()) {
                         server.close();
                     }
+                    logger.log(Level.INFO, "Server successfully closed.");
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    logger.log(Level.WARNING, "Could not close server properly.");
                 }
             }
         }

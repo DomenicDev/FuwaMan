@@ -70,4 +70,9 @@ public class GameStateHandler extends BaseAppState implements GameStateListener 
         GameInitializer.removeVisualAndSoundAppStates(stateManager);
         GameInitializer.removeInputAppStates(stateManager);
     }
+
+    @Override
+    public void cleanup() {
+        onCloseGame();
+    }
 }

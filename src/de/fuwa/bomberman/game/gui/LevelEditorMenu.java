@@ -14,8 +14,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class LevelEditorMenu extends JPanel {
+
+    private static Logger logger = Logger.getLogger(LevelEditorMenu.class.getName());
 
     private int gameFieldSizeX;
     private int gameFieldSizeY;
@@ -216,20 +220,6 @@ public class LevelEditorMenu extends JPanel {
         }
     }
 
-    private class ButtonClickHandler implements ActionListener {
-
-        private int x, y;
-
-        private ButtonClickHandler(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            setBlockType(x, y, selectedBlockType);
-        }
-    }
 
     private class SizeChangeHandler implements ChangeListener, ActionListener {
 
@@ -282,7 +272,7 @@ public class LevelEditorMenu extends JPanel {
                         gameFieldSizeX = gameFieldSizeY = 29;
                         break;
                     default:
-                        System.out.println("Whoops. Seems like your selected size can't be used!");
+                        logger.log(Level.WARNING, "Whoops. Seems like your selected size can't be used!");
                 }
             }
 

@@ -9,6 +9,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * HostedConnections are used by the server for communication (messaging).
@@ -16,6 +18,8 @@ import java.net.Socket;
  * Also it is possible to sent messages to that client
  */
 public class HostedConnection {
+
+    private static Logger logger = Logger.getLogger(HostedConnection.class.getName());
 
     private Socket client;
     private Server server;
@@ -121,14 +125,15 @@ public class HostedConnection {
                     }
                 }
             } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
+                logger.log(Level.INFO, "HostedConnection has been disconnected.");
             } finally {
                 try {
                     input.close();
                     output.close();
                     client.close();
+                    logger.log(Level.INFO, "Closed HostedConnection successfully.");
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    logger.log(Level.WARNING, "Could not close Hosted Connection properly.");
                 }
 
                 // we inform our listeners about the closed connection

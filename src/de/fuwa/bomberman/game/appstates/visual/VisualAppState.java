@@ -15,9 +15,13 @@ import de.fuwa.bomberman.game.enums.ModelType;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class VisualAppState extends BaseAppState {
+
+    private Logger logger = Logger.getLogger(VisualAppState.class.getName());
 
     private EntitySet visualEntities;
     private VisualGameField visualGameField;
@@ -121,7 +125,7 @@ public class VisualAppState extends BaseAppState {
         }
 
         if (drawableObject == null) {
-            System.out.println("WARNUNG: drawableobject is not set!");
+            logger.log(Level.WARNING, "Drawable object is not set!");
         }
 
         return drawableObject;

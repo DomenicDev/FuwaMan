@@ -2,7 +2,6 @@ package de.fuwa.bomberman.game.appstates;
 
 import de.fuwa.bomberman.app.AppStateManager;
 import de.fuwa.bomberman.app.BaseAppState;
-import de.fuwa.bomberman.app.Callable;
 import de.fuwa.bomberman.app.GameApplication;
 import de.fuwa.bomberman.app.gui.GameContextFrame;
 import de.fuwa.bomberman.game.MultiPlayerGame;
@@ -47,6 +46,7 @@ public class FuwaManAppState extends BaseAppState implements GameMenuListener {
 
     private void detachOldGame() {
         if (game != null) {
+            game.closeGame();
             stateManager.detachState(game);
             this.game = null;
         }
@@ -98,7 +98,6 @@ public class FuwaManAppState extends BaseAppState implements GameMenuListener {
     public void onClickSaveChanges(){
         //volume = max-unchanged;
         soundVolumeAppState.setVolume(soundVolumeAppState.getMax()-soundVolumeAppState.getUnchanged());
-        System.out.println(soundVolumeAppState.getVolume());
 
         gameApplication.addCallable(() -> {
             detachOldGame();
@@ -109,7 +108,6 @@ public class FuwaManAppState extends BaseAppState implements GameMenuListener {
     @Override
     public void onVolumeChange(float volume){
         soundVolumeAppState.setUnchanged(volume);
-        System.out.println(soundVolumeAppState.getUnchanged());
     }
 
     @Override
@@ -131,7 +129,9 @@ public class FuwaManAppState extends BaseAppState implements GameMenuListener {
     public void onClickCloseGame() {
         gameApplication.addCallable(() -> {
             this.context.setScreen(guiHolder.getMainMenu());
-            this.game.closeGame();
+            if (game != null) {
+                game.closeGame();
+            }
             detachOldGame();
         });
     }
@@ -154,24 +154,21 @@ public class FuwaManAppState extends BaseAppState implements GameMenuListener {
 
     @Override
     public void onClickConnectToGame(String ipAddress) {
-        gameApplication.addCallable(new Callable() {
-            @Override
-            public void run() {
-                GameClient client = new GameClient();
-                if (client.connect(ipAddress, GameConstants.PORT)) {
-                    //   GameStateHandler stateHandler = new GameStateHandler();
-                    // stateManager.attachState(stateHandler);
-                    // client.setGameStateListener(stateHandler);
-                    stateManager.attachState(client);
+        gameApplication.addCallable(() -> {
+            GameClient client = new GameClient();
+            if (client.connect(ipAddress, GameConstants.PORT)) {
+                //   GameStateHandler stateHandler = new GameStateHandler();
+                // stateManager.attachState(stateHandler);
+                // client.setGameStateListener(stateHandler);
+                stateManager.attachState(client);
 
-                    detachOldGame();
-                    game = new RemoteMultiplayerGame(client);
-                    stateManager.attachState(game);
-                    context.setScreen(guiHolder.getClientWaitingLobbyMenu());
-                    client.start();
-                } else {
-                    JOptionPane.showMessageDialog(null, "Could not connect to this address!");
-                }
+                detachOldGame();
+                game = new RemoteMultiplayerGame(client);
+                stateManager.attachState(game);
+                context.setScreen(guiHolder.getClientWaitingLobbyMenu());
+                client.start();
+            } else {
+                JOptionPane.showMessageDialog(null, "Could not connect to this address!");
             }
         });
     }

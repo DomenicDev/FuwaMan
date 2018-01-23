@@ -1,6 +1,7 @@
 package de.fuwa.bomberman.game;
 
 import de.fuwa.bomberman.game.appstates.AbstractGame;
+import de.fuwa.bomberman.game.appstates.FuwaManAppState;
 import de.fuwa.bomberman.game.appstates.MainGameAppState;
 import de.fuwa.bomberman.game.appstates.session.GameSessionAppState;
 import de.fuwa.bomberman.game.appstates.state.GameStateHandler;
@@ -29,7 +30,7 @@ public class SingleplayerGame extends AbstractGame {
         if (gameOptions.getNumberOfKis() <= 0) {
             return;
         }
-        System.out.println(player.getName());
+
         // first add the real player to the game
         mainGameAppState.addPlayer(player);
 
@@ -48,7 +49,7 @@ public class SingleplayerGame extends AbstractGame {
 
     @Override
     public void onCloseGame() {
-
+        stateManager.getState(FuwaManAppState.class).onClickReturnToMainMenu();
     }
 
     @Override

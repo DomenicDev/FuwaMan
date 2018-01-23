@@ -24,7 +24,6 @@ public class BackgroundMusicAppState extends BaseAppState {
             this.musicClip.open(inputStream);
             FloatControl gainControl =
                     (FloatControl) musicClip.getControl(FloatControl.Type.MASTER_GAIN);
-            System.out.println();
            gainControl.setValue(-(soundVolume.getVolume()));                        //change Volume
             this.musicClip.loop(Clip.LOOP_CONTINUOUSLY);
             this.musicClip.start();

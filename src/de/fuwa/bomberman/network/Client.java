@@ -10,6 +10,8 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.Socket;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A client is a part of our network architecture.
@@ -17,6 +19,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * After that messages can be sent and received.
  */
 public class Client {
+
+    private static Logger logger = Logger.getLogger(Client.class.getName());
 
     private Socket client;
     private String ip;
@@ -60,7 +64,7 @@ public class Client {
             this.handler = new ClientHandler();
             return true;
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.log(Level.WARNING, "Could not establish connection!");
         }
         return false;
     }
@@ -70,8 +74,6 @@ public class Client {
         clientThread.start();
         handler.send(new DefaultCommandMessage(Command.Join));
     }
-
-
 
     /**
      * Closes the connection to the server.
@@ -124,8 +126,8 @@ public class Client {
             try {
                 output.writeObject(message);
                 output.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (IOException i) {
+                logger.log(Level.WARNING, "Failed to send message: " + message);
             }
         }
 
@@ -144,7 +146,7 @@ public class Client {
                                     l.onClientConnected(Client.this);
                                 }
                             } else if (cmd == Command.Exit) {
-                                System.out.println("received exit message");
+                                logger.log(Level.FINE, "Received Exit Message. Client will be closed.");
                                 break;
                             }
                         }
@@ -158,7 +160,7 @@ public class Client {
                     }
                 }
             } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
+                logger.log(Level.WARNING, "Client is closing.");
             } finally {
                 try {
                     input.close();
@@ -168,8 +170,13 @@ public class Client {
                     for (ClientStateListener l : clientStateListeners) {
                         l.onClientDisconnected();
                     }
+
+                    messageListeners.clear();
+                    clientStateListeners.clear();
+
+                    logger.log(Level.INFO, "Client successfully closed.");
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    logger.log(Level.WARNING, "Client could not close properly.");
                 }
             }
         }

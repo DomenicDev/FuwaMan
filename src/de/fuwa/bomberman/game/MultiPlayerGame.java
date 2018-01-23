@@ -2,6 +2,7 @@ package de.fuwa.bomberman.game;
 
 import de.fuwa.bomberman.es.base.DefaultEntityData;
 import de.fuwa.bomberman.game.appstates.AbstractGame;
+import de.fuwa.bomberman.game.appstates.FuwaManAppState;
 import de.fuwa.bomberman.game.appstates.MainGameAppState;
 import de.fuwa.bomberman.game.appstates.multiplayer.GameServer;
 import de.fuwa.bomberman.game.appstates.session.GameSessionAppState;
@@ -43,7 +44,6 @@ public class MultiPlayerGame extends AbstractGame {
     protected void onStartGame(GameOptions gameOptions) {
         this.waitingForGameStart = false;
         //   this.server.setMainGameAppState(mainGameAppState);
-        System.out.println("hallo " + mainGameAppState.sizeOfAddedPlayers());
         if (!(mainGameAppState.sizeOfAddedPlayers() > 1)) {
             return;
         }
@@ -63,7 +63,7 @@ public class MultiPlayerGame extends AbstractGame {
 
     @Override
     public void onCloseGame() {
-
+        stateManager.getState(FuwaManAppState.class).onClickReturnToMainMenu();
     }
 
     @Override
@@ -77,13 +77,11 @@ public class MultiPlayerGame extends AbstractGame {
 
     @Override
     public void cleanup() {
-        System.out.println("cleanup");
         stateManager.detachState(gameSessionAppState);
         stateManager.detachState(mainGameAppState);
         //   stateManager.detachState(gameStateHandler);
         stateManager.detachState(server);
         super.cleanup();
-        System.out.println("cleanup ende");
 
     }
 }
