@@ -44,7 +44,7 @@ public class FuwaButton extends JButton implements MouseListener{
 
     @Override
     protected void paintComponent(Graphics g) {
-        g.drawImage(currentBackgroundImage, 0, 0, getWidth(), getHeight(), this);
+        g.drawImage(currentBackgroundImage, 0, 6, getWidth(), getHeight(), this);
         super.paintComponent(g);
 
 
