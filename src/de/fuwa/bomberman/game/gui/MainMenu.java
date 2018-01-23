@@ -16,31 +16,31 @@ public class MainMenu extends BasicFuwaManPanel {
         this.centerPanel.add(buttonPanel);
         this.centerPanel.add(new TransparentPanel());
 
-        JButton singleplayer = new JButton("Singleplayer");
+        JButton singleplayer = GuiUtils.createButton("Singleplayer");
         singleplayer.addActionListener(e -> listener.onClickSingleplayer());
         buttonPanel.add(singleplayer);
 
-        JButton multiplayer = new JButton("Multiplayer");
+        JButton multiplayer = GuiUtils.createButton("Multiplayer");
         multiplayer.addActionListener(e -> listener.onClickMultiplayer());
         buttonPanel.add(multiplayer);
 
-        JButton connectToMultiplayer = new JButton("Connect to Game");
+        JButton connectToMultiplayer = GuiUtils.createButton("Connect to Game");
         connectToMultiplayer.addActionListener(e -> listener.onClickOpenConnectScreen());
         buttonPanel.add(connectToMultiplayer);
 
-        JButton openLevelEditorButton = new JButton("Open Level Editor");
+        JButton openLevelEditorButton = GuiUtils.createButton("Open Level Editor");
         openLevelEditorButton.addActionListener(e -> listener.onClickOpenLevelEditor());
         buttonPanel.add(openLevelEditorButton);
 
-        JButton options = new JButton("Settings");
+        JButton options = GuiUtils.createButton("Settings");
         options.addActionListener(e -> listener.onClickOptions());
         buttonPanel.add(options);
 
-        JButton credits = new JButton("Credits");
+        JButton credits = GuiUtils.createButton("Credits");
         credits.addActionListener(e -> listener.onClickCredits());
         buttonPanel.add(credits);
 
-        JButton close = new JButton("Exit Game");
+        JButton close = GuiUtils.createButton("Exit Game");
         close.addActionListener(e -> listener.onClickExit());
         buttonPanel.add(close);
     }

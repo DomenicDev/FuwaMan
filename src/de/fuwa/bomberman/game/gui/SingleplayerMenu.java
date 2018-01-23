@@ -24,7 +24,7 @@ public class SingleplayerMenu extends BasicFuwaManPanel {
         // empty panel
 
         // setting
-        JLabel settingsLabel = new JLabel("Choose Setting");
+        JLabel settingsLabel = GuiUtils.createLabel("Choose Setting");
         contentPanel.add(settingsLabel);
 
         JComboBox<Setting> settingsBox = new JComboBox<>();
@@ -33,7 +33,7 @@ public class SingleplayerMenu extends BasicFuwaManPanel {
         }
         contentPanel.add(settingsBox);
 
-        JLabel mapLabel = new JLabel("Choose Map");
+        JLabel mapLabel = GuiUtils.createLabel("Choose Map");
         contentPanel.add(mapLabel);
         JComboBox<NamedGameField> mapBox = new JComboBox<>();
         // add predefined maps
@@ -52,7 +52,7 @@ public class SingleplayerMenu extends BasicFuwaManPanel {
         contentPanel.add(mapBox);
 
         // number of enemies
-        JLabel numberEnemiesLabel = new JLabel("Select Number of Enemies");
+        JLabel numberEnemiesLabel = GuiUtils.createLabel("Amount of Enemies");
         contentPanel.add(numberEnemiesLabel);
 
         JComboBox<Integer> numberOfEnemiesBox = new JComboBox<>();
@@ -63,11 +63,11 @@ public class SingleplayerMenu extends BasicFuwaManPanel {
 
 
         // start and return button
-        JButton startButton = new JButton("Start Game");
+        JButton startButton = GuiUtils.createButton("Start Game");
         startButton.addActionListener(e -> listener.onClickStartGame(new GameOptions(settingsBox.getItemAt(settingsBox.getSelectedIndex()), mapBox.getItemAt(mapBox.getSelectedIndex()).getGameField(), numberOfEnemiesBox.getItemAt(numberOfEnemiesBox.getSelectedIndex()))));
         contentPanel.add(startButton);
 
-        JButton returnButton = new JButton("Return");
+        JButton returnButton = GuiUtils.createButton("Return");
         returnButton.addActionListener(e -> listener.onClickReturnToMainMenu());
         contentPanel.add(returnButton);
 

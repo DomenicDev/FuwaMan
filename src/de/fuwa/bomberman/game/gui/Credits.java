@@ -39,13 +39,13 @@ public class Credits extends BasicFuwaManPanel {
         panel.add(text);
         // set scrollPane transparent
         scrollPane.setOpaque(false);
-        scrollPane.getViewport().setOpaque(false); //transparent
+        scrollPane.getViewport().setOpaque(true);
         contentPanel.add(scrollPane);
 
         JPanel returnPanel = new TransparentPanel();
         returnPanel.setLayout(new GridLayout(2, 1));
         // add Returnbutton to get into MainMenu
-        JButton returnButton = new JButton("Return");
+        JButton returnButton = GuiUtils.createButton("Return");
         returnButton.addActionListener(e -> listener.onClickReturnToMainMenu());
         returnPanel.add(returnButton);
 
