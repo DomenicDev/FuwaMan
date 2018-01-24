@@ -19,4 +19,12 @@ public class EntityDataState extends BaseAppState {
     public EntityData getEntityData() {
         return entityData;
     }
+
+    @Override
+    public void cleanup() {
+        if (entityData != null) {
+            entityData.cleanup();
+            this.entityData = null;
+        }
+    }
 }
