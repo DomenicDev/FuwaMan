@@ -11,7 +11,6 @@ import de.fuwa.bomberman.game.components.CollisionComponent;
 import de.fuwa.bomberman.game.components.PositionComponent;
 import de.fuwa.bomberman.game.components.WalkableComponent;
 import de.fuwa.bomberman.game.enums.MoveDirection;
-import de.fuwa.bomberman.game.utils.GameUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -78,10 +77,16 @@ public class PhysicsCharacterMovementAppState extends BaseAppState {
         // until the character walked out of the shape
         if (bombEntities.applyChanges()) {
             for (Entity bomb : bombEntities.getAddedEntities()) {
+                RectangleFloat r1 = new RectangleFloat();
                 PositionComponent bombPos = bomb.get(PositionComponent.class);
+                CollisionComponent collComp = bomb.get(CollisionComponent.class);
+                prepareRectangle(r1, bombPos, collComp);
                 for (Entity character : characters) {
                     PositionComponent charPos = character.get(PositionComponent.class);
-                    if (GameUtils.inSameCell(charPos, bombPos)) {
+                    CollisionComponent charCollComp = character.get(CollisionComponent.class);
+                    RectangleFloat r2 = new RectangleFloat();
+                    prepareRectangle(r2, charPos, collComp);
+                    if (areColliding(r1, r2)) {
                         playerOnBomb.get(character.getId()).add(bomb.getId());
                     }
                 }
