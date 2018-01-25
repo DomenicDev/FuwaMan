@@ -9,17 +9,16 @@ import java.io.IOException;
 
 public class BackgroundMusicAppState extends BaseAppState {
 
-
+    private AudioInputStream inputStream;
     private Clip musicClip;
-    private SoundVolumeAppState soundVolume;
 
     @Override
     public void initialize(AppStateManager stateManager) {
         // load music file
         try {
-            soundVolume = stateManager.getState(SoundVolumeAppState.class);
+            SoundVolumeAppState soundVolume = stateManager.getState(SoundVolumeAppState.class);
             File musicFile = new File("assets/Sounds/FuwaMan_Main_Theme.wav");
-            AudioInputStream inputStream = AudioSystem.getAudioInputStream(musicFile);
+            this.inputStream = AudioSystem.getAudioInputStream(musicFile);
             this.musicClip = AudioSystem.getClip();
             this.musicClip.open(inputStream);
             FloatControl gainControl =
@@ -36,7 +35,15 @@ public class BackgroundMusicAppState extends BaseAppState {
     public void cleanup() {
         if (musicClip != null) {
             musicClip.stop();
+            musicClip.close();
             musicClip = null;
+        }
+        if (inputStream != null) {
+            try {
+                inputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
