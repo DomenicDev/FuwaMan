@@ -70,4 +70,6 @@ public interface EntityData {
      */
     void removeEntity(EntityId entityId);
 
+    void cleanup();
+
 }

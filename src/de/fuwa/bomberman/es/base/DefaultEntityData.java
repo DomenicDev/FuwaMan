@@ -109,6 +109,14 @@ public class DefaultEntityData implements EntityData {
         entityDataBase.get(entityId).clear();
     }
 
+    @Override
+    public void cleanup() {
+        this.entityChangeListeners.clear();
+
+        this.entityDataBase.clear();
+        this.entityDataBase = null;
+    }
+
     protected synchronized void fireEntityChange(EntityChange entityChange) {
         for (EntityChangeListener l : entityChangeListeners) {
             l.onEntityChange(entityChange);
