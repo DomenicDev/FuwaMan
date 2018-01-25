@@ -83,7 +83,11 @@ public class GameServer extends BaseAppState implements ConnectionListener, Mess
 
     @Override
     public void onClientDisconnected(HostedConnection connection) {
-
+        // we want to remove the disconnected client from the player list in the lobby menu
+        if (connectionPlayerMap.containsKey(connection)) {
+            stateManager.getState(FuwaManGuiHolderAppState.class).getMultiplayerLobbyMenu().removePlayerName(connectionPlayerMap.get(connection).getName());
+            connectionPlayerMap.remove(connection);
+        }
     }
 
     @Override
@@ -142,6 +146,7 @@ public class GameServer extends BaseAppState implements ConnectionListener, Mess
     @Override
     public void cleanup() {
         this.server.close();
+        this.stateManager.getState(FuwaManGuiHolderAppState.class).getMultiplayerLobbyMenu().clearListModel();
         this.connectionPlayerMap.clear();
     }
 
