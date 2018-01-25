@@ -54,8 +54,7 @@ public class GameContextFrame extends JFrame {
         this.gamePanel.setLayout(new GridLayout(1, 1));
         this.mainContentPanel.add(gamePanel);
 
-        setUndecorated(true);
-        setExtendedState(MAXIMIZED_BOTH);
+        setFullscreen(settings.isFullscreen());
 
         setVisible(true);
     }
