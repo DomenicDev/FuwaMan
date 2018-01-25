@@ -111,7 +111,7 @@ public class ExplosionSoundAppState extends BaseAppState {
         private Clip clip;
         private AudioInputStream inputStream;
 
-        public AudioClip(Clip clip, AudioInputStream inputStream) {
+        private AudioClip(Clip clip, AudioInputStream inputStream) {
             this.clip = clip;
             this.inputStream = inputStream;
         }
