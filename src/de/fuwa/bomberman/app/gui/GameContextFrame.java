@@ -2,8 +2,11 @@ package de.fuwa.bomberman.app.gui;
 
 import de.fuwa.bomberman.app.AppSettings;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * We created our own JFrame subclass to extend JFrame
@@ -31,6 +34,7 @@ public class GameContextFrame extends JFrame {
     }
 
     public void buildContext() {
+        setTitle(settings.getTitle());
         setSize(settings.getWidth(), settings.getHeight());
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setResizable(true);
@@ -38,6 +42,7 @@ public class GameContextFrame extends JFrame {
         setMinimumSize(DEFAULT_WINDOW_RESOLUTION);
         setResizable(true);
         setFocusable(true);
+        setIcon(settings.getImageIconPath());
         setPreferredSize(new Dimension(settings.getWidth(), settings.getHeight()));
         setLayout(new GridLayout(1, 1));
 
@@ -53,6 +58,15 @@ public class GameContextFrame extends JFrame {
         setExtendedState(MAXIMIZED_BOTH);
 
         setVisible(true);
+    }
+
+    private void setIcon(String imagePath) {
+        if (imagePath == null) return;
+        try {
+            this.setIconImage(ImageIO.read(new File(imagePath)));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void setFullscreen(boolean fullscreen) {
