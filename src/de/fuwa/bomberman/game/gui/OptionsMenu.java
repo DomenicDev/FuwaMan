@@ -1,7 +1,5 @@
 package de.fuwa.bomberman.game.gui;
 
-import de.fuwa.bomberman.game.appstates.sound.SoundVolumeAppState;
-
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -55,11 +53,11 @@ public class OptionsMenu extends BasicFuwaManPanel {
         window.addActionListener(e->listener.onClickWindow());
         buttonPanel.add(window);
 
-        JButton saveChanges = new JButton("Save Changes");
+        JButton saveChanges = GuiUtils.createButton("Save Changes");
         saveChanges.addActionListener(e->listener.onClickSaveChanges());
         buttonPanel.add(saveChanges);
 
-        JButton returnButton = new JButton("Return");
+        JButton returnButton = GuiUtils.createButton("Return");
         returnButton.addActionListener(e -> listener.onClickReturnToMainMenu());
         buttonPanel.add(returnButton);
     }
