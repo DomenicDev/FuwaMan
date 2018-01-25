@@ -14,8 +14,6 @@ public class VisualGameField extends JPanel {
     private Image background;
 
     private ConcurrentLinkedQueue<DrawableObject> backgroundObjects, middleObjects, foregroundObjects;
-
-
     private ConcurrentLinkedQueue<DrawableObject> graphicalObjects = new ConcurrentLinkedQueue<>();
 
     public VisualGameField() {
@@ -28,12 +26,6 @@ public class VisualGameField extends JPanel {
         this.foregroundObjects = new ConcurrentLinkedQueue<>();
 
         setSize(sizeX, sizeY);
-        /*try {
-            background = ImageIO.read(new File("assets/Textures/ground.jpg"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-
     }
 
     public void setBackground(DrawableObject object) {
@@ -116,5 +108,14 @@ public class VisualGameField extends JPanel {
             int screenPosY = (int) (object.getY() * GameConstants.TILE_SIZE);
             graphics2D.drawImage(object.getImageToDraw(), screenPosX, screenPosY, this);
         }
+    }
+
+    public void clearAll() {
+        this.backgroundObjects.clear();
+        this.middleObjects.clear();
+        this.foregroundObjects.clear();
+        this.graphicalObjects.clear();
+
+        this.background = null;
     }
 }

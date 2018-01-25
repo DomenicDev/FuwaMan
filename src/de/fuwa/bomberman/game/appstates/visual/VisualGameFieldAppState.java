@@ -32,6 +32,8 @@ public class VisualGameFieldAppState extends BaseAppState {
 
     @Override
     public void cleanup() {
-        this.frame.removeCurrentGameField();
+        if (visualGameField != null) {
+            visualGameField.clearAll();
+        }
     }
 }

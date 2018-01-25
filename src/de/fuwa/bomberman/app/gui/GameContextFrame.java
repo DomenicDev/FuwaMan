@@ -20,7 +20,7 @@ public class GameContextFrame extends JFrame {
     private JPanel gamePanel; // this panel is added if we are in the running game
     private JPanel mainMenuPanel; // this panel is added if we are in the main menu
 
-    private VisualGameField visualGameField; // the current game field
+    private final Dimension DEFAULT_WINDOW_RESOLUTION = new Dimension(1200, 720);
 
     public GameContextFrame(GameContextListener listener) {
         this.listener = listener;
@@ -35,26 +35,40 @@ public class GameContextFrame extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setResizable(true);
         setLocationRelativeTo(null); // to place it in the middle of the screen
-        setMinimumSize(new Dimension(1200, 720));
+        setMinimumSize(DEFAULT_WINDOW_RESOLUTION);
         setResizable(true);
-        setExtendedState(MAXIMIZED_BOTH);
-        setUndecorated(true);
+        setFocusable(true);
         setPreferredSize(new Dimension(settings.getWidth(), settings.getHeight()));
-        setLayout(new GridLayout(1,1));
+        setLayout(new GridLayout(1, 1));
 
         this.mainContentPanel = new JPanel();
-        this.mainContentPanel.setLayout(new GridLayout(1,1));
+        this.mainContentPanel.setLayout(new GridLayout(1, 1));
         add(mainContentPanel);
 
         this.gamePanel = new JPanel();
-        this.gamePanel.setLayout(new GridLayout(1,1));
+        this.gamePanel.setLayout(new GridLayout(1, 1));
         this.mainContentPanel.add(gamePanel);
 
-        pack();
-
-        setFocusable(true);
+        setUndecorated(true);
+        setExtendedState(MAXIMIZED_BOTH);
 
         setVisible(true);
+    }
+
+    public void setFullscreen(boolean fullscreen) {
+        if (fullscreen) {
+            super.dispose();
+            setUndecorated(true);
+            setExtendedState(MAXIMIZED_BOTH);
+            setVisible(true);
+        } else {
+            super.dispose();
+            setUndecorated(false);
+            setExtendedState(NORMAL);
+            setSize(DEFAULT_WINDOW_RESOLUTION);
+            setLocationRelativeTo(null);
+            setVisible(true);
+        }
     }
 
     public void updateGui() {
@@ -71,23 +85,6 @@ public class GameContextFrame extends JFrame {
     private void clearContent() {
         this.gamePanel.removeAll();
     }
-
-    public VisualGameField createAndDisplayGameField(int sizeX, int sizeY) {
-        VisualGameField visualGameField = new VisualGameField(sizeX, sizeY);
-        visualGameField.setBackground(Color.CYAN);
-        clearContent();
-        this.gamePanel.add(visualGameField);
-        this.visualGameField = visualGameField;
-        return visualGameField;
-    }
-
-    public void removeCurrentGameField() {
-        if (this.visualGameField != null) {
-            //   this.gamePanel.remove(visualGameField);
-            //   this.visualGameField = null;
-        }
-    }
-
 
     @Override
     public void dispose() {
