@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class KiAppstate extends BaseAppState {
 
@@ -106,7 +105,7 @@ public class KiAppstate extends BaseAppState {
                                 } else if (movedir == MoveDirection.Left) {
                                     newpos = new PositionComponent(move.getPos().getX() + 1, move.getPos().getY());
                                 } else {
-                                    newpos = new PositionComponent(move.getPos().getX() - 1, move.getPos().getY() + 1);
+                                    newpos = new PositionComponent(move.getPos().getX() - 1, move.getPos().getY());
                                 }
                                 PositionComponent pos = entity.get(PositionComponent.class);
                                 KiAction kiAction2 = new KiAction(AStar.findPath(pos, newpos, entityData, playermap, true, MapSizeX, MapSizeY), false, 0);
